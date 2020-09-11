@@ -115,7 +115,7 @@ public class Door : MonoBehaviour {
         GetComponent<Node>().isAvailable = true;
         //door.GetComponent<Animator>().SetTrigger("Open");
         Debug.Log("Opening Door");
-        door.gameObject.SetActive(false);
+        door.GetComponent<DoorNew>().OpenDoor();
         if (!RoomShown)
         {
             GetComponent<HexAdjuster>().SetHexToFull();

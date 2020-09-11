@@ -5,14 +5,22 @@ using UnityEngine;
 public class SideWall : MonoBehaviour
 {
     public LayerMask WallMask;
-    public Vector3 CenterOffset;
 
-    public void CheckIfOnAnotherWall()
+    public bool CheckIfOnAnotherWall()
     {
-        Ray ray = new Ray(transform.position + transform.right * -1.5f*CenterOffset.magnitude + Vector3.up*3f, Vector3.down);
-        if (Physics.RaycastAll(ray, 5f, WallMask).Length > 1)
+        Ray ray = new Ray(transform.position + Vector3.up*3f, Vector3.down);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 5f, WallMask);
+        if (hits.Length > 1)
         {
-            DestroyImmediate(this.gameObject);
+            foreach(RaycastHit hit in hits)
+            {
+                if (hit.transform != this.transform && hit.transform.GetComponentInParent<Room>() != GetComponentInParent<Room>())
+                {
+                    Debug.Log(hit.transform.gameObject);
+                    return true;
+                }
+            }
         }
+        return false;
     }
 }

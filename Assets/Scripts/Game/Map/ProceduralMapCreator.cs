@@ -21,6 +21,27 @@ class Rooms
 public class ProceduralMapCreator : MonoBehaviour {
 
     public List<GameObject> RoomDatabase = new List<GameObject>();
+    public List<GameObject> RoomsWithWallsNotInDirection(RoomSide side)
+    {
+        List<GameObject> RoomsAvailable = new List<GameObject>();
+        foreach (GameObject room in RoomDatabase)
+        {
+            if (room.GetComponent<Room>().DoorOpenings.Count == 0) { continue; }
+            if (room.GetComponent<Room>().DoorOpenings.Contains(side)) { continue; }
+            RoomsAvailable.Add(room);
+        }
+        return RoomsAvailable;
+    }
+    public List<GameObject> DeadEndRooms()
+    {
+        List<GameObject> RoomsAvailable = new List<GameObject>();
+        foreach (GameObject room in RoomDatabase)
+        {
+            if (room.GetComponent<Room>().DoorOpenings.Count == 0) { RoomsAvailable.Add(room); }
+        }
+        return RoomsAvailable;
+    }
+
     List<Door> doorsAvailable = new List<Door>();
 
     public int GoldAmount = 50;
@@ -330,10 +351,27 @@ public class ProceduralMapCreator : MonoBehaviour {
         return playerHexes;
     }
 
+    RoomSide OpositeDirection(RoomSide direction)
+    {
+        switch (direction)
+        {
+            case RoomSide.Down:
+                return RoomSide.Top;
+            case RoomSide.Top:
+                return RoomSide.Down;
+            case RoomSide.Left:
+                return RoomSide.Right;
+            case RoomSide.Right:
+                return RoomSide.Left;
+        }
+        return RoomSide.Left;
+    }
+
     List<Hex> BuildStartRoom(int q, int r, RoomSide directionBuilding)
     {
-        int RoomDatabaseIndex = Random.Range(0, RoomDatabase.Count);
-        Room RoomPrefab = RoomDatabase[RoomDatabaseIndex].GetComponent<Room>();
+        List<GameObject> roomsAvailable = RoomsWithWallsNotInDirection(OpositeDirection(directionBuilding));
+        int RoomDatabaseIndex = Random.Range(0, roomsAvailable.Count);
+        Room RoomPrefab = roomsAvailable[RoomDatabaseIndex].GetComponent<Room>();
         int width = RoomPrefab.width;
         int height = RoomPrefab.height;
         Node StartNode = hexMap.GetNode(q, r);
@@ -342,7 +380,7 @@ public class ProceduralMapCreator : MonoBehaviour {
 
         if (hexes != null)
         {
-            GameObject Room = Instantiate(RoomDatabase[RoomDatabaseIndex]);
+            GameObject Room = Instantiate(roomsAvailable[RoomDatabaseIndex]);
             Room.GetComponent<Room>().start = true;
             BuildRoomShell(hexes, StartNode, directionBuilding, width, height, Room, RoomName);
         }
@@ -354,7 +392,7 @@ public class ProceduralMapCreator : MonoBehaviour {
         switch (directionBuilding)
         {
             case RoomSide.Top:
-                Room.transform.position = StartNode.transform.position + (Vector3.back * .85f * height) + Vector3.left * .8f + Vector3.down *.1f;
+                Room.transform.position = StartNode.transform.position + (Vector3.back * .76f * height) + Vector3.left * .8f + Vector3.down *.1f;
                 break;
             case RoomSide.Right:
                 Room.transform.position = StartNode.transform.position + (Vector3.left * 1.05f * height) + Vector3.down * .1f;
@@ -363,24 +401,27 @@ public class ProceduralMapCreator : MonoBehaviour {
                 Room.transform.position = StartNode.transform.position + (Vector3.right * 1.05f * height) + Vector3.down * .1f;
                 break;
             case RoomSide.Down:
-                Room.transform.position = StartNode.transform.position + (Vector3.forward * .85f * height) + Vector3.left * .8f + Vector3.down * .1f;
+                Room.transform.position = StartNode.transform.position + (Vector3.forward * .76f * height) + Vector3.left * .8f + Vector3.down * .1f;
                 break;
         }
         SideWall[] sideWalls = Room.GetComponentsInChildren<SideWall>();
+        List<GameObject> ObjectToBeDestroyed = new List<GameObject>();
         foreach (SideWall sideWall in sideWalls)
         {
-            sideWall.CheckIfOnAnotherWall();
+            if (sideWall.CheckIfOnAnotherWall()) { ObjectToBeDestroyed.Add(sideWall.gameObject); }
+        }
+        foreach(GameObject obj in ObjectToBeDestroyed)
+        {
+            DestroyImmediate(obj);
         }
         DoorNew[] newDoors = Room.GetComponentsInChildren<DoorNew>();
         foreach (DoorNew doorNew in newDoors)
         {
-            if (!doorNew.CheckIfOnAnotherWall())
-            {
-                Door door = doorNew.CreateDoorHex(RoomName);
-                door.RoomComingFrom = Room;
-                door.HexesInRoom = hexes;
-                doorsAvailable.Add(door);
-            }
+            //doorNew.CheckIfOnAnotherWall();
+            Door door = doorNew.CreateDoorHex(RoomName);
+            door.RoomComingFrom = Room;
+            door.HexesInRoom = hexes;
+            doorsAvailable.Add(door);
         }
     }
 
@@ -539,8 +580,11 @@ public class ProceduralMapCreator : MonoBehaviour {
 
     List<Hex> BuildRoom(int q, int r, RoomSide directionBuilding, Door door)
     {
-        int RoomDatabaseIndex = Random.Range(0, RoomDatabase.Count);
-        Room RoomPrefab = RoomDatabase[RoomDatabaseIndex].GetComponent<Room>();
+        List<GameObject> roomsAvailable;
+        if (CurrentChallengeRating <= 4) { roomsAvailable = DeadEndRooms(); }
+        else { roomsAvailable = RoomsWithWallsNotInDirection(OpositeDirection(directionBuilding)); }
+        int RoomDatabaseIndex = Random.Range(0, roomsAvailable.Count);
+        Room RoomPrefab = roomsAvailable[RoomDatabaseIndex].GetComponent<Room>();
         int width = RoomPrefab.width;
         int height = RoomPrefab.height;
         if (directionBuilding == RoomSide.Top || directionBuilding == RoomSide.Down)
@@ -555,7 +599,7 @@ public class ProceduralMapCreator : MonoBehaviour {
         if (hexes != null)
         {
             attempts = 0;
-            GameObject Room = Instantiate(RoomDatabase[RoomDatabaseIndex]);
+            GameObject Room = Instantiate(roomsAvailable[RoomDatabaseIndex]);
             door.RoomOpeningTo = Room;
             door.GetComponent<Node>().AddRoomName(RoomName);
             BuildRoomShell(hexes, StartNode, directionBuilding, width, height, Room, RoomName);

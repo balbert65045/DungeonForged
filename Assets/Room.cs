@@ -8,5 +8,8 @@ public class Room : MonoBehaviour
     public int height;
     public bool start = false;
 
+    public List<RoomSide> DoorOpenings = new List<RoomSide>();
+
+
     public DoorNew[] doors;
 }

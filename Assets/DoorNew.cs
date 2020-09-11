@@ -8,6 +8,8 @@ public class DoorNew : MonoBehaviour
     public LayerMask HexMask;
     public LayerMask WallMask;
 
+    public GameObject[] Doors;
+
     public Door CreateDoorHex(string RoomNameToBuild)
     {
         Ray ray = new Ray(transform.position, Vector3.down);
@@ -25,14 +27,29 @@ public class DoorNew : MonoBehaviour
         return null;
     }
 
-    public bool CheckIfOnAnotherWall()
+    public void OpenDoor()
     {
-        Ray ray = new Ray(transform.position + Vector3.up * 3f, Vector3.down);
-        if (Physics.RaycastAll(ray, 5f, WallMask).Length > 1)
+        GetComponent<BoxCollider>().enabled = false;
+        foreach(GameObject Door in Doors)
         {
-            DestroyImmediate(this.gameObject);
-            return true;
+            Door.SetActive(false);
         }
-        return false;
+    }
+
+    public void CheckIfOnAnotherWall()
+    {
+        Debug.Log("Door Destroying");
+        Ray ray = new Ray(transform.position + Vector3.up * 3f, Vector3.down);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 5f, WallMask);
+        if (hits.Length > 1)
+        {
+            foreach (RaycastHit hit in hits)
+            {
+                if (hit.transform != this.transform)
+                {
+                    DestroyImmediate(hit.transform.gameObject);
+                }
+            }
+        }
     }
 }
