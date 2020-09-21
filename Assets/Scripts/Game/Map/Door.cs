@@ -96,7 +96,7 @@ public class Door : MonoBehaviour {
     public void BuildRoomBySize()
     {
         HexRoomBuilder builder = FindObjectOfType<HexRoomBuilder>();
-        hexesToOpenTo = builder.BuildRoomBySize(GetComponent<Node>(), heightOfRoom, widthOfRoom, RoomNameToBuild, RoomSideToBuild);
+        hexesToOpenTo = builder.BuildRoomBySize(GetComponent<Node>(), heightOfRoom, widthOfRoom, RoomNameToBuild, RoomSideToBuild, 0, 0);
         if (hexesToOpenTo != null)
         {
             ShowHexes();

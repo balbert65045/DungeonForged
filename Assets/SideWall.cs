@@ -16,7 +16,6 @@ public class SideWall : MonoBehaviour
             {
                 if (hit.transform != this.transform && hit.transform.GetComponentInParent<Room>() != GetComponentInParent<Room>())
                 {
-                    Debug.Log(hit.transform.gameObject);
                     return true;
                 }
             }

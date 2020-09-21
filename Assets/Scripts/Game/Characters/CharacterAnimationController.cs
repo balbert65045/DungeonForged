@@ -63,6 +63,7 @@ public class CharacterAnimationController : MonoBehaviour {
 
     public void GetHit()
     {
+        myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
         myAnimator.SetTrigger("Hit");
     }
 

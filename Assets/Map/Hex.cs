@@ -183,6 +183,10 @@ public class Hex : MonoBehaviour {
             else
             {
                 CharacterHolder CH = FindObjectOfType<CharacterHolder>();
+                if (EntityToSpawn.GetComponent<EnemyCharacter>() != null)
+                {
+                    startingRot = new Vector3(0, 90, 0);
+                }
                 EntityHolding = Instantiate(EntityToSpawn.gameObject, StartPos, Quaternion.Euler(startingRot), CH.transform).GetComponent<Entity>();
             }
             EntityHolding.StartOnHex(this);

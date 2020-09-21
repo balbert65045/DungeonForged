@@ -19,10 +19,11 @@ public class HexRoomBuilder : MonoBehaviour {
     string RoomName;
     public LayerMask WallLayer;
 
-    public List<Hex> BuildRoomBySize(Node startNode, int height, int width, string roomName, RoomSide RS)
+    public List<Hex> BuildRoomBySize(Node startNode, int height, int width, string roomName, RoomSide RS, int heightOffset, int widthOffset)
     {
         if (RS == RoomSide.Left || RS == RoomSide.Right)
         {
+
             if (height % 4 != 1)
             {
                 Debug.LogWarning("Height must be every other odd number ie: 1, 5, 9, 13...");
@@ -43,48 +44,75 @@ public class HexRoomBuilder : MonoBehaviour {
             }
         }
 
-            HexController = GetComponent<HexMapController>();
+        HexController = GetComponent<HexMapController>();
         HexController.CreateTable();
         RoomName = roomName;
-        if (!RoomAvailableToBuild(startNode, RoomByDimensions(height, width, RS)))
+        if (!RoomAvailableToBuild(startNode, RoomByDimensions(height, width, RS), heightOffset, widthOffset))
         {
             Debug.LogWarning("Room unable to be made since a room node is either null or already taken");
             return null;
         }
-        List<Hex> NewRoom = ConstructRoom(startNode, RoomByDimensions(height, width, RS));
+        List<Hex> NewRoom = ConstructRoom(startNode, RoomByDimensions(height, width, RS), heightOffset, widthOffset);
         return NewRoom;
     }
 
-    List<Hex> ConstructRoom(Node StartNode, List<Vector4> roomDeltas)
+    List<Hex> ConstructRoom(Node StartNode, List<Vector4> roomDeltas, int heightOffset, int widthOffset)
     {
         int Q = StartNode.q;
         int R = StartNode.r;
         List<Hex> Room = new List<Hex>();
+        //Room.Add(SetNodeAsNormalHex(Q, R, 0, RoomName));
         foreach (Vector4 delta in roomDeltas)
         {
+            int xChange = (int)delta.x;
+            int yChange = (int)delta.y;
+            if (widthOffset != 0)
+            {
+                xChange = (int)delta.x + widthOffset;
+            }
+            if (heightOffset != 0)
+            {
+                xChange = (int)delta.x - heightOffset / 2;
+                yChange = (int)delta.y + (int)Mathf.Round(heightOffset * .86f);
+            }
+            
+            if ((xChange == 0) && (yChange == 0)) { continue; }
             if (delta.z == 0)
             {
-                Room.Add(SetNodeAsNormalHex(Q + (int)delta.x, R + (int)delta.y, (int)delta.w, RoomName));
+                Room.Add(SetNodeAsNormalHex(Q + xChange, R + yChange, (int)delta.w, RoomName));
             }
             else if (delta.z == 1)
             {
-                Room.Add(SetNodeAsFragmentHex(Q + (int)delta.x, R + (int)delta.y, (int)delta.w, RoomName));
+                Room.Add(SetNodeAsFragmentHex(Q + xChange, R + yChange, (int)delta.w, RoomName));
             }
             else if (delta.z == 2)
             {
-                Room.Add(SetNodeAsHalfHex(Q + (int)delta.x, R + (int)delta.y, (int)delta.w, RoomName));
+                Room.Add(SetNodeAsHalfHex(Q + xChange, R + yChange, (int)delta.w, RoomName));
             }
         }
+        StartNode.GetComponent<HexAdjuster>().SetHexToFull();
         return Room;
     }
 
-    bool RoomAvailableToBuild(Node StartNode, List<Vector4> roomDeltas)
+    bool RoomAvailableToBuild(Node StartNode, List<Vector4> roomDeltas, int heightOffset, int widthOffset)
     {
         int Q = StartNode.q;
         int R = StartNode.r;
         foreach(Vector4 delta in roomDeltas)
         {
-            if (CheckNodeIfTakenOrNull(Q + (int)delta.x, R + (int)delta.y)) {
+            int xChange = (int)delta.x;
+            int yChange = (int)delta.y;
+            if (widthOffset != 0)
+            {
+                xChange = (int)delta.x + widthOffset;
+            }
+            if (heightOffset != 0)
+            {
+                xChange = (int)delta.x - heightOffset / 2;
+                yChange = (int)delta.y + (int)Mathf.Round(heightOffset * .86f);
+            }
+            if ((xChange == 0) && (yChange == 0)) { continue; }
+            if (CheckNodeIfTakenOrNull(Q + xChange, R + yChange)) {
                 return false;
             }
         }
@@ -95,8 +123,8 @@ public class HexRoomBuilder : MonoBehaviour {
     {
         Node node = HexController.GetNode(q, r);
         if (node == null || ((node.isAvailable || node.Used) && !node.edge)) {
-            //Debug.Log(node == null);
-            //Debug.Log(q + "," + r);
+            if (node == null) { Debug.Log("Node null"); }
+            else { Debug.Log(q + "," + r); }
             return true;
         }
         return false;

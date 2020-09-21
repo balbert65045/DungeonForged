@@ -8,7 +8,20 @@ public class DoorNew : MonoBehaviour
     public LayerMask HexMask;
     public LayerMask WallMask;
 
+    public GameObject Railing;
+    public GameObject DoorObj;
     public GameObject[] Doors;
+
+    private Door myDoor;
+
+    public void TurnDoorToRailing()
+    {
+        myDoor.GetComponent<Node>().edge = true;
+        myDoor.GetComponent<Hex>().HideHex();
+        DestroyImmediate(myDoor);
+        DoorObj.SetActive(false);
+        Railing.SetActive(true);
+    }
 
     public Door CreateDoorHex(string RoomNameToBuild)
     {
@@ -16,13 +29,13 @@ public class DoorNew : MonoBehaviour
         RaycastHit Hit;
         if (Physics.Raycast(ray, out Hit, 5f, HexMask))
         {
-            Door door = Hit.transform.gameObject.AddComponent<Door>();
-            door.gameObject.AddComponent<doorConnectionHex>();
-            door.RoomSideToBuild = DoorOpeningTowards;
-            door.door = this.gameObject;
-            door.GetComponent<Node>().edge = false;
-            door.RoomNameToBuild = RoomNameToBuild;
-            return door;
+            myDoor = Hit.transform.gameObject.AddComponent<Door>();
+            myDoor.gameObject.AddComponent<doorConnectionHex>();
+            myDoor.RoomSideToBuild = DoorOpeningTowards;
+            myDoor.door = this.gameObject;
+            myDoor.GetComponent<Node>().edge = false;
+            myDoor.RoomNameToBuild = RoomNameToBuild;
+            return myDoor;
         }
         return null;
     }
@@ -36,9 +49,8 @@ public class DoorNew : MonoBehaviour
         }
     }
 
-    public void CheckIfOnAnotherWall()
+    public bool CheckIfOnAnotherWall()
     {
-        Debug.Log("Door Destroying");
         Ray ray = new Ray(transform.position + Vector3.up * 3f, Vector3.down);
         RaycastHit[] hits = Physics.RaycastAll(ray, 5f, WallMask);
         if (hits.Length > 1)
@@ -47,9 +59,10 @@ public class DoorNew : MonoBehaviour
             {
                 if (hit.transform != this.transform)
                 {
-                    DestroyImmediate(hit.transform.gameObject);
+                    return true;
                 }
             }
         }
+        return false;
     }
 }
