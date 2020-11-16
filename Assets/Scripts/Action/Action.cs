@@ -19,27 +19,25 @@ public enum ActionType
     None = 13,
 }
 
+public enum DeBuff
+{
+    None = 0,
+    Bleed = 1,
+}
+
 [System.Serializable]
 public struct Action {
 
     public ActionType thisActionType;
     public AOE thisAOE;
+    public DeBuff thisDeBuff;
     public int Range;
-    public int Duration;
 
-    public Action(ActionType actionType, AOE aoe, int amount)
+    public Action(ActionType actionType, AOE aoe, int amount, DeBuff deBuff)
     {
         thisActionType = actionType;
         thisAOE = aoe;
         Range = amount;
-        Duration = 0;
-    }
-
-    public Action(ActionType actionType, AOE aoe, int amount, int duration)
-    {
-        thisActionType = actionType;
-        thisAOE = aoe;
-        Range = amount;
-        Duration = duration;
+        thisDeBuff = deBuff;
     }
 }

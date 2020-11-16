@@ -6,6 +6,7 @@ public class EnemyCharacter : Character {
 
     public int EnemyChallengeRating = 1;
     public float XpOnDeath = 10;
+    public int GoldHolding = 5;
 
     public string CharacterName;
     public Sprite enemySprite;
@@ -15,6 +16,8 @@ public class EnemyCharacter : Character {
 
     private Hex TargetHex;
     PlayerCharacter ClosestCharacter;
+
+    ActionSet currentActionSet;
 
     public EnemyGroup GetGroup()
     {
@@ -39,7 +42,8 @@ public class EnemyCharacter : Character {
 
     public void ShowNewAction()
     {
-        myHealthBar.ShowActions(GetGroup().CurrentActionSet.Actions);
+        currentActionSet = GetGroup().GetRandomActionSet();
+        myHealthBar.ShowActions(currentActionSet.Actions);
     }
 
     //OTHER//
@@ -59,11 +63,12 @@ public class EnemyCharacter : Character {
     //Callbacks
     public override void Die()
     {
-        //FindObjectOfType<EnemyController>().CharacterDied(this);
         GetGroup().UnLinkCharacterToGroup(this);
         FindObjectOfType<ObjectiveArea>().EnemyDied();
+        HexOn.goldHolding += GoldHolding;
+        HexOn.ShowMoney();
+        if (FindObjectOfType<TurnOrder>().GetCurrentCharacter() == this) { finishedActions(); }
         base.Die();
-        //characterThatAttackedMe.SlayedEnemy(XpOnDeath);
     }
 
     public override void FinishedPerformingShielding()
@@ -110,13 +115,12 @@ public class EnemyCharacter : Character {
     }
 
     int actionSetIndex = 0;
-    ActionSet currentActionSet;
-    public void PerformActionSet(ActionSet actionSet)
+    public void PerformActionSet()
     {
-        resetShield(baseArmor);
         ClosestCharacter = null;
         actionSetIndex = 0;
-        currentActionSet = actionSet;
+        BeginTurn();
+        if (health <= 0) { return; }
         DoNextAction();
     }
 
@@ -134,10 +138,11 @@ public class EnemyCharacter : Character {
         }
         else
         {
-            GetComponent<CharacterAnimationController>().DoBuff(ActionType.Shield, CurrentAction.thisAOE.Damage, CurrentAction.Duration, new List<Character>() { this });
+            GetComponent<CharacterAnimationController>().DoBuff(ActionType.Shield, CurrentAction.thisAOE.Damage, new List<Character>() { this });
         }
     }
 
+    DeBuff deBuffApplying;
     void UseAttack(Action action)
     {
         if (ClosestCharacter == null) { ClosestCharacter = BreadthFirst(); }
@@ -145,6 +150,7 @@ public class EnemyCharacter : Character {
         GetAttackHexes(action.Range);
         if (HexInActionRange(TargetHex)) {
             CurrentAttack = action.thisAOE.Damage;
+            deBuffApplying = action.thisDeBuff;
             StartCoroutine("ShowAttack");
         }
         else { FinishedAttacking(); }
@@ -276,7 +282,7 @@ public class EnemyCharacter : Character {
         {
             hexVisualizer.HighlightAttackAreaHex(character.HexOn);
         }
-        Attack(CurrentAttack, charactersAttacking.ToArray());
+        Attack(CurrentAttack, deBuffApplying, charactersAttacking.ToArray());
     }
 
     public void GetAttackHexes(int Range)

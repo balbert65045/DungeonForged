@@ -11,6 +11,7 @@ public class CSCharacterCardPanel : MonoBehaviour {
     public GameObject DeckArea;
 
     public GameObject Card;
+    public GameObject CardAmountPrefab;
 
     public void HidePanel()
     {
@@ -28,16 +29,33 @@ public class CSCharacterCardPanel : MonoBehaviour {
         Panel.SetActive(true);
         Name.text = character.Name;
 
+        int amountOfCards = 1;
+        GameObject LastCard = null;
+        GameObject LastCardAmount = null;
+        int index = 0;
         for (int i = 0; i < character.StartingCards.Count; i++)
         {
-            int column = i % 4;
-            int row = i / 4;
-            float x = ((column * 180f) - 270);
-            float y = (250 - (row * 230f));
+            if (LastCard == character.StartingCards[i]) {
+                amountOfCards++;
+                LastCardAmount.GetComponentInChildren<Text>().text = "x" + amountOfCards.ToString();
+                continue; 
+            }
+            amountOfCards = 1;
+            LastCard = character.StartingCards[i];
+            int column = index % 3;
+            int row = index / 3;
+            float x = ((column * 235f) - 230);
+            float y = (220 - (row * 350f));
             Card = Instantiate(character.StartingCards[i], DeckArea.transform);
             Card.transform.rotation = Quaternion.identity;
             Card.transform.localPosition = new Vector3(x, y, 0);
-            Card.transform.localScale = new Vector3(0.6035785f, 0.6035785f, 2.385f);
+            Card.transform.localScale = new Vector3(.8f, .8f, 2.385f);
+
+            LastCardAmount = Instantiate(CardAmountPrefab, DeckArea.transform);
+            LastCardAmount.transform.localPosition = new Vector3(x, y -150f, 0);
+            LastCardAmount.transform.SetAsFirstSibling();
+            LastCardAmount.GetComponentInChildren<Text>().text = "x1";
+            index++;
         }
         //Description.text = character.Description;
         //Card = Instantiate(character.BasicAttackCard, BasicAttackArea.transform);

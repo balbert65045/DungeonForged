@@ -65,6 +65,7 @@ public class Hex : MonoBehaviour {
 
     public void ShowMoney()
     {
+        if (GoldHolding != null) { Destroy(GoldHolding); }
         if (goldHolding > 0 && goldHolding < 6)
         {
             GoldHolding = Instantiate(GoldPrefabSmall, this.transform);

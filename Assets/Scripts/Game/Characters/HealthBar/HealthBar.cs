@@ -29,19 +29,8 @@ public class HealthBar : MonoBehaviour {
     public Sprite RangeSprite;
     public Sprite ArmorSprite;
 
-    public GameObject Buff1;
-    public SpriteRenderer Buff1Sprite;
-    public GameObject Buff2;
-    public SpriteRenderer Buff2Sprite;
-    public GameObject Buff3;
-    public SpriteRenderer Buff3Sprite;
-    public GameObject Buff4;
-    public SpriteRenderer Buff4Sprite;
-
-    float AttackSymbolXStart;
-    float AttackValueXStart;
-    float HealSymbolXStart;
-    float HealValueXStart;
+    List<DeBuffIndicator> DeBuffsIndicatorsActive = new List<DeBuffIndicator>();
+    public GameObject DeBuffPrefab;
 
     Camera cam;
 
@@ -98,6 +87,35 @@ public class HealthBar : MonoBehaviour {
         CurrnetIndicators.Add(AI);
     }
 
+    public void RemoveDeBuff(DeBuff debuff)
+    {
+        bool shift = false;
+        for(int i = 0; i < DeBuffsIndicatorsActive.Count; i++)
+        {
+            if (DeBuffsIndicatorsActive[i].myDeBuff == debuff)
+            {
+                DeBuffIndicator indicatorToRemove = DeBuffsIndicatorsActive[i];
+                DeBuffsIndicatorsActive.Remove(indicatorToRemove);
+                Destroy(indicatorToRemove.gameObject);
+                shift = true;
+                continue;
+            }
+            if (shift)
+            {
+                DeBuffsIndicatorsActive[i].transform.localPosition = new Vector3(DeBuffsIndicatorsActive[i].transform.localPosition.x - .2f, -0.1f, 0);
+            }
+        }
+    }
+
+    public void ShowDeBuff(DeBuff debuff)
+    {
+        GameObject thisDeBuff = Instantiate(DeBuffPrefab, transform);
+        thisDeBuff.transform.localRotation = Quaternion.identity;
+        thisDeBuff.transform.localPosition = new Vector3(-1 + .2f* DeBuffsIndicatorsActive.Count, -0.1f, 0);
+        DeBuffsIndicatorsActive.Add(thisDeBuff.GetComponent<DeBuffIndicator>());
+        thisDeBuff.GetComponent<DeBuffIndicator>().ShowDebuff(debuff);
+    }
+
     public void AddGold(int amount)
     {
         StartCoroutine("GoldAdded", amount);
@@ -109,73 +127,6 @@ public class HealthBar : MonoBehaviour {
         GoldValue.text = "+ " + amount.ToString();
         yield return new WaitForSeconds(1f);
         GoldObj.SetActive(false);
-    }
-
-    public void AddBuff(BuffType buff)
-    {
-        if (!Buff1.activeSelf)
-        {
-            setBuff(Buff1, Buff1Sprite, buff);
-        }
-        else if (!Buff2.activeSelf)
-        {
-            setBuff(Buff2, Buff2Sprite, buff);
-        }
-        else if (!Buff3.activeSelf)
-        {
-            setBuff(Buff3, Buff3Sprite, buff);
-        }
-        else if (!Buff4.activeSelf)
-        {
-            setBuff(Buff4, Buff4Sprite, buff);
-        }
-    }
-
-    void setBuff(GameObject obj, SpriteRenderer SpriteRend, BuffType buffType)
-    {
-        obj.SetActive(true);
-        switch (buffType)
-        {
-            case BuffType.Strength:
-                SpriteRend.sprite = StrengthSprite;
-                break;
-            case BuffType.Agility:
-                SpriteRend.sprite = AgilitySprite;
-                break;
-            case BuffType.Dexterity:
-                SpriteRend.sprite = RangeSprite;
-                break;
-            case BuffType.Armor:
-                SpriteRend.sprite = ArmorSprite;
-                break;
-        }
-    }
-
-    public void RemoveBuff(BuffType buffType)
-    {
-        switch (buffType)
-        {
-            case BuffType.Strength:
-                removeBuff(StrengthSprite);
-                break;
-            case BuffType.Agility:
-                removeBuff(AgilitySprite);
-                break;
-            case BuffType.Dexterity:
-                removeBuff(RangeSprite);
-                break;
-            case BuffType.Armor:
-                removeBuff(ArmorSprite);
-                break;
-        }
-    }
-
-    void removeBuff(Sprite sprite)
-    {
-        if (Buff1.activeSelf && Buff1Sprite.sprite == sprite) { Buff1.SetActive(false); }
-        else if (Buff2.activeSelf && Buff2Sprite.sprite == sprite) { Buff2.SetActive(false); }
-        else if (Buff3.activeSelf && Buff3Sprite.sprite == sprite) { Buff3.SetActive(false); }
-        else if (Buff4.activeSelf && Buff4Sprite.sprite == sprite) { Buff4.SetActive(false); }
     }
 
     public void CreateHealthBar(int currentHealth, int maxHealth)

@@ -160,7 +160,10 @@ public class HexAdjuster : MonoBehaviour {
     public void SetHexToHalf()
     {
         GetComponent<MeshFilter>().mesh = HalfHex;
-        GetComponent<Node>().edge = true;
+        if (GetComponent<Door>() == null)
+        {
+            GetComponent<Node>().edge = true;
+        }
       //  GetComponent<Hex>().OutLine.SetActive(false);
         //GetComponent<Hex>().OutLine.GetComponent<MeshFilter>().mesh = HalfHexOutline;
     }
@@ -171,7 +174,10 @@ public class HexAdjuster : MonoBehaviour {
        // GetComponent<Hex>().OutLine.GetComponent<MeshFilter>().mesh = PartialHexOutline;
         if (GetComponent<MeshFilter>().sharedMesh == DoubleFragmentAcross){ RotateWithoutChild(true); }
         GetComponent<MeshFilter>().mesh = FragmentHex;
-        GetComponent<Node>().edge = true;
+        if (GetComponent<Door>() == null)
+        {
+            GetComponent<Node>().edge = true;
+        }
     }
 
     public void SetHexToEdgeFull()
@@ -193,9 +199,12 @@ public class HexAdjuster : MonoBehaviour {
     {
         RotateWithoutChild(false);
         GetComponent<MeshFilter>().mesh = DoubleFragmentAcross;
-      //  GetComponent<Hex>().OutLine.SetActive(false);
-      //  GetComponent<Hex>().OutLine.GetComponent<MeshFilter>().mesh = DoublePartialHexOutline;
-        GetComponent<Node>().edge = true;
+        //  GetComponent<Hex>().OutLine.SetActive(false);
+        //  GetComponent<Hex>().OutLine.GetComponent<MeshFilter>().mesh = DoublePartialHexOutline;
+        if (GetComponent<Door>() == null)
+        {
+            GetComponent<Node>().edge = true;
+        }
     }
 
     void RotateWithoutChild(bool forward)
@@ -220,7 +229,10 @@ public class HexAdjuster : MonoBehaviour {
         GetComponent<MeshFilter>().mesh = DoubleFragmentSide;
         //GetComponent<Hex>().OutLine.GetComponent<MeshFilter>().mesh = DoublePartialHexOutline;
         //GetComponent<Hex>().OutLine.SetActive(false);
-        GetComponent<Node>().edge = true;
+        if (GetComponent<Door>() == null)
+        {
+            GetComponent<Node>().edge = true;
+        }
     }
 
     public void RotateHexToTopRight()

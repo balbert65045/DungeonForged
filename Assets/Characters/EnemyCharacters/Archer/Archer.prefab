@@ -1898,6 +1898,8 @@ MonoBehaviour:
   AgilitySprite: {fileID: 21300000, guid: d480a25d0bf2e1c49a5583ce5d17f8b4, type: 3}
   RangeSprite: {fileID: 21300000, guid: cfb51629e8afd754da237c5e9256c086, type: 3}
   ArmorSprite: {fileID: 21300000, guid: ff398cdbe032de048871e6fd4ee46a09, type: 3}
+  DeBuffPrefab: {fileID: 497236576766875404, guid: 1ec378248eef5bd44b8be50fa143a983,
+    type: 3}
   Buff1: {fileID: 2735123642893911545}
   Buff1Sprite: {fileID: 2810362864425591433}
   Buff2: {fileID: 2735811044778649363}
@@ -4022,7 +4024,7 @@ MonoBehaviour:
   myCT: 1
   MaxMoveDistance: 15
   CurrentMoveDistance: 0
-  health: 15
+  health: 8
   ViewDistance: 4
   baseStrength: 0
   baseAgility: 0
@@ -4033,6 +4035,7 @@ MonoBehaviour:
   CombatNodes: []
   EnemyChallengeRating: 1
   XpOnDeath: 10
+  GoldHolding: 5
   CharacterName: Archer
   enemySprite: {fileID: 21300000, guid: 93641462c8a68624c8425002fe016275, type: 3}
 --- !u!114 &3383098490634117411
@@ -4085,7 +4088,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1 &5501292017463285647
 GameObject:

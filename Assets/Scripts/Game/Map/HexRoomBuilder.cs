@@ -123,8 +123,8 @@ public class HexRoomBuilder : MonoBehaviour {
     {
         Node node = HexController.GetNode(q, r);
         if (node == null || ((node.isAvailable || node.Used) && !node.edge)) {
-            if (node == null) { Debug.Log("Node null"); }
-            else { Debug.Log(q + "," + r); }
+            //if (node == null) { Debug.Log("Node null"); }
+            //else { Debug.Log(q + "," + r); }
             return true;
         }
         return false;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CSCharacter : MonoBehaviour {
 
+    public PlayerCharacterType characterType;
     public GameObject PrefabAssociatedWith;
     public int MaxHealth;
     public string Name;

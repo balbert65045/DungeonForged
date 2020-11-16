@@ -61,6 +61,10 @@ public class CombatCardAbilityEditor : Editor
 
                     SerializedProperty ActionAttackAmount_Property = ActionAOE_Property.FindPropertyRelative("Damage");
                     EditorGUILayout.PropertyField(ActionAttackAmount_Property);
+
+                    SerializedProperty ActionStatus_Property = Actions_Property.GetArrayElementAtIndex(i - 1).FindPropertyRelative("thisDeBuff");
+                    EditorGUILayout.PropertyField(ActionStatus_Property);
+
                     break;
                 case ActionType.Movement:
                     SerializedProperty ActionMovementAmount_Property = Actions_Property.GetArrayElementAtIndex(i - 1).FindPropertyRelative("Range");

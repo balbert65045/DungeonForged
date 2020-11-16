@@ -18,7 +18,7 @@ public class EnemyController : MonoBehaviour {
     {
         myCamera.SetTarget(character.transform);
         yield return new WaitForSeconds(.5f);
-        character.PerformActionSet(character.GetGroup().CurrentActionSet);
+        character.PerformActionSet();
     }
 
     public void CharacterEndedTurn()
@@ -46,19 +46,6 @@ public class EnemyController : MonoBehaviour {
         turnOrder = FindObjectOfType<TurnOrder>();
     }
 
-    public bool SelectCharacter(string characterName)
-    {
-        foreach (EnemyGroup group in enemyGroups)
-        {
-            if (group.CharacterNameLinkedTo == characterName)
-            {
-                group.selectRandomCharacter();
-                return true;
-            }
-        }
-        return false;
-    }
-
     public EnemyGroup GetGroupFromCharacter(EnemyCharacter character)
     {
         foreach (EnemyGroup group in enemyGroups)
@@ -77,34 +64,5 @@ public class EnemyController : MonoBehaviour {
                 group.LinkCharacterToGroup(character);
             }
         }
-    }
-
-    public void CharacterDied(EnemyCharacter character)
-    {
-        foreach (EnemyGroup group in enemyGroups)
-        {
-            if (group.CharacterNameLinkedTo == character.CharacterName)
-            {
-                group.UnLinkCharacterToGroup(character);
-            }
-        }
-    }
-
-    public void takeAwayBuffs()
-    {
-        foreach (EnemyGroup group in enemyGroups)
-        {
-            group.takeAwayBuffs();
-        }
-    }
-
-    public EnemyCharacter[] enemiesOut()
-    {
-        List<EnemyCharacter> charactersOut = new List<EnemyCharacter>();
-        foreach (EnemyGroup group in enemyGroups)
-        {
-            charactersOut.AddRange(group.linkedCharacters);
-        }
-        return charactersOut.ToArray();
     }
 }

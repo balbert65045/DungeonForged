@@ -2,30 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BuffType
-{
-    Strength = 1,
-    Agility = 2,
-    Dexterity = 3,
-    Armor = 4,
-    None = 5,
-}
-
-[System.Serializable]
-public class Buff
-{
-    public int Amount;
-    public int Duration;
-    public BuffType myBuffType;
-
-    public Buff(int amount, int duration, BuffType buffType)
-    {
-        Amount = amount;
-        Duration = duration;
-        myBuffType = buffType;
-    }
-}
-
 public class Character : Entity {
 
     public Sprite characterIcon;
@@ -90,9 +66,6 @@ public class Character : Entity {
     private bool GoingToDie = false;
     public bool GetGoingToDie() { return GoingToDie; }
 
-    private List<Buff> Buffs = new List<Buff>();
-    public List<Buff> GetBuffs() { return Buffs; }
-
     private bool Stealthed = false;
     public bool GetStealthed() { return Stealthed; }
     private int StealthDuration = 0;
@@ -149,79 +122,10 @@ public class Character : Entity {
 
     public bool HexNegativeActionable(Hex hex) { return hex.EntityHolding != null && hex.EntityHolding.GetComponent<Character>() != null && hex.EntityHolding.GetComponent<Character>().myCT != myCT; }
 
-    public void GiveBuff(int value, int duration, BuffType buffType, List<Character> charactersGivingBuffTo)
+    IEnumerator GivingBuffDelay()
     {
-        foreach (Character character in charactersGivingBuffTo)
-        {
-            character.ApplyBuff(value, duration, buffType);
-        }
+        yield return new WaitForSeconds(.3f);
         FinishedPerformingBuff();
-    }
-
-    public void ApplyBuff(int value, int duration, BuffType buffType)
-    {
-        switch (buffType)
-        {
-            case BuffType.Strength:
-                AddBuff(value, duration, buffType, Strength, baseStrength);
-                Strength += value;
-                break;
-            case BuffType.Armor:
-                AddBuff(value, duration, buffType, Armor, baseArmor);
-                Armor += value;
-                Shield(value, this);
-                break;
-            case BuffType.Agility:
-                AddBuff(value, duration, buffType, Agility, baseAgility);
-                Agility += value;
-                break;
-            case BuffType.Dexterity:
-                AddBuff(value, duration, buffType, Dexterity, baseDexterity);
-                Dexterity += value;
-                break;
-        }
-    }
-
-    void AddBuff(int value, int duration, BuffType buffType, int Attribute, int baseAttribute)
-    {
-        Buff buffApplied = new Buff(value, duration, buffType);
-        Buffs.Add(buffApplied);
-        bool AttributeAlreadyBuffed = Attribute > baseAttribute;
-        if (!AttributeAlreadyBuffed) { myHealthBar.AddBuff(buffType); }
-    }
-
-    public void DecreaseBuffsDuration()
-    {
-        List<Buff> buffsToRemove = new List<Buff>();
-        foreach (Buff buff in Buffs)
-        {
-            buff.Duration--;
-            if (buff.Duration <= 0) { buffsToRemove.Add(buff); }
-
-        }
-        foreach (Buff buff in buffsToRemove)
-        {
-            switch (buff.myBuffType)
-            {
-                case BuffType.Strength:
-                    Strength = Strength - buff.Amount;
-                    if (Strength == baseStrength) { myHealthBar.RemoveBuff(BuffType.Strength); }
-                    break;
-                case BuffType.Agility:
-                    Agility = Agility - buff.Amount;
-                    if (Agility == baseAgility) { myHealthBar.RemoveBuff(BuffType.Agility); }
-                    break;
-                case BuffType.Dexterity:
-                    Dexterity = Dexterity - buff.Amount;
-                    if (Dexterity == baseDexterity) { myHealthBar.RemoveBuff(BuffType.Dexterity); }
-                    break;
-                case BuffType.Armor:
-                    Armor = Armor - buff.Amount;
-                    if (Armor == baseArmor) { myHealthBar.RemoveBuff(BuffType.Armor); }
-                    break;
-            }
-            Buffs.Remove(buff);
-        }
     }
 
     void Awake()
@@ -280,7 +184,7 @@ public class Character : Entity {
     {
         transform.LookAt(characterThatAttackedMe.transform);
         GetComponent<CharacterAnimationController>().GetHit();
-
+        ShowDeBuff();
         int healthBeforeDamage = health;
         health -= Mathf.Clamp((TotalHealthLosing - CurrentArmor), 0, 1000);
         if (health <= 0) { GoingToDie = true; }
@@ -318,6 +222,7 @@ public class Character : Entity {
     public void Heal(int amount, Character character)
     {
         characterThatHealingMe = character;
+        if (myDeBuffs.Contains(DeBuff.Bleed)){RemoveBleed();}
         myHealthBar.AddHealth(amount);
         health += amount;
         health = Mathf.Clamp(health, 0, maxHealth + 1);
@@ -391,6 +296,45 @@ public class Character : Entity {
         LetAttackerAttack();
     }
 
+    public void BeginTurn()
+    {
+        resetShield(baseArmor);
+        if (myDeBuffs.Contains(DeBuff.Bleed))
+        {
+            Bleed();
+        }
+    }
+
+    void RemoveBleed()
+    {
+        myDeBuffs.Remove(DeBuff.Bleed);
+        myHealthBar.RemoveDeBuff(DeBuff.Bleed);
+    }
+
+    void Bleed()
+    {
+        TakeTrueDamage(1);
+    }
+
+    List<DeBuff> myDeBuffs = new List<DeBuff>();
+    public DeBuff deBuffApplied = DeBuff.None;
+    public void ShowDeBuff()
+    {
+        if (deBuffApplied != DeBuff.None && deBuffApplied != 0)
+        {
+            myHealthBar.ShowDeBuff(deBuffApplied);
+        }
+        deBuffApplied = DeBuff.None;
+    }
+    public void AddDeBuff(DeBuff deBuff)
+    {
+        if (!myDeBuffs.Contains(deBuff))
+        {
+            myDeBuffs.Add(deBuff);
+            deBuffApplied = deBuff;
+        }
+    }
+
     public void HitOpponent()
     {
         foreach (Character character in charactersAttackingAt)
@@ -409,7 +353,7 @@ public class Character : Entity {
         GetComponent<CharacterAnimationController>().Attack();
     }
 
-    public void Attack(int damage, Character[] characters)
+    public void Attack(int damage, DeBuff deBuff, Character[] characters)
     {
         charactersAttackingAt.Clear();
         CharactersFinishedTakingDamage = 0;
@@ -425,6 +369,7 @@ public class Character : Entity {
         foreach (Character character in charactersAttackingAt)
         {
             character.transform.LookAt(transform);
+            character.AddDeBuff(deBuff);
             character.TakeDamage(damage, this);
         }
     }

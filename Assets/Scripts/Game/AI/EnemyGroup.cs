@@ -34,11 +34,16 @@ public class EnemyGroup : MonoBehaviour {
     public void SetNewAction()
     {
         if (AvailableActions.Count == 0) { return; }
-        CurrentActionSet = AvailableActions[Random.Range(0, AvailableActions.Count)];
         foreach(EnemyCharacter character in linkedCharacters)
         {
             character.ShowNewAction();
         }
+    }
+
+    public ActionSet GetRandomActionSet()
+    {
+        int randomNum = Random.Range(0, AvailableActions.Count);
+        return AvailableActions[randomNum];
     }
 
     void Start()
@@ -79,7 +84,6 @@ public class EnemyGroup : MonoBehaviour {
     {
         foreach (Character character in linkedCharacters)
         {
-            character.DecreaseBuffsDuration();
             character.resetShield(character.GetArmor());
             character.SetSummonSickness(false);
         }

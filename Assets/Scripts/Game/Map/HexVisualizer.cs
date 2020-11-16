@@ -312,6 +312,13 @@ public class HexVisualizer : MonoBehaviour {
         }
     }
 
+    public void HexChange()
+    {
+        Hex hex = LastHexOver;
+        LastHexOver = null;
+        OnHexChanged(hex);
+    }
+
     public void OnHexChanged(Hex hex)
     {
         

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ActionIndicator : MonoBehaviour {
 
+    public GameObject StatusObj;
+    public SpriteRenderer StatusSpriteRenderer;
+    public Sprite BleedSprite;
+    public Sprite PosionSprite;
 
     public GameObject RangeObj;
     public SpriteRenderer RangeSpriteIndicator;
@@ -45,6 +49,22 @@ public class ActionIndicator : MonoBehaviour {
                 ActionSpriteIndicator.sprite = AttackIndicatorSprite;
                 ActionSpriteIndicatorBackGround.sprite = AttackIndicatorSprite;
                 ActionSpriteIndicator.color = Color.red;
+                switch (action.thisDeBuff)
+                {
+                    case DeBuff.Bleed:
+                        StatusObj.SetActive(true);
+                        StatusSpriteRenderer.sprite = BleedSprite;
+                        StatusSpriteRenderer.color = Color.red;
+                        if (!RangeObj.activeSelf)
+                        {
+                            StatusObj.transform.localPosition = new Vector3(6.3f, StatusObj.transform.localPosition.y, StatusObj.transform.localPosition.z);
+                        }
+                        else
+                        {
+                            StatusObj.transform.localPosition = new Vector3(26f, StatusObj.transform.localPosition.y, StatusObj.transform.localPosition.z);
+                        }
+                        break;
+                }
                 break;
             case ActionType.Shield:
                 if (action.Range > 1)

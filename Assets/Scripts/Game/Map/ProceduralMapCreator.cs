@@ -206,19 +206,20 @@ public class ProceduralMapCreator : MonoBehaviour {
     {
         AddEnemies(hexes);
         AddObstaclesToRoom(hexes);
+        AddGoldToRooms(hexes);
     }
 
     void AddGoldToRooms(List<Hex> hexes)
     {
         if (CurrentGoldAmount > GoldAmount) { return; }
         List<Hex> NonEdgeHexes = GetNonEdgeHexes(hexes);
-        int MaximumGoldShouldPlace = 4;
+        int MaximumGoldShouldPlace = 2;
         for (int i = 0; i < MaximumGoldShouldPlace; i++)
         {
             int RandomLocation = Random.Range(0, NonEdgeHexes.Count);
             Hex AttemptHex = NonEdgeHexes[RandomLocation];
-            int flip = Random.Range(0, 2);
-            if (flip == 1) {
+            if (AttemptHex.EntityToSpawn == null)
+            {
                 int goldPlacing = Random.Range(1, 7);
                 CurrentGoldAmount += goldPlacing;
                 AttemptHex.goldHolding = goldPlacing;
@@ -288,6 +289,7 @@ public class ProceduralMapCreator : MonoBehaviour {
         }
         AddEnemies(EnemyHexes);
         AddObstaclesToRoom(hexes);
+        AddGoldToRooms(hexes);
         SetStartNode(StartNode, RoomName);
         hexes.Add(StartNode.GetComponent<Hex>());
         ShowHexSet(hexes, RoomName);
@@ -401,7 +403,7 @@ public class ProceduralMapCreator : MonoBehaviour {
         switch (directionBuilding)
         {
             case RoomSide.Top:
-                Room.transform.position = (StartNode.transform.position + (Vector3.back * .735f * height) + (Vector3.right * widthOffset * 1.61f) + Vector3.down *.1f) - DoorOffset;
+                Room.transform.position = (StartNode.transform.position + (Vector3.back * .735f * height) + (Vector3.right * widthOffset * 1.605f) + Vector3.down *.1f) - DoorOffset;
                 break;
             case RoomSide.Right:
                 Room.transform.position = (StartNode.transform.position + (Vector3.left * .78f * width) + (Vector3.back * heightOffset * 1.47f) + Vector3.down * .1f) - DoorOffset;
@@ -410,16 +412,11 @@ public class ProceduralMapCreator : MonoBehaviour {
                 Room.transform.position = (StartNode.transform.position + (Vector3.right * .73f * width) + (Vector3.back * heightOffset * 1.47f) + Vector3.down * .1f) - DoorOffset;
                 break;
             case RoomSide.Down:
-                Room.transform.position = (StartNode.transform.position + (Vector3.forward * .735f * height) + (Vector3.right * widthOffset * 1.61f) + Vector3.down * .1f) - DoorOffset;
+                Room.transform.position = (StartNode.transform.position + (Vector3.forward * .735f * height) + (Vector3.right * widthOffset * 1.605f) + Vector3.down * .1f) - DoorOffset;
                 break;
         }
-        SideWall[] sideWalls = Room.GetComponentsInChildren<SideWall>();
         DoorNew[] doors = Room.GetComponentsInChildren<DoorNew>();
         List<GameObject> ObjectToBeDestroyed = new List<GameObject>();
-        foreach (SideWall sideWall in sideWalls)
-        {
-            if (sideWall.CheckIfOnAnotherWall()) { ObjectToBeDestroyed.Add(sideWall.gameObject); }
-        }
         foreach(DoorNew door in doors)
         {
             if (door.CheckIfOnAnotherWall()) { ObjectToBeDestroyed.Add(door.gameObject); }

@@ -114,8 +114,6 @@ public class Door : MonoBehaviour {
         isOpen = true;
         GetComponent<Node>().isAvailable = true;
         //door.GetComponent<Animator>().SetTrigger("Open");
-        Debug.Log("Opening Door");
-        door.GetComponent<DoorNew>().OpenDoor();
         if (!RoomShown)
         {
             GetComponent<HexAdjuster>().SetHexToFull();
@@ -129,6 +127,7 @@ public class Door : MonoBehaviour {
                 }
             }
         }
+        door.GetComponent<DoorNew>().OpenDoor();
     }
 
     public void ShowHexes()

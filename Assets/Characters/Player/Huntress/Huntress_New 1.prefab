@@ -142,7 +142,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 515987071149349302}
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 80.37317, y: -31.888186, z: -40.061363}
   m_LocalScale: {x: 0.6795859, y: 0.67958486, z: 0.67958564}
   m_Children:
@@ -258,7 +258,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1 &631728062752858426
 GameObject:
@@ -365,6 +365,8 @@ MonoBehaviour:
   AgilitySprite: {fileID: 21300000, guid: d480a25d0bf2e1c49a5583ce5d17f8b4, type: 3}
   RangeSprite: {fileID: 21300000, guid: cfb51629e8afd754da237c5e9256c086, type: 3}
   ArmorSprite: {fileID: 21300000, guid: ff398cdbe032de048871e6fd4ee46a09, type: 3}
+  DeBuffPrefab: {fileID: 497236576766875404, guid: 1ec378248eef5bd44b8be50fa143a983,
+    type: 3}
   Buff1: {fileID: 8232655771513192620}
   Buff1Sprite: {fileID: 744155507852181808}
   Buff2: {fileID: 2174928010253291338}
@@ -2961,7 +2963,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5731447966947005415}
   m_LocalRotation: {x: -0.000000052154054, y: -0.000000029802315, z: -0, w: 1}
-  m_LocalPosition: {x: 0.93, y: -0, z: -0}
+  m_LocalPosition: {x: 0.93, y: 0.223, z: -0}
   m_LocalScale: {x: 0.05164589, y: 0.052673675, z: 0.05267371}
   m_Children:
   - {fileID: 462455084762387890}

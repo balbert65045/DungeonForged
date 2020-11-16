@@ -14,6 +14,7 @@ public class CardsPanel : MonoBehaviour {
         foreach(NewCard newCard in newCards)
         {
             newCard.transform.SetParent(OldParent.transform);
+            newCard.transform.localPosition = Vector3.zero;
             newCard.gameObject.SetActive(false);
         }
         MaskPenel.SetActive(false);

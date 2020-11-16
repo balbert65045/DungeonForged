@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointerUpHandler
 {
+    public int price;
     public Text EnergyText;
     public GameObject PrefabAssociatedWith;
     public int EnergyAmount;
@@ -53,17 +54,26 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
         else if (inHand() && playable && FindObjectOfType<PlayerController>().CardsPlayable)
         {
             if (EnergyAmount > FindObjectOfType<EnergyAmount>().CurrentEnergyAmount) { unShowCard(); }
-            else if (cardAbility.Staging) { FindObjectOfType<NewHand>().PutCardInStaging(this); }
-            else{ FindObjectOfType<NewHand>().UseCard(this); }
+            else if (cardAbility.Staging) {
+                InTheHand = false;
+                FindObjectOfType<NewHand>().PutCardInStaging(this); 
+            }
+            else{
+                InTheHand = false;
+                FindObjectOfType<NewHand>().UseCard(this); 
+            }
         }
         else
         {
             unShowCard();
         }
+        FindObjectOfType<HexVisualizer>().HexChange();
     }
 
     bool inLoot() { return GetComponentInParent<CardLoot>() != null; }
-    bool inHand(){ return GetComponentInParent<NewHand>() != null; }
+
+    public bool InTheHand = false;
+    bool inHand(){ return InTheHand; }
     bool inStaging() { return GetComponentInParent<StagingArea>() != null; }
 
     public void OnPointerEnter(PointerEventData eventData)

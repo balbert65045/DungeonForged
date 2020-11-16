@@ -6,7 +6,6 @@ public class LevelManager : MonoBehaviour {
 
     // Use this for initialization
 
-    public int LevelIndex = 1;
     public float autoLoadNextLevelAfter;
 
     private void Awake()
@@ -40,7 +39,7 @@ public class LevelManager : MonoBehaviour {
 
     public void LoadNextLevelFromIndex()
     {
-        SceneManager.LoadSceneAsync("Level"+ LevelIndex.ToString());
+        SceneManager.LoadSceneAsync("Level"+ FindObjectOfType<NewGroupStorage>().LevelIndex.ToString());
     }
 
     public void LoadLevelWithDelay(string levelName, float timeDelay)

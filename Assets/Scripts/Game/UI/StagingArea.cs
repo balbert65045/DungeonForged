@@ -39,7 +39,7 @@ public class StagingArea : MonoBehaviour {
     {
         for (int i = 0; i < actions.Length; i++)
         {
-            Action newAction = new Action(actions[i].thisActionType, actions[i].thisAOE, actions[i].Range);
+            Action newAction = new Action(actions[i].thisActionType, actions[i].thisAOE, actions[i].Range, actions[i].thisDeBuff);
             CurrentActions.Add(newAction);
             if (i == actions.Length - 1) { LastActionStackingOn = newAction; }
         }
@@ -56,19 +56,19 @@ public class StagingArea : MonoBehaviour {
             {
                 if (LastActionStackingOn.thisActionType == ActionType.Movement)
                 {
-                    CurrentActions[CurrentActions.Count - 1] = new Action(ActionType.Movement, LastActionStackingOn.thisAOE, LastActionStackingOn.Range + AddedAction.Range);
+                    CurrentActions[CurrentActions.Count - 1] = new Action(ActionType.Movement, LastActionStackingOn.thisAOE, LastActionStackingOn.Range + AddedAction.Range, LastActionStackingOn.thisDeBuff);
                     LastActionStackingOn = CurrentActions[CurrentActions.Count - 1];
                 }
                 else
                 {
-                    Action Maction = new Action(AddedAction.thisActionType, AddedAction.thisAOE, AddedAction.Range);
+                    Action Maction = new Action(AddedAction.thisActionType, AddedAction.thisAOE, AddedAction.Range, AddedAction.thisDeBuff);
                     CurrentActions.Add(Maction);
                     LastActionStackingOn = Maction;
                 }
             }
             else
             {
-                Action Aaction = new Action(AddedAction.thisActionType, AddedAction.thisAOE, AddedAction.Range);
+                Action Aaction = new Action(AddedAction.thisActionType, AddedAction.thisAOE, AddedAction.Range, AddedAction.thisDeBuff);
                 CurrentActions.Add(Aaction);
                 LastActionStackingOn = Aaction;
             }
@@ -89,7 +89,7 @@ public class StagingArea : MonoBehaviour {
                 }
                 else
                 {
-                    CurrentActions[CurrentActions.Count - 1] = new Action(ActionType.Movement, LastActionStackingOn.thisAOE, LastActionStackingOn.Range - actions[i].Range);
+                    CurrentActions[CurrentActions.Count - 1] = new Action(ActionType.Movement, LastActionStackingOn.thisAOE, LastActionStackingOn.Range - actions[i].Range, LastActionStackingOn.thisDeBuff);
                     LastActionStackingOn = CurrentActions[CurrentActions.Count - 1];
                 }
             }

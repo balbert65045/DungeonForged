@@ -175,9 +175,10 @@ public class NewHand : MonoBehaviour {
     void PlaceCard(int index, NewCard card)
     {
         card.transform.SetParent(Positions[index].transform);
+        card.InTheHand = true;
         card.Returning = true;
         card.transform.localRotation = Quaternion.identity;
-        card.SetCurrentParent(card.transform.parent);
+        card.SetCurrentParent(Positions[index].transform);
         card.transform.localScale = new Vector3(1, 1, 1);
     }
 }

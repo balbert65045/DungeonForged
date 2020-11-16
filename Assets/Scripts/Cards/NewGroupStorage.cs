@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class CardStorage
 {
+    public PlayerCharacterType characterType;
     public string CharacterName;
     public int CharacterMaxHealth = 0;
     public int CharacterCurrentHealth = 0;
@@ -31,6 +32,7 @@ public class NewGroupStorage : MonoBehaviour {
         if (index < MyGroupCardStorage.Length)
         {
             CardStorage CS = new CardStorage();
+            CS.characterType = character.characterType;
             CS.CharacterName = character.Name;
             CS.CharacterMaxHealth = character.MaxHealth;
             CS.CharacterCurrentHealth = character.MaxHealth;
@@ -41,6 +43,12 @@ public class NewGroupStorage : MonoBehaviour {
             }
             index++;
         }
+    }
+
+    public void AddHealth(int amount, string characterName)
+    {
+        CardStorage character = GetStorageFromName(characterName);
+        character.CharacterCurrentHealth = Mathf.Clamp(character.CharacterCurrentHealth + amount, 0, character.CharacterMaxHealth);
     }
 
     public CardStorage GetStorageFromName(string name)

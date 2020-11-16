@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour {
         {
             SelectPlayerCharacter.ShowAction(CurrentAction.Range, CurrentAction.thisActionType);
         }
+        endActionButton.gameObject.SetActive(true);
         SelectPlayerCharacter.ShowActionOnHealthBar(CurrentActions);
     }
 
@@ -113,14 +114,16 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    bool usingAction = false;
+
     void UseAction(Action action)
     {
+        if (usingAction) { return; }
         if (action.thisActionType == ActionType.None) { return; }
         Transform HexHit = raycaster.HexRaycast();
         Hex hexSelected = null;
         if (HexHit != null && HexHit.GetComponent<Hex>()) { hexSelected = HexHit.GetComponent<Hex>(); }
         if (hexSelected == null) { return; }
-        bool usingAction = false;
         if (action.thisActionType == ActionType.Movement)
         {
             usingAction = CheckToMoveOrInteract();
@@ -209,8 +212,8 @@ public class PlayerController : MonoBehaviour {
     void PerformAction(Action action, List<Character> characters)
     {
         RemoveArea();
-        if (action.thisActionType == ActionType.Attack) { SelectPlayerCharacter.Attack(action.thisAOE.Damage, characters.ToArray()); }
-        else { SelectPlayerCharacter.GetComponent<CharacterAnimationController>().DoBuff(action.thisActionType, action.thisAOE.Damage, action.Duration, characters); }
+        if (action.thisActionType == ActionType.Attack) { SelectPlayerCharacter.Attack(action.thisAOE.Damage, action.thisDeBuff, characters.ToArray()); }
+        else { SelectPlayerCharacter.GetComponent<CharacterAnimationController>().DoBuff(action.thisActionType, action.thisAOE.Damage, characters); }
     }
 
     List<Character> CheckForNegativeAction(Action action, Character character, Hex hexSelected)
@@ -259,8 +262,7 @@ public class PlayerController : MonoBehaviour {
 
     public void AddGold(int gold)
     {
-        GoldHolding += gold;
-        FindObjectOfType<PlayerCurrency>().SetGoldValue(GoldHolding);
+        FindObjectOfType<PlayerCurrency>().SetGoldValue(FindObjectOfType<PlayerCurrency>().GoldHolding() + gold);
     }
 
     public void RemoveGold(int gold)
@@ -306,7 +308,8 @@ public class PlayerController : MonoBehaviour {
         myCamera.SetTarget(SelectPlayerCharacter.transform);
         SelectPlayerCharacter.MyNewDeck.SetActive(true);
         SelectPlayerCharacter.GetMyNewHand().DrawNewHand();
-        SelectPlayerCharacter.resetShield(SelectPlayerCharacter.baseArmor);
+        SelectPlayerCharacter.BeginTurn();
+        yield return new WaitForSeconds(.8f);
         AllowEndTurn();
     }
 
@@ -321,11 +324,11 @@ public class PlayerController : MonoBehaviour {
 
     IEnumerator StartNewTurn()
     {
+        DisableEndTurn();
         yield return new WaitForSeconds(.8f);
         SelectPlayerCharacter.MyNewDeck.SetActive(false);
         TurnOrder turnOrder = FindObjectOfType<TurnOrder>();
         turnOrder.EndTurn();
-        DisableEndTurn();
 
         if (turnOrder.GetCurrentCharacter().IsPlayer())
         {
@@ -337,8 +340,15 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void DiscardAction()
+    {
+        RemoveActionUsed();
+        ActionFinished();
+    }
+
     void ActionFinished()
     {
+        usingAction = false;
         if (CurrentActions.Count > 0)
         {
             switch (CurrentActions[0].thisActionType)

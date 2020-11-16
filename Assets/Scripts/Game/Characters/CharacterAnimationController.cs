@@ -21,13 +21,12 @@ public class CharacterAnimationController : MonoBehaviour {
 
     ActionType ActionPerforming;
     int AmountOfAction;
-    int DurationOfAction;
     List<Character> CharactersAffected;
     // Use this for initialization
     void Awake() {
         myAnimator = GetComponent<Animator>();
         myRigidbody = GetComponent<Rigidbody>();
-        myRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+        myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
         myCharacter = GetComponent<Character>();
     }
 
@@ -78,11 +77,11 @@ public class CharacterAnimationController : MonoBehaviour {
         GetComponent<PlayerCharacter>().CollectGold(GoldAmount);
     }
 
-    public void DoBuff(ActionType action, int Amount, int Duration, List<Character> charactersEffecting)
+    public void DoBuff(ActionType action, int Amount, List<Character> charactersEffecting)
     {
+       myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
        ActionPerforming = action;
        AmountOfAction = Amount;
-       DurationOfAction = Duration;
        CharactersAffected = charactersEffecting;
        myAnimator.SetTrigger("Buff");
     }
@@ -96,18 +95,6 @@ public class CharacterAnimationController : MonoBehaviour {
                 break;
             case ActionType.Shield:
                 GetComponent<Character>().PerformShield(AmountOfAction, CharactersAffected);
-                break;
-            case ActionType.BuffArmor:
-                GetComponent<Character>().GiveBuff(AmountOfAction, DurationOfAction, BuffType.Armor, CharactersAffected);
-                break;
-            case ActionType.BuffAttack:
-                GetComponent<Character>().GiveBuff(AmountOfAction, DurationOfAction, BuffType.Strength, CharactersAffected);
-                break;
-            case ActionType.BuffMove:
-                GetComponent<Character>().GiveBuff(AmountOfAction, DurationOfAction, BuffType.Agility, CharactersAffected);
-                break;
-            case ActionType.BuffRange:
-                GetComponent<Character>().GiveBuff(AmountOfAction, DurationOfAction, BuffType.Dexterity, CharactersAffected);
                 break;
         }
     }
@@ -172,7 +159,7 @@ public class CharacterAnimationController : MonoBehaviour {
         if (nodesMovingOn.Count == 0)
         {
             myCharacter.SetMoving(false);
-            myRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+            myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
             myAnimator.SetBool("moving", false);
             myCharacter.FinishedMoving(hexMovingTo, MovingToFight, HexMovingFrom);
             MovingToFight = false;

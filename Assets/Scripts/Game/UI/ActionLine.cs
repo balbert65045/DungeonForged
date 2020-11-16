@@ -7,7 +7,6 @@ public class ActionLine : MonoBehaviour {
 
     public Color EnhanceColor;
     public Color DehanceColor;
-    public BuffType MyActionType = BuffType.None;
 
     public Text AbilityType;
     public Image AbilityImage;
@@ -17,8 +16,8 @@ public class ActionLine : MonoBehaviour {
     public Image RangeAbilityImage;
     public Text RangeAbilityAmount;
 
-    public Image DurationAbilityImage;
-    public Text DurationAbilityAmount;
+    public Image StatusImage;
+    public Text StatusText;
 
     public int ActionLineBaseAmount;
     public int RangeAmountBaseAmount;
@@ -27,8 +26,6 @@ public class ActionLine : MonoBehaviour {
 
     public void HighlightAction()
     {
-        DurationAbilityImage.color = Color.green;
-        DurationAbilityAmount.color = Color.green;
         AbilityType.color = Color.green;
         AbilityImage.color = Color.green;
         AbilityAmount.color = Color.green;
@@ -39,8 +36,6 @@ public class ActionLine : MonoBehaviour {
 
     public void ActionUsed()
     {
-        DurationAbilityImage.color = Color.gray;
-        DurationAbilityAmount.color = Color.gray;
         AbilityType.color = Color.gray;
         AbilityImage.color = Color.gray;
         AbilityAmount.color = Color.gray;
@@ -51,8 +46,6 @@ public class ActionLine : MonoBehaviour {
 
     public void ActionBackToNormal()
     {
-        DurationAbilityImage.color = Color.black;
-        DurationAbilityAmount.color = Color.black;
         AbilityType.color = Color.black;
         AbilityImage.color = Color.black;
         AbilityAmount.color = Color.black;
