@@ -213,14 +213,14 @@ public class ProceduralMapCreator : MonoBehaviour {
     {
         if (CurrentGoldAmount > GoldAmount) { return; }
         List<Hex> NonEdgeHexes = GetNonEdgeHexes(hexes);
-        int MaximumGoldShouldPlace = 2;
+        int MaximumGoldShouldPlace = 1;
         for (int i = 0; i < MaximumGoldShouldPlace; i++)
         {
             int RandomLocation = Random.Range(0, NonEdgeHexes.Count);
             Hex AttemptHex = NonEdgeHexes[RandomLocation];
             if (AttemptHex.EntityToSpawn == null)
             {
-                int goldPlacing = Random.Range(1, 7);
+                int goldPlacing = Random.Range(3, 15);
                 CurrentGoldAmount += goldPlacing;
                 AttemptHex.goldHolding = goldPlacing;
             }
@@ -463,7 +463,7 @@ public class ProceduralMapCreator : MonoBehaviour {
     {
         if (CurrentChallengeRating <= 0) { return; }
         List<Hex> NonEdgeHexes = GetNonEdgeHexes(hexes);
-        int EnemiesToSpawn = Random.Range(1, 4);
+        int EnemiesToSpawn = Random.Range(2, 5);
         int RoomChallengeRating = 0;
         for (int i= 0; i< EnemiesToSpawn; i++)
         {
@@ -482,15 +482,23 @@ public class ProceduralMapCreator : MonoBehaviour {
     void AddObstaclesToRoom(List<Hex> hexes)
     {
         List<Hex> NonEdgeHexes = GetNonEdgeHexes(hexes);
-        int MaximumObstaclesShouldPlace = NonEdgeHexes.Count / 10;
+        int MaximumObstaclesShouldPlace = NonEdgeHexes.Count / 5;
+        List<Hex> hexPool = new List<Hex>();
+        foreach(Hex hex in hexes) { hexPool.Add(hex); }
         for (int i =0; i < MaximumObstaclesShouldPlace; i++)
         {
-            int RandomLocation = Random.Range(0, NonEdgeHexes.Count);
-            Hex AttemptHex = NonEdgeHexes[RandomLocation];
+            if (hexPool.Count <= 0) { return; }
+            int RandomLocation = Random.Range(0, hexPool.Count);
+            Hex AttemptHex = hexPool[RandomLocation];
            if (HexNotNextToOtherObstacleOrDoor(AttemptHex))
             {
                 int RandomObstacleIndex = Random.Range(0, ObstaclePool.Count);
                 AttemptHex.EntityToSpawn = ObstaclePool[RandomObstacleIndex].GetComponent<Entity>(); ;
+            }
+            else
+            {
+                i--;
+                hexPool.RemoveAt(RandomLocation);
             }
         }
     }
@@ -551,15 +559,14 @@ public class ProceduralMapCreator : MonoBehaviour {
 
     bool HexNotNextToOtherObstacleOrDoor(Hex hex)
     {
+        if (hex.GetComponent<Node>().edge) { return false; }
+        if (hex.GetComponent<Door>() != null) { return false; }
         if (hex.EntityToSpawn != null) { return false; }
         List<Node> AdjacentNodes = hexMap.GetNeighborsNoRoom(hex.GetComponent<Node>());
         foreach(Node node in AdjacentNodes)
         {
             if (node.GetComponent<Hex>().EntityToSpawn != null) { return false; }
             if (node.GetComponent<Door>() != null) { return false; }
-
-            //TODO change this to make it so that it doesnt block a small hallway
-            if (node.edge) { return false; }
         }
         return true;
     }

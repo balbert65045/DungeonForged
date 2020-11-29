@@ -49,7 +49,12 @@ MonoBehaviour:
   StatusObj: {fileID: 5861681667842415111}
   StatusSpriteRenderer: {fileID: 3839173646605486398}
   BleedSprite: {fileID: 21300000, guid: 1aedc8fc4da94174d979eb2cd4c653d2, type: 3}
-  PosionSprite: {fileID: 21300000, guid: 1df3b00bfb6ef934d9d9b9087ef19c7f, type: 3}
+  PoisonSprite: {fileID: 21300000, guid: 1df3b00bfb6ef934d9d9b9087ef19c7f, type: 3}
+  ImmobelizeSprite: {fileID: 21300000, guid: 64908219868a445429369498b93809b6, type: 3}
+  WeakenSprite: {fileID: 21300000, guid: 6527e4afb5d4e3a4c85aee86ab2c7417, type: 3}
+  StunSprite: {fileID: 21300000, guid: 7711d24b8c2fa1a4db68c5937499893d, type: 3}
+  DisarmSprite: {fileID: 21300000, guid: 576f71740053da7428e6ce759678b988, type: 3}
+  SlowSprite: {fileID: 21300000, guid: 37f7735c39076d24490e1a440828678f, type: 3}
   RangeObj: {fileID: 1183982029500546}
   RangeSpriteIndicator: {fileID: 212627508011541474}
   RangeValue: {fileID: 102855864787093904}
@@ -68,6 +73,7 @@ MonoBehaviour:
     type: 3}
   DrawIndicatorSprite: {fileID: 21300000, guid: 1158bcf946885ef4b8f8d9f912baa8b3,
     type: 3}
+  myActionType: 0
 --- !u!1 &1183982029500546
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,7 +801,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2231910800380048541}
   - component: {fileID: 3264916417249479970}
-  m_Layer: 0
+  - component: {fileID: 8668884153733763828}
+  - component: {fileID: 2850058607100466670}
+  m_Layer: 11
   m_Name: StatusIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -868,3 +876,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &8668884153733763828
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5861681667842415111}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 20.12, y: 25.064335, z: 0.20000003}
+  m_Center: {x: 0, y: 0.0000038146973, z: -2.2737368e-13}
+--- !u!114 &2850058607100466670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5861681667842415111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e474f90b1e231314a997f514389f0209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipTitle: 
+  tooltipText: 

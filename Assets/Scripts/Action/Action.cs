@@ -23,6 +23,12 @@ public enum DeBuff
 {
     None = 0,
     Bleed = 1,
+    Poison = 2,
+    Immobelized = 3,
+    Weaken = 4,
+    Stun = 5,
+    Disarm = 6,
+    Slow = 7,
 }
 
 [System.Serializable]

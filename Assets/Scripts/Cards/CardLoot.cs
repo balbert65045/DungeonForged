@@ -6,13 +6,26 @@ public class CardLoot : MonoBehaviour {
 
     public GameObject[] Positions;
     public GameObject Panel;
+    PlayerCharacterType PCT;
 
     public void AddCardToStorage(NewCard card)
     {
-        PlayerCharacter character = GetComponentInParent<LevelClearedPanel>().GetCurrentlootPlayer();
-        FindObjectOfType<NewGroupStorage>().AddCardToStorage(character.CharacterName, card.PrefabAssociatedWith);
+        string CharacterNameForLoot = "";
+        switch (PCT)
+        {
+            case PlayerCharacterType.Knight:
+                CharacterNameForLoot = "Knight";
+                break;
+            case PlayerCharacterType.Crossbow:
+                CharacterNameForLoot = "Huntress";
+                break;
+        }
+        FindObjectOfType<NewGroupStorage>().AddCardToStorage(CharacterNameForLoot, card.PrefabAssociatedWith);
         HidePanel();
-        GetComponentInParent<LevelClearedPanel>().ShowNextLoot();
+        if (GetComponentInParent<LevelClearedPanel>() != null)
+        {
+            GetComponentInParent<LevelClearedPanel>().ShowNextLoot();
+        }
     }
 
     void HidePanel()
@@ -22,6 +35,7 @@ public class CardLoot : MonoBehaviour {
 
 	public void ShowThreeCards(PlayerCharacterType characterType)
     {
+        PCT = characterType;
         Panel.SetActive(true);
         ClearOldCards();
         GameObject[] cardloot = FindObjectOfType<CardDatabase>().Select3RandomCards(characterType);

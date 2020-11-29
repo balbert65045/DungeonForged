@@ -50,7 +50,7 @@ public class Hex : MonoBehaviour {
         if (GetComponent<Node>().edge) {GetComponent<HexAdjuster>().RevealRoomEdge(); }
         //GetComponent<HexWallAdjuster>().ShowWall();
         if (!GetComponent<Node>().edge) { GetComponent<Hex>().ShowHex(); }
-        HexNode.Shown = true;
+        GetComponent<Node>().Shown = true;
         ShowMoney();
         if (EntityToSpawn != null) { CreateCharacter(); }
     }
@@ -66,19 +66,19 @@ public class Hex : MonoBehaviour {
     public void ShowMoney()
     {
         if (GoldHolding != null) { Destroy(GoldHolding); }
-        if (goldHolding > 0 && goldHolding < 6)
+        if (goldHolding > 0 && goldHolding < 10)
         {
             GoldHolding = Instantiate(GoldPrefabSmall, this.transform);
             GoldHolding.transform.localPosition = new Vector3(0, 0, -.15f);
             GoldHolding.transform.localRotation = Quaternion.Euler(new Vector3(-90, 0, 0));
         }
-        else if (goldHolding > 5 && goldHolding < 11)
+        else if (goldHolding > 9 && goldHolding < 21)
         {
             GoldHolding = Instantiate(GoldPrefabMedium, this.transform);
             GoldHolding.transform.localPosition = new Vector3(0, -.1f, -.15f);
             GoldHolding.transform.localRotation = Quaternion.Euler(new Vector3(-90, 0, 0));
         }
-        else if (goldHolding > 10)
+        else if (goldHolding > 20)
         {
             GoldHolding = Instantiate(GoldPrefabLarge, this.transform);
             GoldHolding.transform.localPosition = new Vector3(0, 0f, -.15f);
@@ -91,6 +91,7 @@ public class Hex : MonoBehaviour {
 
     public void ShowHex()
     {
+        HexNode = GetComponent<Node>();
         if (!HexNode.Shown && !HexNode.edge)
         {
             //GetComponent<MeshRenderer>().material = OGMaterial;

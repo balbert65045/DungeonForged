@@ -43,7 +43,7 @@ public class EnemyCharacter : Character {
     public void ShowNewAction()
     {
         currentActionSet = GetGroup().GetRandomActionSet();
-        myHealthBar.ShowActions(currentActionSet.Actions);
+        myHealthBar.ShowActions(currentActionSet.Actions, myDeBuffs);
     }
 
     //OTHER//
@@ -83,10 +83,20 @@ public class EnemyCharacter : Character {
         finishedAction();
     }
 
-    public override void FinishedAttacking()
+    public override void FinishedAttacking(bool dead = false)
     {
         base.FinishedAttacking();
-        if (charactersAttackingAt == null || CharactersFinishedTakingDamage >= charactersAttackingAt.Count) { finishedAction(); }
+        if (charactersAttackingAt == null || CharactersFinishedTakingDamage >= charactersAttackingAt.Count) 
+        { 
+            if (!dead) { StartCoroutine("FinisheAttackDelay"); }
+            else { finishedAction(); }
+        }
+    }
+
+    IEnumerator FinisheAttackDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+        finishedAction();
     }
 
     public override void FinishedMoving(Hex hex, bool fight = false, Hex HexMovingFrom = null)
@@ -111,6 +121,7 @@ public class EnemyCharacter : Character {
     void finishedActions()
     {
         UnShowPath();
+        EndTurn();
         FindObjectOfType<EnemyController>().CharacterEndedTurn();
     }
 
@@ -120,6 +131,10 @@ public class EnemyCharacter : Character {
         ClosestCharacter = null;
         actionSetIndex = 0;
         BeginTurn();
+        if (myDeBuffs.Contains(DeBuff.Stun)) { 
+            finishedActions();
+            return;
+        }
         if (health <= 0) { return; }
         DoNextAction();
     }
@@ -148,7 +163,7 @@ public class EnemyCharacter : Character {
         if (ClosestCharacter == null) { ClosestCharacter = BreadthFirst(); }
         TargetHex = ClosestCharacter.HexOn;
         GetAttackHexes(action.Range);
-        if (HexInActionRange(TargetHex)) {
+        if (HexInActionRange(TargetHex) && !myDeBuffs.Contains(DeBuff.Disarm)) {
             CurrentAttack = action.thisAOE.Damage;
             deBuffApplying = action.thisDeBuff;
             StartCoroutine("ShowAttack");
@@ -176,12 +191,13 @@ public class EnemyCharacter : Character {
         }
         TargetHex = ClosestCharacter.HexOn;
         GetAttackHexes(CurrentAttackRange);
-        if (HexInActionRange(TargetHex))
+        if (HexInActionRange(TargetHex) || myDeBuffs.Contains(DeBuff.Immobelized))
         {
             finishedAction();
         } else
         {
             CurrentMoveRange = action.Range;
+            if (myDeBuffs.Contains(DeBuff.Slow)) { CurrentMoveRange--; }
             StartCoroutine("Move");
         }
     }

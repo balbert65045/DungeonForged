@@ -16,7 +16,7 @@ public class CardStorage
 
 public class NewGroupStorage : MonoBehaviour {
 
-    public int LevelIndex = 1;
+    public int LevelIndex = 0;
     public void IncrimentLevel() { LevelIndex++; }
 
     public CardStorage[] MyGroupCardStorage = new CardStorage[2];

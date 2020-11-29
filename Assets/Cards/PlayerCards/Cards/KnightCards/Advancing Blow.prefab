@@ -441,15 +441,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 2
   AbilityType: {fileID: 114869169908641828}
   AbilityImage: {fileID: 114716041510152898}
   AbilityAmount: {fileID: 114102790212621708}
   RangeAbilityType: {fileID: 114498672916508370}
   RangeAbilityImage: {fileID: 114952716999681356}
   RangeAbilityAmount: {fileID: 114560212226970480}
-  DurationAbilityImage: {fileID: 114507066075874720}
-  DurationAbilityAmount: {fileID: 114097451834539734}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 0
@@ -586,15 +585,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 1
   AbilityType: {fileID: 114037124668068272}
   AbilityImage: {fileID: 114364358928130448}
   AbilityAmount: {fileID: 114866616948163594}
   RangeAbilityType: {fileID: 114723480191167674}
   RangeAbilityImage: {fileID: 114917854386973298}
   RangeAbilityAmount: {fileID: 114608536136772954}
-  DurationAbilityImage: {fileID: 114303112218897868}
-  DurationAbilityAmount: {fileID: 114730255062559514}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 1
@@ -1508,15 +1506,15 @@ MonoBehaviour:
       thisAOEType: 0
       Targets: 0
       Damage: 0
+    thisDeBuff: 0
     Range: 1
-    Duration: 0
   - thisActionType: 2
     thisAOE:
       thisAOEType: 0
       Targets: 0
-      Damage: 3
+      Damage: 6
+    thisDeBuff: 0
     Range: 1
-    Duration: 0
 --- !u!1 &1743297657480216
 GameObject:
   m_ObjectHideFlags: 0
@@ -2153,6 +2151,7 @@ MonoBehaviour:
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1447789393970908}
+  InTheHand: 0
 --- !u!1 &1930747597469716
 GameObject:
   m_ObjectHideFlags: 0
@@ -2232,7 +2231,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: 6
 --- !u!114 &7719228814354589307
 MonoBehaviour:
   m_ObjectHideFlags: 0

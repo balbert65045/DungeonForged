@@ -46,6 +46,7 @@ public class LevelClearedPanel : MonoBehaviour {
         CharacterImages[characterLootIndex].transform.parent.GetComponent<Image>().color = Color.gray;
         characterLootIndex++;
         if (characterLootIndex >= characters.Count) {
+            FindObjectOfType<PlayerController>().AddGold(20);
             FindObjectOfType<GameManager>().LevelComplete();
             return;
         }

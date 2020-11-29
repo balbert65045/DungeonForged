@@ -307,15 +307,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 2
   AbilityType: {fileID: 114706903885198718}
   AbilityImage: {fileID: 114459597068087968}
   AbilityAmount: {fileID: 114712610898209440}
   RangeAbilityType: {fileID: 114309041858394470}
   RangeAbilityImage: {fileID: 114245217938150118}
   RangeAbilityAmount: {fileID: 114401326032566794}
-  DurationAbilityImage: {fileID: 114407522116793488}
-  DurationAbilityAmount: {fileID: 114695716606101110}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 0
@@ -910,6 +909,7 @@ MonoBehaviour:
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1409629709527104}
+  InTheHand: 0
 --- !u!1 &1429916019915056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1535,15 +1535,15 @@ MonoBehaviour:
       thisAOEType: 0
       Targets: 0
       Damage: 0
+    thisDeBuff: 0
     Range: 1
-    Duration: 0
   - thisActionType: 2
     thisAOE:
       thisAOEType: 0
       Targets: 0
-      Damage: 3
+      Damage: 5
+    thisDeBuff: 0
     Range: 2
-    Duration: 0
 --- !u!1 &1650103853055228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,7 +1905,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: 5
 --- !u!114 &3771107131522184387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2054,15 +2054,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 1
   AbilityType: {fileID: 114373541656280676}
   AbilityImage: {fileID: 114167153451463156}
   AbilityAmount: {fileID: 114055540081455922}
   RangeAbilityType: {fileID: 114773523318490726}
   RangeAbilityImage: {fileID: 114683969624488588}
   RangeAbilityAmount: {fileID: 114223636280713952}
-  DurationAbilityImage: {fileID: 114168492200758738}
-  DurationAbilityAmount: {fileID: 114556315365644192}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 1

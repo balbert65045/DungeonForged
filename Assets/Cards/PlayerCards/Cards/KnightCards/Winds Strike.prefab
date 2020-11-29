@@ -399,15 +399,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 2
   AbilityType: {fileID: 114957706709476262}
   AbilityImage: {fileID: 114619728149036382}
   AbilityAmount: {fileID: 114650171551821818}
   RangeAbilityType: {fileID: 114255024364140768}
   RangeAbilityImage: {fileID: 114140865513085722}
   RangeAbilityAmount: {fileID: 114494103577901172}
-  DurationAbilityImage: {fileID: 114549914110999338}
-  DurationAbilityAmount: {fileID: 114867859609068694}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 2
@@ -490,7 +489,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: 3
 --- !u!114 &8351014598184630965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,15 +642,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 1
   AbilityType: {fileID: 114616706438723510}
   AbilityImage: {fileID: 114601604696064846}
   AbilityAmount: {fileID: 114987443965027246}
   RangeAbilityType: {fileID: 114532013956484796}
   RangeAbilityImage: {fileID: 114745834601758494}
   RangeAbilityAmount: {fileID: 114800879040773822}
-  DurationAbilityImage: {fileID: 114535659004686250}
-  DurationAbilityAmount: {fileID: 114758662723186814}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 1
@@ -2086,6 +2084,7 @@ MonoBehaviour:
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1715265802749396}
+  InTheHand: 0
 --- !u!1 &1680975048588260
 GameObject:
   m_ObjectHideFlags: 0
@@ -2466,22 +2465,22 @@ MonoBehaviour:
       thisAOEType: 0
       Targets: 0
       Damage: 0
-    Range: 2
-    Duration: 0
+    thisDeBuff: 0
+    Range: 3
   - thisActionType: 2
     thisAOE:
       thisAOEType: 0
       Targets: 0
       Damage: 8
+    thisDeBuff: 0
     Range: 1
-    Duration: 0
   - thisActionType: 1
     thisAOE:
       thisAOEType: 0
       Targets: 0
       Damage: 0
-    Range: 2
-    Duration: 0
+    thisDeBuff: 0
+    Range: 3
 --- !u!1 &1747234925172574
 GameObject:
   m_ObjectHideFlags: 0
@@ -2715,7 +2714,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: 3
 --- !u!114 &814177779629492880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2789,15 +2788,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 2
   AbilityType: {fileID: 114972790314863788}
   AbilityImage: {fileID: 114694140791115348}
   AbilityAmount: {fileID: 114079114752105846}
   RangeAbilityType: {fileID: 114634947400519232}
   RangeAbilityImage: {fileID: 114061449005212520}
   RangeAbilityAmount: {fileID: 114727838829484148}
-  DurationAbilityImage: {fileID: 114004191959938208}
-  DurationAbilityAmount: {fileID: 114520270502415682}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 0

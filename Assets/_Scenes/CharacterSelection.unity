@@ -13953,7 +13953,7 @@ MonoBehaviour:
   MaxHealth: 60
   Name: Knight
   StartingCards:
-  - {fileID: 1981688129858890, guid: 170b920555e6132439ea027d3ee0f5dd, type: 3}
+  - {fileID: 1431665790145160, guid: c432c9f8c42dedd4691adde8b30f9017, type: 3}
   - {fileID: 1431665790145160, guid: c432c9f8c42dedd4691adde8b30f9017, type: 3}
   - {fileID: 1431665790145160, guid: c432c9f8c42dedd4691adde8b30f9017, type: 3}
   - {fileID: 1431665790145160, guid: c432c9f8c42dedd4691adde8b30f9017, type: 3}
@@ -26357,15 +26357,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1842329293}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: LoadLevelIndex
-        m_Mode: 1
+        m_TargetAssemblyTypeName: LevelButton, Assembly-CSharp
+        m_MethodName: LoadLevel
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Level1
+          m_StringArgument: CardSelection
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 601397023}
@@ -27451,7 +27451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89b3312c05b364a4ca6069793fcbb137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelIndex: 1
+  LevelIndex: 0
   MyGroupCardStorage:
   - characterType: 0
     CharacterName: 

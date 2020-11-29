@@ -21,7 +21,7 @@ public class SideWall : MonoBehaviour
         {
             foreach(RaycastHit hit in hits)
             {
-                if (hit.transform != this.transform && hit.transform.GetComponentInParent<Room>() != GetComponentInParent<Room>())
+                if (hit.collider.transform != this.transform && hit.collider.transform.GetComponentInParent<Room>() != GetComponentInParent<Room>())
                 {
                     return true;
                 }

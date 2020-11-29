@@ -74,7 +74,9 @@ public class PlayerCharacter : Character
     public override void ShowMoveDistance(int moveRange)
     {
         CurrentMoveRange = moveRange;
-        List<Node> nodesInDistance = aStar.Diskatas(HexOn.HexNode, moveRange, myCT);
+        if (myDeBuffs.Contains(DeBuff.Immobelized)) { CurrentMoveRange = 0; }
+        else if (myDeBuffs.Contains(DeBuff.Slow)) { CurrentMoveRange--; }
+        List<Node> nodesInDistance = aStar.Diskatas(HexOn.HexNode, CurrentMoveRange, myCT);
         NodesInWalkingDistance.Clear();
         List<Node> nodesInArea = new List<Node>();
         foreach (Node node in nodesInDistance)
@@ -174,12 +176,18 @@ public class PlayerCharacter : Character
         FindObjectOfType<PlayerController>().FinishedBuffing(this);
     }
 
-    public override void FinishedAttacking()
+    public override void FinishedAttacking(bool dead = false)
     {
         base.FinishedAttacking();
         if (CharactersFinishedTakingDamage >= charactersAttackingAt.Count || charactersAttackingAt.Count == 0) {
-            FindObjectOfType<PlayerController>().FinishedAttacking(this);
+            if (!dead) { StartCoroutine("FinisheAttackDelay"); }
+            else { FindObjectOfType<PlayerController>().FinishedAttacking(this); }
         }
+    }
+    IEnumerator FinisheAttackDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+        FindObjectOfType<PlayerController>().FinishedAttacking(this);
     }
 
     public override void FinishedPerformingHealing()

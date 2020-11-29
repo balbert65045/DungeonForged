@@ -93,15 +93,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 1
   AbilityType: {fileID: 114839171924929014}
   AbilityImage: {fileID: 114113876964498966}
   AbilityAmount: {fileID: 114851946042816986}
   RangeAbilityType: {fileID: 114878340106617318}
   RangeAbilityImage: {fileID: 114370849064839792}
   RangeAbilityAmount: {fileID: 114724466305901674}
-  DurationAbilityImage: {fileID: 114953341015427972}
-  DurationAbilityAmount: {fileID: 114618930273999508}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 0
@@ -1116,7 +1115,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: 6
 --- !u!114 &4299603120024463531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1494,16 +1493,16 @@ MonoBehaviour:
     thisAOE:
       thisAOEType: 0
       Targets: 0
-      Damage: 3
+      Damage: 6
+    thisDeBuff: 0
     Range: 1
-    Duration: 0
   - thisActionType: 1
     thisAOE:
       thisAOEType: 0
       Targets: 0
       Damage: 0
+    thisDeBuff: 0
     Range: 1
-    Duration: 0
 --- !u!1 &1709599656376088
 GameObject:
   m_ObjectHideFlags: 0
@@ -1610,6 +1609,7 @@ MonoBehaviour:
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1407753455074534}
+  InTheHand: 0
 --- !u!1 &1747469216438214
 GameObject:
   m_ObjectHideFlags: 0
@@ -2232,15 +2232,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 2
   AbilityType: {fileID: 114534992567028600}
   AbilityImage: {fileID: 114263467789499808}
   AbilityAmount: {fileID: 114437428959562522}
   RangeAbilityType: {fileID: 114828734026622584}
   RangeAbilityImage: {fileID: 114887572257292202}
   RangeAbilityAmount: {fileID: 114195703782551482}
-  DurationAbilityImage: {fileID: 114672622321937372}
-  DurationAbilityAmount: {fileID: 114494620400961650}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 1

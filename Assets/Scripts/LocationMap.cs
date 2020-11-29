@@ -101,6 +101,7 @@ public class LocationMap : MonoBehaviour
     {
         CreateTable();
         SetStartArea();
+        CreateFirstPath();
     }
 
     void Start()
@@ -159,8 +160,24 @@ public class LocationMap : MonoBehaviour
     void SetStartArea()
     {
         StartArea = GetArea(4, 4);
-        StartArea.SetAsEnemy();
+        StartArea.SetAsStart();
         StartArea.SetAsUsed();
+    }
+
+    void CreateFirstPath()
+    {
+        Path path = new Path();
+        LocationArea NewArea = SetupArea(StartArea);
+        LocationArea FirstArea = SetupChestArea(NewArea);
+        path.AddToPath(FirstArea.GetComponent<PathPart>());
+        GameObject road1 = CreateTravelPath(StartArea, FirstArea);
+        path.AddToPath(road1.GetComponent<PathPart>());
+        LocationArea SecondArea = SetupCombatArea(FirstArea);
+        path.AddToPath(SecondArea.GetComponent<PathPart>());
+        GameObject road2 = CreateTravelPath(FirstArea, SecondArea);
+        path.AddToPath(road2.GetComponent<PathPart>());
+
+        Paths.Add(path);
     }
 
     void ShowPossibleOtherAreas()
@@ -209,6 +226,13 @@ public class LocationMap : MonoBehaviour
             Road.GetComponent<Road>().myDirection = RoadDirection.Up;
         }
         return Road;
+    }
+
+    LocationArea SetupChestArea(LocationArea area)
+    {
+        area.SetAsChest();
+        area.SetAsUnused();
+        return area;
     }
 
     LocationArea SetupRestArea(LocationArea area)

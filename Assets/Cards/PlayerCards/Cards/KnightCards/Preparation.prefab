@@ -58,15 +58,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 2
   AbilityType: {fileID: 114753270186342354}
   AbilityImage: {fileID: 114673824000545008}
   AbilityAmount: {fileID: 114536001973316214}
   RangeAbilityType: {fileID: 114915640316308302}
   RangeAbilityImage: {fileID: 114853975023926926}
   RangeAbilityAmount: {fileID: 114153870201652368}
-  DurationAbilityImage: {fileID: 114347236327275440}
-  DurationAbilityAmount: {fileID: 114331991189686234}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 0
@@ -228,7 +227,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 0
 --- !u!114 &699640232031339433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,11 +550,12 @@ MonoBehaviour:
   price: 70
   EnergyText: {fileID: 114830614614969162}
   PrefabAssociatedWith: {fileID: 0}
-  EnergyAmount: 1
+  EnergyAmount: 0
   cardAbility: {fileID: 114580984727046602}
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1128992925064724}
+  InTheHand: 0
 --- !u!1 &1208790207083060
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,8 +860,8 @@ MonoBehaviour:
       thisAOEType: 2
       Targets: 0
       Damage: 3
+    thisDeBuff: 0
     Range: 0
-    Duration: 0
 --- !u!1 &1398943858675466
 GameObject:
   m_ObjectHideFlags: 0

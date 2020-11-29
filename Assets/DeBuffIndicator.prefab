@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 9b0b3fc7721dde646ab860e99903eb41, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1aedc8fc4da94174d979eb2cd4c653d2, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -94,7 +94,9 @@ GameObject:
   - component: {fileID: 6777393418939497436}
   - component: {fileID: 3814838883423689573}
   - component: {fileID: -3745496458555962839}
-  m_Layer: 0
+  - component: {fileID: -4441214312008458603}
+  - component: {fileID: -7131335386529538187}
+  m_Layer: 11
   m_Name: DeBuffIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +112,7 @@ Transform:
   m_GameObject: {fileID: 497236576766875404}
   m_LocalRotation: {x: 0.31365818, y: -0.63373387, z: 0.31365818, w: 0.63373387}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4134963, y: 0.4134228, z: 0.4133199}
+  m_LocalScale: {x: 0.9468837, y: 0.9468837, z: 0.9468837}
   m_Children:
   - {fileID: 1665792434471517905}
   m_Father: {fileID: 0}
@@ -156,7 +158,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 9b0b3fc7721dde646ab860e99903eb41, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1aedc8fc4da94174d979eb2cd4c653d2, type: 3}
   m_Color: {r: 1, g: 0.033107195, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -179,5 +181,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f8adbec1d840645a630521e506eef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BleedSprite: {fileID: 21300000, guid: 9b0b3fc7721dde646ab860e99903eb41, type: 3}
-  PoisonSprite: {fileID: 21300000, guid: 81ea0aec7b2a3304aa19221f59e6214f, type: 3}
+  myDeBuff: 0
+  BleedSprite: {fileID: 21300000, guid: 1aedc8fc4da94174d979eb2cd4c653d2, type: 3}
+  PoisonSprite: {fileID: 21300000, guid: 1df3b00bfb6ef934d9d9b9087ef19c7f, type: 3}
+  ImmobelizeSprite: {fileID: 21300000, guid: 64908219868a445429369498b93809b6, type: 3}
+  WeakenSprite: {fileID: 21300000, guid: 6527e4afb5d4e3a4c85aee86ab2c7417, type: 3}
+  StunSprite: {fileID: 21300000, guid: 7711d24b8c2fa1a4db68c5937499893d, type: 3}
+  DisarmSprite: {fileID: 21300000, guid: 576f71740053da7428e6ce759678b988, type: 3}
+  SlowSprite: {fileID: 21300000, guid: 37f7735c39076d24490e1a440828678f, type: 3}
+--- !u!65 &-4441214312008458603
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497236576766875404}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3200001, y: 0.32000008, z: 0.20000015}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-7131335386529538187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497236576766875404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e474f90b1e231314a997f514389f0209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipTitle: 
+  tooltipText: 

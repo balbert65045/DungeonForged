@@ -64,7 +64,7 @@ public class HealthBar : MonoBehaviour {
         }
     }
 
-    public void ShowActions(List<Action> actions)
+    public void ShowActions(List<Action> actions, List<DeBuff> deBuffs)
     {
         ClearActions();
         for(int i = 0; i < actions.Count; i++)
@@ -72,18 +72,27 @@ public class HealthBar : MonoBehaviour {
             GameObject actionIndicator = Instantiate(IndicatorPrefab, this.transform);
             actionIndicator.transform.localPosition = new Vector3(-0.25f, .94f + i * .5f, 0);
             ActionIndicator AI = actionIndicator.GetComponent<ActionIndicator>();
-            AI.ShowAction(actions[i]);
+            AI.ShowAction(actions[i], deBuffs);
             CurrnetIndicators.Add(AI);
         }
     }
 
-    public void ShowAction(Action action)
+    public void UpdateDamageVisualsFromDeBuff(DeBuff deBuff)
+    {
+        ActionIndicator[] AIs = GetComponentsInChildren<ActionIndicator>();
+        foreach(ActionIndicator AI in AIs)
+        {
+            AI.DeBuffApplied(deBuff);
+        }
+    }
+
+    public void ShowAction(Action action, List<DeBuff> deBuffs)
     {
         ClearActions();
         GameObject actionIndicator = Instantiate(IndicatorPrefab, this.transform);
         actionIndicator.transform.localPosition = new Vector3(-0.25f, .94f, 0);
         ActionIndicator AI = actionIndicator.GetComponent<ActionIndicator>();
-        AI.ShowAction(action);
+        AI.ShowAction(action, deBuffs);
         CurrnetIndicators.Add(AI);
     }
 
@@ -102,7 +111,7 @@ public class HealthBar : MonoBehaviour {
             }
             if (shift)
             {
-                DeBuffsIndicatorsActive[i].transform.localPosition = new Vector3(DeBuffsIndicatorsActive[i].transform.localPosition.x - .2f, -0.1f, 0);
+                DeBuffsIndicatorsActive[i].transform.localPosition = new Vector3(DeBuffsIndicatorsActive[i].transform.localPosition.x - .4f, -0.1f, 0);
             }
         }
     }
@@ -111,9 +120,10 @@ public class HealthBar : MonoBehaviour {
     {
         GameObject thisDeBuff = Instantiate(DeBuffPrefab, transform);
         thisDeBuff.transform.localRotation = Quaternion.identity;
-        thisDeBuff.transform.localPosition = new Vector3(-1 + .2f* DeBuffsIndicatorsActive.Count, -0.1f, 0);
+        thisDeBuff.transform.localPosition = new Vector3(-1 + .4f* DeBuffsIndicatorsActive.Count, -0.1f, 0);
         DeBuffsIndicatorsActive.Add(thisDeBuff.GetComponent<DeBuffIndicator>());
         thisDeBuff.GetComponent<DeBuffIndicator>().ShowDebuff(debuff);
+        UpdateDamageVisualsFromDeBuff(debuff);
     }
 
     public void AddGold(int amount)
@@ -214,6 +224,23 @@ public class HealthBar : MonoBehaviour {
         AttackValue.gameObject.SetActive(false);
         GetComponentInParent<Character>().finishedTakingDamage();
         yield return null;
+    }
+
+    public void PredictDamage(int totalDamageIncomming)
+    {
+        int totalHealthLoss = Mathf.Clamp(totalDamageIncomming - CurrentShield, 0, 100000);
+        int predictedHealth = CurrentHealth - totalHealthLoss;
+        CurrentHealthText.text = predictedHealth.ToString();
+        CurrentHealthText.color = Color.red;
+        HpBar.ShowPredictedDamage((float)predictedHealth / (float)MaxHealth);
+    }
+
+    public void RemovePredication()
+    {
+        if (CurrentHealthText == null) { return; }
+        CurrentHealthText.text = CurrentHealth.ToString();
+        CurrentHealthText.color = Color.white;
+        HpBar.SetHP((float)CurrentHealth / (float)MaxHealth);
     }
 
 	// Use this for initialization

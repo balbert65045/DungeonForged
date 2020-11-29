@@ -25,9 +25,9 @@ public class DoorEditor : Editor
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Show Door Tiles"))
+        if (GUILayout.Button("Open Room"))
         {
-            myDoor.ShowHexes();
+            myDoor.OpenRoom();
         }
         if (GUILayout.Button("Hide Door Tiles"))
         {

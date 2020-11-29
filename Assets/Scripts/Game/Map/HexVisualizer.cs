@@ -294,6 +294,21 @@ public class HexVisualizer : MonoBehaviour {
             if (node == null) { break; }
             HighlightActionPointHex(node.NodeHex, type);
             LastHexesChanged.Add(node.NodeHex);
+            if (type == ActionType.Attack) { PredictDamage(node);  }
+        }
+    }
+
+    List<Character> charactersPredictingDamage = new List<Character>();
+    void PredictDamage(Node node)
+    {
+        Hex hex = node.GetComponent<Hex>();
+        if (hex.HasEnemy())
+        {
+            hex.GetEnemy().PredictDamage(playerController.CurrentAction.thisAOE.Damage);
+            if (!charactersPredictingDamage.Contains(hex.GetEnemy()))
+            {
+                charactersPredictingDamage.Add(hex.GetEnemy());
+            }
         }
     }
 
@@ -319,14 +334,24 @@ public class HexVisualizer : MonoBehaviour {
         OnHexChanged(hex);
     }
 
+    public void ResetPredication()
+    {
+        foreach(Character character in charactersPredictingDamage)
+        {
+            character.HidePredication();
+        }
+    }
+
     public void OnHexChanged(Hex hex)
     {
         
         if (LastHexOver == hex) {return;}
         LastHexOver = hex;
+        ResetPredication();
 
         PlayerCharacter myCharacter = playerController.SelectPlayerCharacter;
         if (myCharacter == null) { return; }
+
         //if (!myCharacter.InCombat() && combatcontroller.PickingCards())
         //{
         //    Debug.Log("Hex Changed Combat");

@@ -130,6 +130,11 @@ public class Door : MonoBehaviour {
         door.GetComponent<DoorNew>().OpenDoor();
     }
 
+    public void OpenRoom()
+    {
+        OpenHexes(GetComponent<Node>().RoomName[0]);
+    }
+
     public void ShowHexes()
     {
         ShowHexSet(hexesToOpenTo, RoomNameToBuild);

@@ -323,15 +323,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 1
   AbilityType: {fileID: 114761445055920242}
   AbilityImage: {fileID: 114559857905781788}
   AbilityAmount: {fileID: 114351629433914262}
   RangeAbilityType: {fileID: 114531116409415430}
   RangeAbilityImage: {fileID: 114979859950859884}
   RangeAbilityAmount: {fileID: 114968775361622086}
-  DurationAbilityImage: {fileID: 114909432954607548}
-  DurationAbilityAmount: {fileID: 114215003032233374}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 1
@@ -393,15 +392,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 2
   AbilityType: {fileID: 114107642179142474}
   AbilityImage: {fileID: 114872609334130194}
   AbilityAmount: {fileID: 114438620898560618}
   RangeAbilityType: {fileID: 114657061517716850}
   RangeAbilityImage: {fileID: 114311954534126330}
   RangeAbilityAmount: {fileID: 114171645188834242}
-  DurationAbilityImage: {fileID: 114356806729450380}
-  DurationAbilityAmount: {fileID: 114287700609530710}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 0
@@ -2121,6 +2119,7 @@ MonoBehaviour:
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1353033379053436}
+  InTheHand: 0
 --- !u!1 &1982465329968696
 GameObject:
   m_ObjectHideFlags: 0
@@ -2200,7 +2199,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: 4
 --- !u!114 &1454304796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2314,12 +2313,12 @@ MonoBehaviour:
       thisAOEType: 0
       Targets: 0
       Damage: 0
-    Range: 3
-    Duration: 0
+    thisDeBuff: 0
+    Range: 4
   - thisActionType: 2
     thisAOE:
       thisAOEType: 0
       Targets: 0
       Damage: 12
+    thisDeBuff: 0
     Range: 1
-    Duration: 0

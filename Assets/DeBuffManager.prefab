@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5360357055989878229
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5360357055989878231}
+  - component: {fileID: 5360357055989878228}
+  m_Layer: 0
+  m_Name: DeBuffManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5360357055989878231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360357055989878229}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 951.5, y: 669.19995, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5360357055989878228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360357055989878229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b234c61aeaa89444cb19d8e3d23fa005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BleedSprite: {fileID: 21300000, guid: 1aedc8fc4da94174d979eb2cd4c653d2, type: 3}
+  BleedColor: {r: 1, g: 0, b: 0, a: 1}
+  BleedTitle: Bleed
+  BleedText: Lose 1 health at the beggining of a turn
+  PoisonSprite: {fileID: 21300000, guid: 1df3b00bfb6ef934d9d9b9087ef19c7f, type: 3}
+  PoisonColor: {r: 0, g: 0.6603774, b: 0.0049726246, a: 1}
+  PoisonTitle: Poison
+  PoisonText: Take 25% extra damage
+  ImmobelizeSprite: {fileID: 21300000, guid: 64908219868a445429369498b93809b6, type: 3}
+  ImmobelizeColor: {r: 1, g: 0.42438906, b: 0, a: 1}
+  ImmobelizeTitle: Immobelize
+  ImmobelizeText: Unable to move
+  WeakenSprite: {fileID: 21300000, guid: 6527e4afb5d4e3a4c85aee86ab2c7417, type: 3}
+  WeakenColor: {r: 1, g: 1, b: 1, a: 1}
+  WeakenTitle: Weaken
+  WeakenText: Deal 25% less damage
+  StunSprite: {fileID: 21300000, guid: af2c91c97cbc8fd4da1e4057a6b41a8c, type: 3}
+  StunColor: {r: 0, g: 0.23950672, b: 1, a: 1}
+  StunTitle: Stun
+  StunText: Unable to perform any actions
+  DisarmSprite: {fileID: 21300000, guid: 576f71740053da7428e6ce759678b988, type: 3}
+  DisarmColor: {r: 0, g: 0.6826074, b: 1, a: 1}
+  DisarmTitle: Disarm
+  DisarmText: Unable to attack
+  SlowSprite: {fileID: 21300000, guid: 37f7735c39076d24490e1a440828678f, type: 3}
+  SlowColor: {r: 1, g: 1, b: 1, a: 1}
+  SlowTitle: Slow
+  SlowText: Reduce Movement by 1

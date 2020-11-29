@@ -9,6 +9,8 @@ public enum Location
     Enemy = 1,
     Shop = 2,
     Rest = 3,
+    Chest = 4,
+    Start = 5
 }
 public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
 {
@@ -21,6 +23,8 @@ public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
     public Sprite Enemy;
     public Sprite Shop;
     public Sprite Rest;
+    public Sprite Chest;
+    public Sprite StartSprite;
 
     public Color UnusedColor;
 
@@ -119,6 +123,20 @@ public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
         myLocation = Location.Shop;
     }
 
+    public void SetAsChest()
+    {
+        LocationSprite = GetComponent<Image>();
+        LocationSprite.sprite = Chest;
+        myLocation = Location.Chest;
+    }
+
+    public void SetAsStart()
+    {
+        LocationSprite = GetComponent<Image>();
+        LocationSprite.sprite = StartSprite;
+        myLocation = Location.Start;
+    }
+
     public void ChangeLevelToLocation()
     {
         switch (myLocation)
@@ -132,6 +150,9 @@ public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
                 break;
             case Location.Rest:
                 FindObjectOfType<LevelManager>().LoadLevel("Rest");
+                break;
+            case Location.Chest:
+                FindObjectOfType<LevelManager>().LoadLevel("ChestRoom");
                 break;
         }
     }

@@ -134,6 +134,7 @@ public class PlayerController : MonoBehaviour {
             if (charactersActingOn != null && charactersActingOn.Count != 0)
             {
                 usingAction = true;
+                hexVisualizer.ResetPredication();
                 PerformAction(action, charactersActingOn);
             }
         }
@@ -310,7 +311,8 @@ public class PlayerController : MonoBehaviour {
         SelectPlayerCharacter.GetMyNewHand().DrawNewHand();
         SelectPlayerCharacter.BeginTurn();
         yield return new WaitForSeconds(.8f);
-        AllowEndTurn();
+        if (SelectPlayerCharacter.myDeBuffs.Contains(DeBuff.Stun)) { EndPlayerTurn(); }
+        else { AllowEndTurn(); }
     }
 
     public void EndPlayerTurn()
@@ -327,6 +329,7 @@ public class PlayerController : MonoBehaviour {
         DisableEndTurn();
         yield return new WaitForSeconds(.8f);
         SelectPlayerCharacter.MyNewDeck.SetActive(false);
+        SelectPlayerCharacter.EndTurn();
         TurnOrder turnOrder = FindObjectOfType<TurnOrder>();
         turnOrder.EndTurn();
 
@@ -363,6 +366,7 @@ public class PlayerController : MonoBehaviour {
                     CardsPlayable = true;
                     endActionButton.gameObject.SetActive(true);
                     ShowStagedAction(CurrentActions);
+                    hexVisualizer.HexChange();
                     break;
             }
         }

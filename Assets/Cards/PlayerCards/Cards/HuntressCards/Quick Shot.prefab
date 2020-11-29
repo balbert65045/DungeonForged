@@ -58,15 +58,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 1
   AbilityType: {fileID: 114611323552664588}
   AbilityImage: {fileID: 114753997847163978}
   AbilityAmount: {fileID: 114510932809307128}
   RangeAbilityType: {fileID: 114753265912916548}
   RangeAbilityImage: {fileID: 114776154484630948}
   RangeAbilityAmount: {fileID: 114838978787197992}
-  DurationAbilityImage: {fileID: 114409891408353420}
-  DurationAbilityAmount: {fileID: 114727069171365348}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 0
@@ -639,6 +638,7 @@ MonoBehaviour:
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1155820374346854}
+  InTheHand: 0
 --- !u!1 &1395453210302232
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,7 +794,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: 4
 --- !u!114 &2466986442205431716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,9 +1113,9 @@ MonoBehaviour:
     thisAOE:
       thisAOEType: 0
       Targets: 0
-      Damage: 2
+      Damage: 4
+    thisDeBuff: 0
     Range: 2
-    Duration: 0
 --- !u!1 &1668954677124592
 GameObject:
   m_ObjectHideFlags: 0

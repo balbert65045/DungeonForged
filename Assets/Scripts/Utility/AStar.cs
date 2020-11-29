@@ -294,12 +294,15 @@ public class AStar : MonoBehaviour
         List<Node> NodesInRange = new List<Node>();
         List<Node> Visited = new List<Node>();
         List<Node> Queue = new List<Node>();
+        if (distance == 0) {
+            NodesInRange.Add(fromNode);
+            return NodesInRange;
+        }
         fromNode.G = 0;
         Queue.Add(fromNode);
         Visited.Add(fromNode);
         while ((Queue.Count > 0))
         {
-            //Debug.Log(Queue.Count);
             Node node = Queue[0];
             List<Node> adjacentNodes = GetDiskatasAdjacentWalkableNodes(node, CT);
             foreach(Node adjacentNode in adjacentNodes)

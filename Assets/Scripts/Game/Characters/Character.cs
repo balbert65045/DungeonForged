@@ -94,17 +94,22 @@ public class Character : Entity {
     {
         List<Node> nodes = HexMap.GetNodesInLOS(HexOn.HexNode, Range);
         NodesInActionRange.Clear();
-        foreach (Node node in nodes)
+        if (action == ActionType.Attack && myDeBuffs.Contains(DeBuff.Disarm)) { }
+        else
         {
-            if (!node.Shown) { continue; }
-            if (node.edge) { continue; }
-            NodesInActionRange.Add(node);
+            foreach (Node node in nodes)
+            {
+                if (!node.Shown) { continue; }
+                if (node.edge) { continue; }
+                NodesInActionRange.Add(node);
+            }
+            if (action == ActionType.Attack && NodesInActionRange.Contains(HexOn.HexNode)) { NodesInActionRange.Remove(HexOn.HexNode); }
         }
-        if (action == ActionType.Attack && NodesInActionRange.Contains(HexOn.HexNode)) { NodesInActionRange.Remove(HexOn.HexNode); }
 
         //Have to do this because of silly variable being added
         List<Node> nodesToSurround = new List<Node>();
         foreach(Node node in NodesInActionRange) { nodesToSurround.Add(node); }
+        if (NodesInActionRange.Count == 0) { nodesToSurround.Add(HexOn.HexNode); }
 
         List<Vector3> points = new List<Vector3>();
         points = HexMap.GetHexesSurrounding(HexOn.HexNode, nodesToSurround);
@@ -113,7 +118,7 @@ public class Character : Entity {
 
     public void ShowActionOnHealthBar(List<Action> actions)
     {
-        myHealthBar.ShowActions(actions);
+        myHealthBar.ShowActions(actions, myDeBuffs);
     }
 
     public bool HexInActionRange(Hex hex) { return NodesInActionRange.Contains(hex.HexNode); }
@@ -168,7 +173,7 @@ public class Character : Entity {
 
     public virtual void FinishedMoving(Hex hex, bool fighting = false, Hex HexMovingFrom = null) { }
 
-    public virtual void FinishedAttacking() { CharactersFinishedTakingDamage++; }
+    public virtual void FinishedAttacking(bool dead = false) { CharactersFinishedTakingDamage++; }
 
     public void FinishedHealing() { characterThatHealingMe.FinishedPerformingHealing(); }
 
@@ -180,10 +185,20 @@ public class Character : Entity {
 
     public virtual void FinishedPerformingBuff() { }
 
+    int AddPoisonDamage(int initialHealthLost)
+    {
+        if (myDeBuffs.Contains(DeBuff.Poison) && deBuffApplied != DeBuff.Poison)
+        {
+            return Mathf.FloorToInt(initialHealthLost * 1.25f);
+        }
+        return initialHealthLost;
+    }
+
     public virtual void GetHit()
     {
         transform.LookAt(characterThatAttackedMe.transform);
         GetComponent<CharacterAnimationController>().GetHit();
+        TotalHealthLosing = AddPoisonDamage(TotalHealthLosing);
         ShowDeBuff();
         int healthBeforeDamage = health;
         health -= Mathf.Clamp((TotalHealthLosing - CurrentArmor), 0, 1000);
@@ -191,11 +206,22 @@ public class Character : Entity {
         myHealthBar.LoseHealth(TotalHealthLosing);
     }
 
+    public void PredictDamage(int damage)
+    {
+        damage = CalculateDeBuffs(damage);
+        damage = AddPoisonDamage(damage);
+        myHealthBar.PredictDamage(damage);
+    }
+
+    public void HidePredication()
+    {
+        myHealthBar.RemovePredication();
+    }
+
     public void TakeTrueDamage(int amount)
     {
         characterThatAttackedMe = null;
         GetComponent<CharacterAnimationController>().GetHit();
-        int healthBeforeDamage = health;
         TotalHealthLosing = amount;
         health -= Mathf.Clamp(amount, 0, 1000);
         if (health <= 0) { GoingToDie = true; }
@@ -222,7 +248,7 @@ public class Character : Entity {
     public void Heal(int amount, Character character)
     {
         characterThatHealingMe = character;
-        if (myDeBuffs.Contains(DeBuff.Bleed)){RemoveBleed();}
+        if (myDeBuffs.Contains(DeBuff.Bleed)){RemoveStatus(DeBuff.Bleed);}
         myHealthBar.AddHealth(amount);
         health += amount;
         health = Mathf.Clamp(health, 0, maxHealth + 1);
@@ -281,7 +307,7 @@ public class Character : Entity {
     {
         if (characterThatAttackedMe != null)
         {
-            characterThatAttackedMe.FinishedAttacking();
+            characterThatAttackedMe.FinishedAttacking(true);
         }
         HexOn.RemoveEntityFromHex();
         FindObjectOfType<TurnOrder>().CharacterRemoved(this);
@@ -305,10 +331,19 @@ public class Character : Entity {
         }
     }
 
-    void RemoveBleed()
+    public void EndTurn()
     {
-        myDeBuffs.Remove(DeBuff.Bleed);
-        myHealthBar.RemoveDeBuff(DeBuff.Bleed);
+        if (myDeBuffs.Contains(DeBuff.Poison)) { RemoveStatus(DeBuff.Poison); }
+        if (myDeBuffs.Contains(DeBuff.Immobelized)) { RemoveStatus(DeBuff.Immobelized); }
+        if (myDeBuffs.Contains(DeBuff.Weaken)) { RemoveStatus(DeBuff.Weaken); }
+        if (myDeBuffs.Contains(DeBuff.Stun)) { RemoveStatus(DeBuff.Stun); }
+        if (myDeBuffs.Contains(DeBuff.Disarm)) { RemoveStatus(DeBuff.Disarm); }
+        if (myDeBuffs.Contains(DeBuff.Slow)) { RemoveStatus(DeBuff.Slow); }
+    }
+    void RemoveStatus(DeBuff debuff)
+    {
+        myDeBuffs.Remove(debuff);
+        myHealthBar.RemoveDeBuff(debuff);
     }
 
     void Bleed()
@@ -316,7 +351,7 @@ public class Character : Entity {
         TakeTrueDamage(1);
     }
 
-    List<DeBuff> myDeBuffs = new List<DeBuff>();
+    public List<DeBuff> myDeBuffs = new List<DeBuff>();
     public DeBuff deBuffApplied = DeBuff.None;
     public void ShowDeBuff()
     {
@@ -353,6 +388,13 @@ public class Character : Entity {
         GetComponent<CharacterAnimationController>().Attack();
     }
 
+    int CalculateDeBuffs(int amount)
+    {
+        int totalamount = amount;
+        if (myDeBuffs.Contains(DeBuff.Weaken)) { totalamount = Mathf.FloorToInt(totalamount * .75f); }
+        return totalamount;
+    }
+
     public void Attack(int damage, DeBuff deBuff, Character[] characters)
     {
         charactersAttackingAt.Clear();
@@ -366,6 +408,11 @@ public class Character : Entity {
             return;
         }
         transform.LookAt(charactersAttackingAt[0].transform);
+
+        //DeBuffCalc
+        damage = CalculateDeBuffs(damage);
+
+
         foreach (Character character in charactersAttackingAt)
         {
             character.transform.LookAt(transform);
@@ -394,6 +441,7 @@ public class Character : Entity {
     // MOVEMENT//
     public bool HexInMoveRange(Hex hex, int Amount)
     {
+        if (myDeBuffs.Contains(DeBuff.Immobelized)){ return false; }
         if (NodesInWalkingDistance.Contains(hex.HexNode)) { return true; }
         return false;
 
@@ -413,7 +461,7 @@ public class Character : Entity {
     public virtual void ShowMoveDistance(int moveRange)
     {
         CurrentMoveRange = moveRange;
-        List<Node> nodesInDistance = aStar.Diskatas(HexOn.HexNode, moveRange, myCT);
+        List<Node> nodesInDistance = aStar.Diskatas(HexOn.HexNode, CurrentMoveRange, myCT);
         NodesInWalkingDistance.Clear();
         foreach (Node node in nodesInDistance)
         {

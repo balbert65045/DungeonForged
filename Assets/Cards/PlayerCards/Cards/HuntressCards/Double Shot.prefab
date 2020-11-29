@@ -249,7 +249,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 4
+  m_Text: 6
 --- !u!114 &3429167417863397158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,6 +696,7 @@ MonoBehaviour:
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1651328855469180}
+  InTheHand: 0
 --- !u!1 &1172468940717514
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,16 +1001,16 @@ MonoBehaviour:
     thisAOE:
       thisAOEType: 0
       Targets: 0
-      Damage: 5
+      Damage: 6
+    thisDeBuff: 0
     Range: 2
-    Duration: 0
   - thisActionType: 2
     thisAOE:
       thisAOEType: 0
       Targets: 0
-      Damage: 4
+      Damage: 6
+    thisDeBuff: 0
     Range: 2
-    Duration: 0
 --- !u!1 &1272047893465060
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,15 +1199,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 1
   AbilityType: {fileID: 114240029471065612}
   AbilityImage: {fileID: 114592967040607852}
   AbilityAmount: {fileID: 114480728815481538}
   RangeAbilityType: {fileID: 114743512354036986}
   RangeAbilityImage: {fileID: 114399382051771010}
   RangeAbilityAmount: {fileID: 114564772238033642}
-  DurationAbilityImage: {fileID: 114902506969777310}
-  DurationAbilityAmount: {fileID: 114723933767036668}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 1
@@ -1889,7 +1889,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 5
+  m_Text: 6
 --- !u!114 &4751717151547609967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2054,15 +2054,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 1
   AbilityType: {fileID: 114731991833201720}
   AbilityImage: {fileID: 114004406545413050}
   AbilityAmount: {fileID: 114107697129851722}
   RangeAbilityType: {fileID: 114154300539219946}
   RangeAbilityImage: {fileID: 114657202141185528}
   RangeAbilityAmount: {fileID: 114584776305771980}
-  DurationAbilityImage: {fileID: 114646346637594080}
-  DurationAbilityAmount: {fileID: 114793515702820152}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 0
