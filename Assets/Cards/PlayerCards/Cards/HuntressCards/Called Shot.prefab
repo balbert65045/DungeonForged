@@ -605,7 +605,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5a9c174617a13fc45824167b56cefe44, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9f7a91a71d2012d4191a1c4d1304041b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -626,6 +626,7 @@ GameObject:
   - component: {fileID: 224280908746414738}
   - component: {fileID: 222367082895265570}
   - component: {fileID: 114315567553330786}
+  - component: {fileID: 2900529221346222979}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -694,6 +695,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Called Shot
+--- !u!114 &2900529221346222979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362449263710524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1412067267605128
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,6 +1073,7 @@ MonoBehaviour:
   - {fileID: 1161781509100130}
   - {fileID: 1663746408452168}
   - {fileID: 1686165803016442}
+  CardRarity: 1
   price: 70
   EnergyText: {fileID: 114466817894223182}
   PrefabAssociatedWith: {fileID: 0}

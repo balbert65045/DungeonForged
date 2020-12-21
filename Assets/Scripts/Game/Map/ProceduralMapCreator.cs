@@ -463,7 +463,7 @@ public class ProceduralMapCreator : MonoBehaviour {
     {
         if (CurrentChallengeRating <= 0) { return; }
         List<Hex> NonEdgeHexes = GetNonEdgeHexes(hexes);
-        int EnemiesToSpawn = Random.Range(2, 5);
+        int EnemiesToSpawn = 2;
         int RoomChallengeRating = 0;
         for (int i= 0; i< EnemiesToSpawn; i++)
         {

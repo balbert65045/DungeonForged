@@ -45,7 +45,31 @@ public class CardDatabase : MonoBehaviour {
 
     public GameObject SelectRandomCard(List<GameObject> Cards)
     {
-        GameObject card = Cards[Random.Range(0, Cards.Count)];
+        List<GameObject> CommonCardList = new List<GameObject>();
+        List<GameObject> UncommonCardList = new List<GameObject>();
+        List<GameObject> RareCardList = new List<GameObject>();
+
+        foreach(GameObject cardObj in Cards)
+        {
+            switch (cardObj.GetComponent<NewCard>().CardRarity)
+            {
+                case Rarity.Common:
+                    CommonCardList.Add(cardObj);
+                    break;
+                case Rarity.Uncommon:
+                    UncommonCardList.Add(cardObj);
+                    break;
+                case Rarity.Rare:
+                    RareCardList.Add(cardObj);
+                    break;
+            }
+        }
+        int randomRoll = Random.Range(0, 100);
+        Debug.Log(randomRoll);
+        GameObject card = null;
+        if (randomRoll >= 0 && randomRoll < 60) { card = CommonCardList[Random.Range(0, CommonCardList.Count)]; }
+        if (randomRoll >= 60 && randomRoll < 90) { card = UncommonCardList[Random.Range(0, UncommonCardList.Count)]; }
+        if (randomRoll >= 90 && randomRoll < 100) { card = RareCardList[Random.Range(0, RareCardList.Count)]; }
         Cards.Remove(card);
         return card;
     }

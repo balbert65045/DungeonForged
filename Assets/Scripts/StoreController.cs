@@ -6,7 +6,7 @@ public class StoreController : MonoBehaviour
 {
 
     public GameObject[] Character1CardsPositions;
-    public GameObject[] Character2CardsPositions;
+    //public GameObject[] Character2CardsPositions;
 
     public void MakeAvailableCards()
     {
@@ -15,9 +15,9 @@ public class StoreController : MonoBehaviour
         GameObject[] newCards1 = cardDatabase.Select3RandomCards(groupManager.MyGroupCardStorage[0].characterType);
         string character1 = groupManager.MyGroupCardStorage[0].CharacterName;
         PlaceCards(newCards1, Character1CardsPositions, character1);
-        GameObject[] newCards2 = cardDatabase.Select3RandomCards(groupManager.MyGroupCardStorage[1].characterType);
-        string character2 = groupManager.MyGroupCardStorage[1].CharacterName;
-        PlaceCards(newCards2, Character2CardsPositions, character2);
+        //GameObject[] newCards2 = cardDatabase.Select3RandomCards(groupManager.MyGroupCardStorage[1].characterType);
+        //string character2 = groupManager.MyGroupCardStorage[1].CharacterName;
+        //PlaceCards(newCards2, Character2CardsPositions, character2);
     }
 
     void PlaceCards(GameObject[] cards, GameObject[] positions, string name)

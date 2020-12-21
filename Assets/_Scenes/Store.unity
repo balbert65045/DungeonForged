@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.1
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -293,6 +293,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &10054296
@@ -482,6 +485,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &26841948
@@ -670,6 +676,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &87808845
@@ -710,6 +719,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87808842}
   m_CullTransparentMesh: 0
+--- !u!1 &99110086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 99110090}
+  - component: {fileID: 99110089}
+  - component: {fileID: 99110088}
+  - component: {fileID: 99110087}
+  m_Layer: 0
+  m_Name: Plane (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &99110087
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99110086}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &99110088
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99110086}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9b41cafadc4b45047be424837ad08c5c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &99110089
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99110086}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &99110090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99110086}
+  m_LocalRotation: {x: 0, y: 0, z: -0.70129514, w: 0.71287113}
+  m_LocalPosition: {x: -0.9, y: -3.456587, z: 17.25}
+  m_LocalScale: {x: 8.426828, y: 5.1603355, z: 5.1603355}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -89.062}
 --- !u!1 &106141141
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,6 +872,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &106141144
@@ -807,6 +915,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 106141141}
   m_CullTransparentMesh: 0
+--- !u!1 &108717750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 108717754}
+  - component: {fileID: 108717753}
+  - component: {fileID: 108717752}
+  - component: {fileID: 108717751}
+  m_Layer: 0
+  m_Name: Plane (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &108717751
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108717750}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &108717752
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108717750}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9b41cafadc4b45047be424837ad08c5c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &108717753
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108717750}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &108717754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108717750}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7012974, w: 0.7128688}
+  m_LocalPosition: {x: 47.83, y: -3.456587, z: 17.25}
+  m_LocalScale: {x: 9.065162, y: 5.1603355, z: 5.1603355}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 89.062}
 --- !u!1 &138613872
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +1068,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &138613875
@@ -1092,6 +1299,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &181466874
@@ -1189,6 +1399,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &190456801
@@ -1397,6 +1610,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &283032498
@@ -1555,6 +1771,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &341134999
@@ -1652,6 +1871,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &343009547
@@ -1749,6 +1971,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &356162854
@@ -1898,6 +2123,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &376978984
@@ -2056,6 +2284,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &395401873
@@ -2153,6 +2384,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &409802332
@@ -2250,6 +2484,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &449696562
@@ -2347,6 +2584,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &461643245
@@ -2505,6 +2745,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &476754283
@@ -2754,6 +2997,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &515897009
@@ -3036,6 +3282,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &636714873
@@ -3133,6 +3382,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &639489144
@@ -3230,6 +3482,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &676931242
@@ -3621,6 +3876,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &729406108
@@ -3865,6 +4123,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &757359781
@@ -4038,6 +4299,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767077715}
   m_CullTransparentMesh: 0
+--- !u!1 &780318697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 780318701}
+  - component: {fileID: 780318700}
+  - component: {fileID: 780318699}
+  - component: {fileID: 780318698}
+  m_Layer: 0
+  m_Name: Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &780318698
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780318697}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &780318699
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780318697}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9b41cafadc4b45047be424837ad08c5c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &780318700
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780318697}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &780318701
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780318697}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 19.8, y: -3.456587, z: 17.25}
+  m_LocalScale: {x: 5.1603355, y: 5.1603355, z: 5.1603355}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &780340879
 GameObject:
   m_ObjectHideFlags: 0
@@ -4145,6 +4502,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &871402869
@@ -4368,6 +4728,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &910203094
@@ -4465,6 +4828,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &917728428
@@ -4869,6 +5235,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &951558850
@@ -4966,6 +5335,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &954146546
@@ -5006,6 +5378,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 954146543}
   m_CullTransparentMesh: 0
+--- !u!1 &962618617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 962618621}
+  - component: {fileID: 962618620}
+  - component: {fileID: 962618619}
+  - component: {fileID: 962618618}
+  m_Layer: 0
+  m_Name: Plane (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &962618618
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962618617}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &962618619
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962618617}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9b41cafadc4b45047be424837ad08c5c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &962618620
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962618617}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &962618621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962618617}
+  m_LocalRotation: {x: -0.6908833, y: -0, z: -0, w: 0.7229663}
+  m_LocalPosition: {x: 19.8, y: -3.456587, z: 36.1}
+  m_LocalScale: {x: 5.1603355, y: 5.1603355, z: 7.8839602}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: -87.4, y: 0, z: 0}
 --- !u!1 &980446502
 GameObject:
   m_ObjectHideFlags: 0
@@ -5063,6 +5531,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &980446505
@@ -5160,6 +5631,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1001447409
@@ -5309,6 +5783,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1007419051
@@ -5493,6 +5970,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1045532192
@@ -5590,6 +6070,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1059605138
@@ -5687,6 +6170,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1078966200
@@ -5784,6 +6270,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1082206100
@@ -5881,6 +6370,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1119043450
@@ -5978,6 +6470,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1131085999
@@ -6075,6 +6570,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1141605162
@@ -6267,6 +6765,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1169170146
@@ -6459,6 +6960,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1195904400
@@ -6556,6 +7060,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1197786427
@@ -6653,6 +7160,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1198999266
@@ -6750,6 +7260,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1215199626
@@ -6900,7 +7413,12 @@ PrefabInstance:
     - target: {fileID: 4513197452597640216, guid: 8543c8fcfefdcf74e9047c32028b3e6d,
         type: 3}
       propertyPath: m_Intensity
-      value: 0.5
+      value: 5.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 4513197452597640216, guid: 8543c8fcfefdcf74e9047c32028b3e6d,
+        type: 3}
+      propertyPath: m_Range
+      value: 12.78
       objectReference: {fileID: 0}
     - target: {fileID: 4513197452597640217, guid: 8543c8fcfefdcf74e9047c32028b3e6d,
         type: 3}
@@ -7109,6 +7627,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1260257550
@@ -7206,6 +7727,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1278213061
@@ -7338,6 +7862,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1284079645
@@ -7615,6 +8142,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1316809771
@@ -7713,7 +8243,6 @@ MonoBehaviour:
   - {fileID: 747741833}
   - {fileID: 366795168}
   - {fileID: 540989886}
-  Character2CardsPositions:
   - {fileID: 1036733288}
   - {fileID: 1712739145}
   - {fileID: 1005562178}
@@ -7774,6 +8303,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1427465361
@@ -7966,6 +8498,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1443886458
@@ -8063,6 +8598,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1457726860
@@ -8160,6 +8698,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1487696567
@@ -8318,6 +8859,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1488441972
@@ -8415,6 +8959,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1493325912
@@ -8642,6 +9189,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1518527349
@@ -8739,6 +9289,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1519976880
@@ -8980,6 +9533,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1539962444
@@ -9077,6 +9633,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1615533483
@@ -9174,6 +9733,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1624666718
@@ -9271,6 +9833,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1636508433
@@ -9368,6 +9933,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1638993859
@@ -9556,6 +10124,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1693095833
@@ -9705,6 +10276,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1714777166
@@ -9802,6 +10376,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1724677249
@@ -9899,6 +10476,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1737964944
@@ -10087,6 +10667,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1755228573
@@ -10184,6 +10767,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1803044805
@@ -10281,6 +10867,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1803713186
@@ -10378,6 +10967,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1805422719
@@ -10475,6 +11067,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1811795739
@@ -10705,6 +11300,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1852727084
@@ -10867,6 +11465,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1874344293
@@ -11097,6 +11698,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1876393885
@@ -11289,6 +11893,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1929891531
@@ -11515,6 +12122,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &1986169119
@@ -11612,6 +12222,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &2027998226
@@ -11709,6 +12322,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &2037750203
@@ -11806,6 +12422,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &2063595506
@@ -12036,6 +12655,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &2084776396
@@ -12234,6 +12856,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &2094164727
@@ -12608,6 +13233,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &2108218882
@@ -12705,6 +13333,9 @@ MonoBehaviour:
   myLocation: 0
   Enemy: {fileID: 21300000, guid: 41c6f94d80f9e034a9c63dcf97d30f5c, type: 3}
   Shop: {fileID: 21300000, guid: 63e698edeb0df76448f068cb0a8f0090, type: 3}
+  Rest: {fileID: 0}
+  Chest: {fileID: 0}
+  StartSprite: {fileID: 0}
   UnusedColor: {r: 0.33333334, g: 0.30980393, b: 0.30588236, a: 1}
   LocationSprite: {fileID: 0}
 --- !u!114 &2109406879

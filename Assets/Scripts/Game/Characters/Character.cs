@@ -208,9 +208,14 @@ public class Character : Entity {
 
     public void PredictDamage(int damage)
     {
-        damage = CalculateDeBuffs(damage);
         damage = AddPoisonDamage(damage);
         myHealthBar.PredictDamage(damage);
+    }
+
+    public int DamageDealing(int damage)
+    {
+        damage = CalculateDeBuffs(damage);
+        return damage;
     }
 
     public void HidePredication()

@@ -35,10 +35,7 @@ public class LevelClearedPanel : MonoBehaviour {
         FindObjectOfType<PlayersDecks>().gameObject.SetActive(false);
         panel.SetActive(true);
         characters = FindObjectOfType<ProceduralMapCreator>().PlayerCharacters;
-        for(int i = 0; i < 2; i++)
-        {
-            CharacterImages[i].sprite = characters[i].GetComponent<PlayerCharacter>().characterSymbol;
-        }
+        CharacterImages[0].sprite = characters[0].GetComponent<PlayerCharacter>().characterSymbol;
     }
 
     public void ShowNextLoot()

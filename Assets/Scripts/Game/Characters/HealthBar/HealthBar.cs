@@ -218,7 +218,13 @@ public class HealthBar : MonoBehaviour {
         AttackValue.gameObject.SetActive(true);
         AttackValue.text = totalHealthLoss.ToString();
         yield return new WaitForSeconds(.2f);
+
+        if (CurrentShield > 0)
+        {
+            RemoveShield(totalDamageIncomming);
+        }
         CurrentHealth -= totalHealthLoss;
+        
         CurrentHealthText.text = CurrentHealth.ToString();
         HpBar.SetHP((float)CurrentHealth / (float)MaxHealth);
         AttackValue.gameObject.SetActive(false);

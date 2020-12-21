@@ -113,16 +113,16 @@ public class StagingArea : MonoBehaviour {
     public void ReturnLastCardToHand()
     {
         NewCard card = GetLastCard();
-        FindObjectOfType<EnergyAmount>().AddEnergy(card.EnergyAmount);
+        FindObjectOfType<EnergyAmount>().AddEnergy(card.CurrentEnergyAmount());
         int index = card.transform.parent.GetSiblingIndex();
-        FindObjectOfType<NewHand>().PlaceCardOnNextAvailableSpot(card);
         if (index == 0) {
             ClearStagedAction();
             FindObjectOfType<NewHand>().MakeAllCardsPlayable();
         }
         else {
-            SubtractToStagedAction(card.cardAbility.Actions);
+            SubtractToStagedAction(card.FrontFacing ? card.cardAbility.Actions : card.backActions());
         }
+        FindObjectOfType<NewHand>().PlaceCardOnNextAvailableSpot(card);
     }
 
     public NewCard GetLastCard()
@@ -144,8 +144,8 @@ public class StagingArea : MonoBehaviour {
             if (Positions[i].GetComponentInChildren<NewCard>() == null)
             {
                 PlaceCard(i, card);
-                if (i == 0) { SetFirstAction(card.cardAbility.Actions); }
-                else { AddToStagedAction(card.cardAbility.Actions); }
+                if (i == 0) { SetFirstAction(card.FrontFacing ? card.cardAbility.Actions : card.backActions()); }
+                else { AddToStagedAction(card.FrontFacing ? card.cardAbility.Actions: card.backActions()); }
                 return;
             }
         }
@@ -156,6 +156,8 @@ public class StagingArea : MonoBehaviour {
         card.transform.SetParent(Positions[index].transform);
         card.transform.localScale = new Vector3(1, 1, 1);
         card.transform.localPosition = Vector3.zero;
+        card.flipping = false;
+        if (!card.FrontFacing) { card.FlipBack(); }
         card.transform.localRotation = Quaternion.identity;
         card.SetCurrentParent(card.transform.parent);
     }

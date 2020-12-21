@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.12
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -3419,6 +3419,102 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209067988}
   m_Mesh: {fileID: 4300000, guid: a0b1ecb5f740bbf4c93ffc78e6c87a18, type: 3}
+--- !u!1 &236833713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 236833717}
+  - component: {fileID: 236833716}
+  - component: {fileID: 236833715}
+  - component: {fileID: 236833714}
+  m_Layer: 0
+  m_Name: Plane (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &236833714
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236833713}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &236833715
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236833713}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9b41cafadc4b45047be424837ad08c5c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &236833716
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236833713}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &236833717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236833713}
+  m_LocalRotation: {x: 0, y: 0, z: -0.70129514, w: 0.71287113}
+  m_LocalPosition: {x: -0.9, y: -3.456587, z: 17.25}
+  m_LocalScale: {x: 5.1603355, y: 5.1603355, z: 5.1603355}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -89.062}
 --- !u!1 &236958412
 GameObject:
   m_ObjectHideFlags: 0
@@ -8350,7 +8446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &598804676
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9832,6 +9928,102 @@ MonoBehaviour:
   WallMask:
     serializedVersion: 2
     m_Bits: 512
+--- !u!1 &721324152
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 721324156}
+  - component: {fileID: 721324155}
+  - component: {fileID: 721324154}
+  - component: {fileID: 721324153}
+  m_Layer: 0
+  m_Name: Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &721324153
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721324152}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &721324154
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721324152}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9b41cafadc4b45047be424837ad08c5c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &721324155
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721324152}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &721324156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721324152}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 19.8, y: -3.456587, z: 17.25}
+  m_LocalScale: {x: 5.1603355, y: 5.1603355, z: 5.1603355}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &730224301
 GameObject:
   m_ObjectHideFlags: 0
@@ -13950,19 +14142,19 @@ MonoBehaviour:
   characterType: 2
   PrefabAssociatedWith: {fileID: 3718883073841060820, guid: 441b37a66a2002243ac4c75f825cf3cc,
     type: 3}
-  MaxHealth: 60
+  MaxHealth: 30
   Name: Knight
   StartingCards:
-  - {fileID: 1431665790145160, guid: c432c9f8c42dedd4691adde8b30f9017, type: 3}
-  - {fileID: 1431665790145160, guid: c432c9f8c42dedd4691adde8b30f9017, type: 3}
-  - {fileID: 1431665790145160, guid: c432c9f8c42dedd4691adde8b30f9017, type: 3}
-  - {fileID: 1431665790145160, guid: c432c9f8c42dedd4691adde8b30f9017, type: 3}
-  - {fileID: 1721450809079396, guid: 842323a1a501d674082de2298069ceed, type: 3}
   - {fileID: 1848688880243040, guid: f812706d1ab81c044ba33d03623656da, type: 3}
   - {fileID: 1848688880243040, guid: f812706d1ab81c044ba33d03623656da, type: 3}
   - {fileID: 1848688880243040, guid: f812706d1ab81c044ba33d03623656da, type: 3}
-  - {fileID: 1167312542221384, guid: da37e8c6768a5514894caf5dbb9e312d, type: 3}
-  - {fileID: 1289822614523832, guid: 74bc84029311ab3429080b245a5a2d21, type: 3}
+  - {fileID: 1848688880243040, guid: f812706d1ab81c044ba33d03623656da, type: 3}
+  - {fileID: 6352592757122840788, guid: 891e565b169948b47b0447bac349e685, type: 3}
+  - {fileID: 1857171428323454, guid: 280c74d51079d934095ad2a23bfb8c59, type: 3}
+  - {fileID: 1857171428323454, guid: 280c74d51079d934095ad2a23bfb8c59, type: 3}
+  - {fileID: 1857171428323454, guid: 280c74d51079d934095ad2a23bfb8c59, type: 3}
+  - {fileID: 1857171428323454, guid: 280c74d51079d934095ad2a23bfb8c59, type: 3}
+  - {fileID: 1857171428323454, guid: 280c74d51079d934095ad2a23bfb8c59, type: 3}
   Description: The Knight is a class that is well balanced in all areas. Having skills
     for damage, movement, and defense, he can be adaptive in any combat situation.
 --- !u!1 &999621594
@@ -15283,6 +15475,102 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1069981509}
   m_Mesh: {fileID: 4300000, guid: a0b1ecb5f740bbf4c93ffc78e6c87a18, type: 3}
+--- !u!1 &1075199355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1075199359}
+  - component: {fileID: 1075199358}
+  - component: {fileID: 1075199357}
+  - component: {fileID: 1075199356}
+  m_Layer: 0
+  m_Name: Plane (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &1075199356
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075199355}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1075199357
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075199355}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9b41cafadc4b45047be424837ad08c5c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1075199358
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075199355}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1075199359
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075199355}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7012974, w: 0.7128688}
+  m_LocalPosition: {x: 47.83, y: -3.456587, z: 17.25}
+  m_LocalScale: {x: 5.1603355, y: 5.1603355, z: 5.1603355}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 89.062}
 --- !u!1 &1081708911
 GameObject:
   m_ObjectHideFlags: 0
@@ -19774,6 +20062,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: KnightNew
       objectReference: {fileID: 0}
+    - target: {fileID: 3718883073841060820, guid: 441b37a66a2002243ac4c75f825cf3cc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3718883073841387190, guid: 441b37a66a2002243ac4c75f825cf3cc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19787,7 +20080,7 @@ PrefabInstance:
     - target: {fileID: 3718883073841387190, guid: 441b37a66a2002243ac4c75f825cf3cc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.7289824
+      value: 7.463
       objectReference: {fileID: 0}
     - target: {fileID: 3718883073841387190, guid: 441b37a66a2002243ac4c75f825cf3cc,
         type: 3}
@@ -23031,7 +23324,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1002.8, y: -423}
+  m_AnchoredPosition: {x: 777.8, y: -423}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1564751146
@@ -24157,6 +24450,102 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1659846124}
   m_Mesh: {fileID: 4300000, guid: cfa1b8675b2cf0140ab483c5885acd16, type: 3}
+--- !u!1 &1676741961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1676741965}
+  - component: {fileID: 1676741964}
+  - component: {fileID: 1676741963}
+  - component: {fileID: 1676741962}
+  m_Layer: 0
+  m_Name: Plane (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &1676741962
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676741961}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1676741963
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676741961}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9b41cafadc4b45047be424837ad08c5c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1676741964
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676741961}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1676741965
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676741961}
+  m_LocalRotation: {x: -0.6908833, y: -0, z: -0, w: 0.7229663}
+  m_LocalPosition: {x: 19.8, y: -3.456587, z: 36.1}
+  m_LocalScale: {x: 5.1603355, y: 5.1603355, z: 5.1603355}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: -87.4, y: 0, z: 0}
 --- !u!1 &1679470200
 GameObject:
   m_ObjectHideFlags: 0
@@ -26162,19 +26551,19 @@ MonoBehaviour:
   characterType: 5
   PrefabAssociatedWith: {fileID: 515987071149349302, guid: 1a6e8d72ca8c51c4388a6d67c8753686,
     type: 3}
-  MaxHealth: 50
+  MaxHealth: 25
   Name: Huntress
   StartingCards:
-  - {fileID: 1431665790145160, guid: 305d1570edb48494a8d5f1df5edbebd3, type: 3}
-  - {fileID: 1431665790145160, guid: 305d1570edb48494a8d5f1df5edbebd3, type: 3}
-  - {fileID: 1431665790145160, guid: 305d1570edb48494a8d5f1df5edbebd3, type: 3}
-  - {fileID: 1431665790145160, guid: 305d1570edb48494a8d5f1df5edbebd3, type: 3}
+  - {fileID: 1945860075907932, guid: 85cbf718ee00b684686e9daa85962e9b, type: 3}
+  - {fileID: 1945860075907932, guid: 85cbf718ee00b684686e9daa85962e9b, type: 3}
+  - {fileID: 1945860075907932, guid: 85cbf718ee00b684686e9daa85962e9b, type: 3}
+  - {fileID: 1945860075907932, guid: 85cbf718ee00b684686e9daa85962e9b, type: 3}
+  - {fileID: 1945860075907932, guid: 85cbf718ee00b684686e9daa85962e9b, type: 3}
   - {fileID: 1721450809079396, guid: 757e6477f7d895d4e9a7c7e0f2096a1f, type: 3}
-  - {fileID: 1945860075907932, guid: 85cbf718ee00b684686e9daa85962e9b, type: 3}
-  - {fileID: 1945860075907932, guid: 85cbf718ee00b684686e9daa85962e9b, type: 3}
-  - {fileID: 1945860075907932, guid: 85cbf718ee00b684686e9daa85962e9b, type: 3}
-  - {fileID: 1666350264716992, guid: 5cacefcda37563b4eb102a13a5438eec, type: 3}
-  - {fileID: 1289822614523832, guid: d6fafc9f704ee694f96cfef0aa3f6187, type: 3}
+  - {fileID: 1721450809079396, guid: 757e6477f7d895d4e9a7c7e0f2096a1f, type: 3}
+  - {fileID: 1721450809079396, guid: 757e6477f7d895d4e9a7c7e0f2096a1f, type: 3}
+  - {fileID: 1721450809079396, guid: 757e6477f7d895d4e9a7c7e0f2096a1f, type: 3}
+  - {fileID: 1721450809079396, guid: 757e6477f7d895d4e9a7c7e0f2096a1f, type: 3}
   Description: The Huntress is a ranged attack class. Looking to position herself
     in a good position and then pick off enemies one by one with her vicious range
     attacks.
@@ -29615,16 +30004,13 @@ MonoBehaviour:
   - {fileID: 1745930576202298, guid: 5443c0408fb1c5848857d51e6280dc60, type: 3}
   - {fileID: 1908412039326876, guid: 3c38ed7535ba0b848a28b9f2add7d28d, type: 3}
   - {fileID: 1259558149755004, guid: 9e3e278019eb92549bbb58a22e6157d1, type: 3}
-  - {fileID: 1857171428323454, guid: 280c74d51079d934095ad2a23bfb8c59, type: 3}
   - {fileID: 1184795242867608, guid: e5ed7033612d19541a8de91f6ea16dcb, type: 3}
-  - {fileID: 1382756180423444, guid: f5a02301fb7c5b1409d25d6d5cd75f44, type: 3}
   - {fileID: 1407865300834006, guid: 009d38deff90beb4fa61d338ca88ed21, type: 3}
   - {fileID: 1543104635636980, guid: 561e40915baeda7468b985c255484aad, type: 3}
   - {fileID: 1220368753216542, guid: 691cf862477d3724bb00e32c2866a1ea, type: 3}
   - {fileID: 1943391264971672, guid: 853d31ca8b61ff841b38e12c273654e8, type: 3}
   - {fileID: 1425366688226838, guid: 33ac85f904f7057468b006a7bbd2df49, type: 3}
   - {fileID: 1196692883934498, guid: f984a87344309504da4887ccd7cea2f4, type: 3}
-  - {fileID: 1164173910057272, guid: bfc405753961cad4fa548ce600c3ac83, type: 3}
   - {fileID: 1597602407829196, guid: 63248a0034480f947a049989b0840c05, type: 3}
   - {fileID: 1709599656376088, guid: 57b1d8f8160e19b4a8a734da2b6155c9, type: 3}
   - {fileID: 1600559754376820, guid: b65d0c1b1c4276843b6f0dd875a21db3, type: 3}
@@ -29991,6 +30377,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Huntress_New
+      objectReference: {fileID: 0}
+    - target: {fileID: 515987071149349302, guid: 1a6e8d72ca8c51c4388a6d67c8753686,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 774987913611505499, guid: 1a6e8d72ca8c51c4388a6d67c8753686,
         type: 3}

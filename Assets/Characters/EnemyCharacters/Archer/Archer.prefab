@@ -177,7 +177,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 461675503
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 8b4c67102ee77fe45baed21fe9f0df7b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -258,8 +258,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 461675503
-  m_SortingLayer: 3
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 1d74826b88af8de45bf0de7a7343a0c2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -848,8 +848,8 @@ SpriteMask:
   m_MaskAlphaCutoff: 0.2
   m_FrontSortingLayerID: -1749864065
   m_BackSortingLayerID: 461675503
-  m_FrontSortingLayer: 4
-  m_BackSortingLayer: 3
+  m_FrontSortingLayer: 3
+  m_BackSortingLayer: 2
   m_FrontSortingOrder: 0
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 1
@@ -897,8 +897,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2735430560611095161}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.052, y: 0.072, z: -0.01}
-  m_LocalScale: {x: 0.046613038, y: 0.046613023, z: 0.046613038}
+  m_LocalPosition: {x: -0.023, y: -0.029, z: -0.01}
+  m_LocalScale: {x: 0.16313258, y: 0.16313253, z: 0.16313258}
   m_Children: []
   m_Father: {fileID: 2730077664845291815}
   m_RootOrder: 1
@@ -956,8 +956,8 @@ TextMesh:
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
-  m_Anchor: 0
-  m_Alignment: 0
+  m_Anchor: 4
+  m_Alignment: 1
   m_TabSize: 4
   m_FontSize: 34
   m_FontStyle: 0
@@ -1054,11 +1054,11 @@ SpriteMask:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e80708d4ea7aeef4eaedb9da8b27bd52, type: 3}
   m_MaskAlphaCutoff: 0.2
-  m_FrontSortingLayerID: -1749864065
-  m_BackSortingLayerID: 461675503
-  m_FrontSortingLayer: 4
-  m_BackSortingLayer: 3
-  m_FrontSortingOrder: 0
+  m_FrontSortingLayerID: 461675503
+  m_BackSortingLayerID: 0
+  m_FrontSortingLayer: 2
+  m_BackSortingLayer: 0
+  m_FrontSortingOrder: 1
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
@@ -1074,6 +1074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 314148567e37a4b4e8838c0d583da51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HPPrediction: {fileID: 0}
   HpObject: {fileID: 2735094559364180145}
   Min: -33
   Max: 32
@@ -1492,7 +1493,7 @@ Transform:
   m_LocalRotation: {x: -0.000000089406946, y: -0.00000008049191, z: 0.000000041673726,
     w: -1}
   m_LocalPosition: {x: 1.82, y: 0.43, z: 0}
-  m_LocalScale: {x: 2.2318325, y: 2.231832, z: 2.231832}
+  m_LocalScale: {x: 0.7223326, y: 0.7223324, z: 0.7223324}
   m_Children:
   - {fileID: 2730269791503197315}
   - {fileID: 2730138721211605667}
@@ -1539,7 +1540,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: ff398cdbe032de048871e6fd4ee46a09, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8c013fbd1dde7bc4db457cfd3b7b7ffa, type: 3}
   m_Color: {r: 0.75, g: 0.75, b: 0.75, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1813,7 +1814,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ff398cdbe032de048871e6fd4ee46a09, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8c013fbd1dde7bc4db457cfd3b7b7ffa, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1900,14 +1901,6 @@ MonoBehaviour:
   ArmorSprite: {fileID: 21300000, guid: ff398cdbe032de048871e6fd4ee46a09, type: 3}
   DeBuffPrefab: {fileID: 497236576766875404, guid: 1ec378248eef5bd44b8be50fa143a983,
     type: 3}
-  Buff1: {fileID: 2735123642893911545}
-  Buff1Sprite: {fileID: 2810362864425591433}
-  Buff2: {fileID: 2735811044778649363}
-  Buff2Sprite: {fileID: 2810608704606995761}
-  Buff3: {fileID: 2735755849592863997}
-  Buff3Sprite: {fileID: 2810430560012166585}
-  Buff4: {fileID: 2735207792409310255}
-  Buff4Sprite: {fileID: 2810865440087343675}
   IndicatorPrefab: {fileID: 1145121032965342, guid: ab27972d27547c841a63479e9dfd7496,
     type: 3}
 --- !u!1 &2735755849592863997
@@ -4024,7 +4017,7 @@ MonoBehaviour:
   myCT: 1
   MaxMoveDistance: 15
   CurrentMoveDistance: 0
-  health: 8
+  health: 15
   ViewDistance: 4
   baseStrength: 0
   baseAgility: 0
@@ -4033,6 +4026,8 @@ MonoBehaviour:
   NodesInWalkingDistance: []
   NodesInActionRange: []
   CombatNodes: []
+  myDeBuffs: 
+  deBuffApplied: 0
   EnemyChallengeRating: 1
   XpOnDeath: 10
   GoldHolding: 5

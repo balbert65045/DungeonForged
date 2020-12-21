@@ -304,7 +304,7 @@ public class HexVisualizer : MonoBehaviour {
         Hex hex = node.GetComponent<Hex>();
         if (hex.HasEnemy())
         {
-            hex.GetEnemy().PredictDamage(playerController.CurrentAction.thisAOE.Damage);
+            hex.GetEnemy().PredictDamage(playerController.SelectPlayerCharacter.DamageDealing(playerController.CurrentAction.thisAOE.Damage));
             if (!charactersPredictingDamage.Contains(hex.GetEnemy()))
             {
                 charactersPredictingDamage.Add(hex.GetEnemy());

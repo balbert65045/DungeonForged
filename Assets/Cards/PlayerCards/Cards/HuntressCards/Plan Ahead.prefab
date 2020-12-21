@@ -101,7 +101,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5a9c174617a13fc45824167b56cefe44, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9f7a91a71d2012d4191a1c4d1304041b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -884,6 +884,7 @@ MonoBehaviour:
   - {fileID: 1833800238016152}
   - {fileID: 1716788926786352}
   - {fileID: 1056230626047496}
+  CardRarity: 1
   price: 40
   EnergyText: {fileID: 114838696587397700}
   PrefabAssociatedWith: {fileID: 0}
@@ -892,6 +893,7 @@ MonoBehaviour:
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1365849520360158}
+  InTheHand: 0
 --- !u!1 &1446571287352454
 GameObject:
   m_ObjectHideFlags: 0
@@ -1221,8 +1223,8 @@ MonoBehaviour:
       thisAOEType: 0
       Targets: 0
       Damage: 4
+    thisDeBuff: 0
     Range: 0
-    Duration: 0
 --- !u!1 &1716788926786352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,15 +1472,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnhanceColor: {r: 0.06798414, g: 0.52205884, b: 0.007677343, a: 1}
   DehanceColor: {r: 0.6764706, g: 0.01492216, b: 0.01492216, a: 1}
-  MyActionType: 2
   AbilityType: {fileID: 114804308157610454}
   AbilityImage: {fileID: 114758388491130022}
   AbilityAmount: {fileID: 114588138315086418}
   RangeAbilityType: {fileID: 114480569333701152}
   RangeAbilityImage: {fileID: 114234671330304342}
   RangeAbilityAmount: {fileID: 114560111425222752}
-  DurationAbilityImage: {fileID: 114617287484752258}
-  DurationAbilityAmount: {fileID: 114811594899512226}
+  StatusImage: {fileID: 0}
+  StatusText: {fileID: 0}
   ActionLineBaseAmount: 0
   RangeAmountBaseAmount: 0
   actionIndex: 0

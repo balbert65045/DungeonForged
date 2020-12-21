@@ -85,14 +85,14 @@ public class NewHand : MonoBehaviour {
 
     public void PutCardInStaging(NewCard card)
     {
-        energyAmount.LoseEnergy(card.EnergyAmount);
+        energyAmount.LoseEnergy(card.CurrentEnergyAmount());
         FindObjectOfType<StagingArea>().PlaceCardOnNextAvailableSpot(card);
         ShiftHand();
     }
 
     public void UseCard(NewCard card)
     {
-        energyAmount.LoseEnergy(card.EnergyAmount);
+        energyAmount.LoseEnergy(card.CurrentEnergyAmount());
         FindObjectOfType<PlayerController>().UseUnstagedAction(card.cardAbility.Actions[0]);
         if (card.cardAbility.LostAbility)
         {
@@ -177,6 +177,7 @@ public class NewHand : MonoBehaviour {
         card.transform.SetParent(Positions[index].transform);
         card.InTheHand = true;
         card.Returning = true;
+        card.ShowFront();
         card.transform.localRotation = Quaternion.identity;
         card.SetCurrentParent(Positions[index].transform);
         card.transform.localScale = new Vector3(1, 1, 1);
