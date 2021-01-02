@@ -12,7 +12,7 @@ public class StoreController : MonoBehaviour
     {
         NewGroupStorage groupManager = FindObjectOfType<NewGroupStorage>();
         CardDatabase cardDatabase = FindObjectOfType<CardDatabase>();
-        GameObject[] newCards1 = cardDatabase.Select3RandomCards(groupManager.MyGroupCardStorage[0].characterType);
+        GameObject[] newCards1 = cardDatabase.Select6RandomCards(groupManager.MyGroupCardStorage[0].characterType);
         string character1 = groupManager.MyGroupCardStorage[0].CharacterName;
         PlaceCards(newCards1, Character1CardsPositions, character1);
         //GameObject[] newCards2 = cardDatabase.Select3RandomCards(groupManager.MyGroupCardStorage[1].characterType);
@@ -22,7 +22,7 @@ public class StoreController : MonoBehaviour
 
     void PlaceCards(GameObject[] cards, GameObject[] positions, string name)
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 6; i++)
         {
             GameObject Card = Instantiate(cards[i], positions[i].transform);
             Card.GetComponent<NewCard>().PrefabAssociatedWith = cards[i];

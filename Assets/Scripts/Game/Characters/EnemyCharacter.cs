@@ -65,8 +65,8 @@ public class EnemyCharacter : Character {
     {
         GetGroup().UnLinkCharacterToGroup(this);
         FindObjectOfType<ObjectiveArea>().EnemyDied();
-        HexOn.goldHolding += GoldHolding;
-        HexOn.ShowMoney();
+        //HexOn.goldHolding += GoldHolding;
+        //HexOn.ShowMoney();
         if (FindObjectOfType<TurnOrder>().GetCurrentCharacter() == this) { finishedActions(); }
         base.Die();
     }

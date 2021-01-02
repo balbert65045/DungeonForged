@@ -8,6 +8,7 @@ public class BurnPile : CardPile
     {
         CardsCurrentlyInPile.Add(card);
         card.transform.SetParent(this.transform);
+        card.InTheHand = false;
         card.Used = true;
         CardPileNumber.text = CardsCurrentlyInPile.Count.ToString();
     }

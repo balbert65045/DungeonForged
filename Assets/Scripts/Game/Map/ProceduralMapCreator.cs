@@ -128,9 +128,9 @@ public class ProceduralMapCreator : MonoBehaviour {
         List<Hex> StartHexes = CreateStartRoom();
         //CollectAndSortEdges(StartHexes, new List<Hex>(), "A");
         if (StartHexes.Count == 0) { return; }
-        CreateNextRoom();
-        HideAllDoorsNotUsed();
-        HideRooms();
+        //CreateNextRoom();
+        //HideAllDoorsNotUsed();
+        //HideRooms();
         //PopulateRooms();
         FindObjectOfType<ObjectiveArea>().SetTotalEnemies(totalEnemiesOut);
         //Create exit
@@ -335,7 +335,7 @@ public class ProceduralMapCreator : MonoBehaviour {
             Node SpawnNode = null;
             if (index == 0)
             {
-                SpawnNode = hexMap.GetNode(24, 23);
+                SpawnNode = hexMap.GetNode(21, 23);
             }
             else if (index == 1)
             {
@@ -405,11 +405,12 @@ public class ProceduralMapCreator : MonoBehaviour {
             case RoomSide.Top:
                 Room.transform.position = (StartNode.transform.position + (Vector3.back * .735f * height) + (Vector3.right * widthOffset * 1.605f) + Vector3.down *.1f) - DoorOffset;
                 break;
+                //This is the start room
             case RoomSide.Right:
-                Room.transform.position = (StartNode.transform.position + (Vector3.left * .78f * width) + (Vector3.back * heightOffset * 1.47f) + Vector3.down * .1f) - DoorOffset;
+                Room.transform.position = (StartNode.transform.position + (Vector3.left * .66f * width) + (Vector3.back * -height*.35f) + Vector3.down * .1f) - DoorOffset;
                 break;
             case RoomSide.Left:
-                Room.transform.position = (StartNode.transform.position + (Vector3.right * .73f * width) + (Vector3.back * heightOffset * 1.47f) + Vector3.down * .1f) - DoorOffset;
+                Room.transform.position = (StartNode.transform.position + (Vector3.right * 1f * width) + (Vector3.back * heightOffset * 1.47f) + Vector3.down * .1f) - DoorOffset;
                 break;
             case RoomSide.Down:
                 Room.transform.position = (StartNode.transform.position + (Vector3.forward * .735f * height) + (Vector3.right * widthOffset * 1.605f) + Vector3.down * .1f) - DoorOffset;
@@ -463,7 +464,7 @@ public class ProceduralMapCreator : MonoBehaviour {
     {
         if (CurrentChallengeRating <= 0) { return; }
         List<Hex> NonEdgeHexes = GetNonEdgeHexes(hexes);
-        int EnemiesToSpawn = 2;
+        int EnemiesToSpawn = 4;
         int RoomChallengeRating = 0;
         for (int i= 0; i< EnemiesToSpawn; i++)
         {

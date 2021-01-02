@@ -20,6 +20,7 @@ public class DiscardPile : CardPileActioner
         card.SetPlayable();
         card.transform.SetParent(this.transform);
         card.Used = true;
+        card.InTheHand = false;
         SetText();
     }
 }

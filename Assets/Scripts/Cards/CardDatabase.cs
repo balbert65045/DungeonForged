@@ -17,6 +17,35 @@ public class CardDatabase : MonoBehaviour {
         DontDestroyOnLoad(this.gameObject);
     }
 
+    public GameObject[] Select6RandomCards(PlayerCharacterType characterType)
+    {
+        List<GameObject> CardsList = new List<GameObject>();
+        switch (characterType)
+        {
+            case PlayerCharacterType.Knight:
+                CardsList = new List<GameObject>(KnightCards);
+                break;
+            case PlayerCharacterType.Barbarian:
+                CardsList = new List<GameObject>(BarbarianCards);
+                break;
+            case PlayerCharacterType.Crossbow:
+                CardsList = new List<GameObject>(HuntressCards);
+                break;
+            case PlayerCharacterType.Mage:
+                CardsList = new List<GameObject>(MageCards);
+                break;
+        }
+        GameObject Card1 = SelectRandomCard(CardsList);
+        GameObject Card2 = SelectRandomCard(CardsList);
+        GameObject Card3 = SelectRandomCard(CardsList);
+        GameObject Card4 = SelectRandomCard(CardsList);
+        GameObject Card5 = SelectRandomCard(CardsList);
+        GameObject Card6 = SelectRandomCard(CardsList);
+
+        GameObject[] cards = new GameObject[6] { Card1, Card2, Card3, Card4, Card5, Card6 };
+        return cards;
+    }
+
     public GameObject[] Select3RandomCards(PlayerCharacterType characterType)
     {
         List<GameObject> CardsList = new List<GameObject>();

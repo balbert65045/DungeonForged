@@ -48,13 +48,11 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
 
     public void Flip()
     {
-        Debug.Log("Flipping");
         StartCoroutine("FlipCard");
     }
 
     public void FlipBack()
     {
-        Debug.Log("Flipping back");
         FrontSide.SetActive(false);
         BackSide.SetActive(true);
         BackSide.transform.localRotation = Quaternion.identity;

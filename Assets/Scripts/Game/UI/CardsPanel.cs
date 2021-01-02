@@ -13,6 +13,7 @@ public class CardsPanel : MonoBehaviour {
         NewCard[] newCards = ContentPanel.GetComponentsInChildren<NewCard>();
         foreach(NewCard newCard in newCards)
         {
+            Debug.Log("hiding new card");
             newCard.transform.SetParent(OldParent.transform);
             newCard.transform.localPosition = Vector3.zero;
             newCard.gameObject.SetActive(false);
@@ -47,6 +48,7 @@ public class CardsPanel : MonoBehaviour {
         float x = ((column * 180f) + 110);
         float y = (-120f - (row * 230f));
 
+        card.ShowFront();
         card.transform.SetParent(ContentPanel.transform);
         card.transform.rotation = Quaternion.identity;
         card.transform.localPosition = new Vector3(x, y, 0);
