@@ -351,6 +351,20 @@ public class HexVisualizer : MonoBehaviour {
 
         PlayerCharacter myCharacter = playerController.SelectPlayerCharacter;
         if (myCharacter == null) { return; }
+        if (playerController.enemySelected)
+        {
+            if (playerController.enemySelected.previewMoveHexes.Contains(hex.HexNode))
+            {
+                if (playerController.enemySelected.HexOn == hex) { playerController.enemySelected.ShowAttackOnHexOn(); }
+                else { playerController.enemySelected.VisualizeAttack(hex); }
+                return;
+            }
+            else
+            {
+                playerController.enemySelected.ShowAttackOnHexOn();
+                return;
+            }
+        }
 
         //if (!myCharacter.InCombat() && combatcontroller.PickingCards())
         //{

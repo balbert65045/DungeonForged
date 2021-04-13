@@ -74,8 +74,8 @@ public class PlayerCharacter : Character
     public override void ShowMoveDistance(int moveRange)
     {
         CurrentMoveRange = moveRange;
-        if (myDeBuffs.Contains(DeBuff.Immobelized)) { CurrentMoveRange = 0; }
-        else if (myDeBuffs.Contains(DeBuff.Slow)) { CurrentMoveRange--; }
+        if (MyDeBuffsHas(DeBuffType.Immobelized)) { CurrentMoveRange = 0; }
+        else if (MyDeBuffsHas(DeBuffType.Slow)) { CurrentMoveRange--; }
         List<Node> nodesInDistance = aStar.Diskatas(HexOn.HexNode, CurrentMoveRange, myCT);
         NodesInWalkingDistance.Clear();
         List<Node> nodesInArea = new List<Node>();
@@ -99,6 +99,7 @@ public class PlayerCharacter : Character
     {
         playerController = FindObjectOfType<PlayerController>();
         myHealthBar = GetComponentInChildren<HealthBar>();
+        if (FindObjectOfType<PlayersDecks>() == null) { return; }
         if (FindObjectOfType<NewGroupStorage>().GetCurrentHealth(CharacterName) == 0)
         {
             Destroy(this.gameObject);
@@ -108,6 +109,27 @@ public class PlayerCharacter : Character
         if (myHealthBar != null)
         {
             myHealthBar.CreateHealthBar(health, maxHealth);
+            if (hasArtifact(ArtifactType.ShieldStart))
+            {
+                myHealthBar.SetShield(10);
+            }
+            if (hasArtifact(ArtifactType.AttackStart))
+            {
+                int amount = 5;
+                DeBuff newDeBuff = new DeBuff(DeBuffType.IncreaseAttack, amount);
+                if (!MyDeBuffsHas(DeBuffType.IncreaseAttack))
+                {
+                    myDeBuffs.Add(newDeBuff);
+                    myHealthBar.ShowDeBuff(newDeBuff);
+                }
+                else
+                {
+                    DeBuff myDeBuff = FindDeBuff(DeBuffType.IncreaseAttack);
+                    int newAmount = myDeBuff.Amount + amount;
+                    SetDeBuffAmount(newAmount, myDeBuff);
+                    myHealthBar.SetDeBuffAmount(myDeBuff.thisDeBuffType, newAmount);
+                }
+            }
         }
         GetComponent<CharacterAnimationController>().SwitchCombatState(true);
         FindObjectOfType<TurnOrder>().AddCharacter(this);
@@ -140,6 +162,11 @@ public class PlayerCharacter : Character
 
     public void Selected()
     {
+    }
+
+    public void PickUpGold(int amount)
+    {
+        GetComponent<CharacterAnimationController>().DoPickup(amount);
     }
 
     public override void FinishedMoving(Hex hex, bool fight = false, Hex hexMovingFrom = null)
@@ -225,6 +252,12 @@ public class PlayerCharacter : Character
     }
 
     float XpGaining = 0;
+
+    public void UpdateHealth(int amount)
+    {
+        FindObjectOfType<CCSSelectionButton>().SetCurrentHp(amount);
+    }
+
     public void GainXP(float XP)
     {
         if (XpGaining == 0)

@@ -39,7 +39,16 @@ public class LevelManager : MonoBehaviour {
 
     public void LoadNextLevelFromIndex()
     {
-        SceneManager.LoadSceneAsync("Level"+ FindObjectOfType<NewGroupStorage>().LevelIndex.ToString());
+        if (FindObjectOfType<NewGroupStorage>().BossNext) { SceneManager.LoadSceneAsync("Boss"); }
+        else
+        {
+            int randIndex = Random.Range(0, 3);
+            string Letter = "A";
+            if (randIndex == 1) { Letter = "B"; }
+            else if (randIndex == 2) { Letter = "C"; }
+            int level = FindObjectOfType<NewGroupStorage>().LevelIndex;
+            SceneManager.LoadSceneAsync("New Level " + level.ToString() + " " + Letter);
+        }
     }
 
     public void LoadLevelWithDelay(string levelName, float timeDelay)

@@ -48,7 +48,7 @@ public class CardsPanel : MonoBehaviour {
         float x = ((column * 180f) + 110);
         float y = (-120f - (row * 230f));
 
-        card.ShowFront();
+     //   card.ShowFront();
         card.transform.SetParent(ContentPanel.transform);
         card.transform.rotation = Quaternion.identity;
         card.transform.localPosition = new Vector3(x, y, 0);

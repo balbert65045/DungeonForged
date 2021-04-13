@@ -48,7 +48,18 @@ public class NewHand : MonoBehaviour {
     public void DrawNewHand()
     {
         energyAmount.RefreshEnergy();
-        DrawCards(5);
+
+        DrawCards(amountToDraw());
+    }
+
+    int amountToDraw()
+    {
+        int amount = 5;
+        if(FindObjectOfType<PlayerController>().SelectPlayerCharacter.hasArtifact(ArtifactType.DrawStart) && FindObjectOfType<TurnOrder>().TurnNumber == 0)
+        {
+            amount += 2;
+        }
+        return amount;
     }
 
     public void DrawCards(int amount)
@@ -85,14 +96,14 @@ public class NewHand : MonoBehaviour {
 
     public void PutCardInStaging(NewCard card)
     {
-        energyAmount.LoseEnergy(card.CurrentEnergyAmount());
+        energyAmount.LoseEnergy(card.EnergyAmount);
         FindObjectOfType<StagingArea>().PlaceCardOnNextAvailableSpot(card);
         ShiftHand();
     }
 
     public void UseCard(NewCard card)
     {
-        energyAmount.LoseEnergy(card.CurrentEnergyAmount());
+        energyAmount.LoseEnergy(card.EnergyAmount);
         FindObjectOfType<PlayerController>().UseUnstagedAction(card.cardAbility.Actions[0]);
         if (card.cardAbility.LostAbility)
         {
@@ -177,7 +188,7 @@ public class NewHand : MonoBehaviour {
         card.transform.SetParent(Positions[index].transform);
         card.InTheHand = true;
         card.Returning = true;
-        card.ShowFront();
+      //  card.ShowFront();
         card.transform.localRotation = Quaternion.identity;
         card.SetCurrentParent(Positions[index].transform);
         card.transform.localScale = new Vector3(1, 1, 1);

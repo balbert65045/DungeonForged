@@ -8,12 +8,25 @@ public struct ActionSet
     public List<Action> Actions;
 }
 
+[System.Serializable]
+public struct SpawnInterval
+{
+    public int amount;
+    public int turn;
+}
+
 public class EnemyGroup : MonoBehaviour {
 
     public Sprite CharacterIcon;
     public string CharacterNameLinkedTo;
+    public GameObject EnemyPrefab;
+    public List<SpawnInterval> Spawns = new List<SpawnInterval>();
 
+    public int MaxIdealRange = 2;
+    public int MinIdealRange = 1;
+    public List<ActionSet> EngagingActions = new List<ActionSet>();
     public List<ActionSet> AvailableActions = new List<ActionSet>();
+    public List<ActionSet> DisengagingActions = new List<ActionSet>();
     public ActionSet CurrentActionSet;
 
     public List<EnemyCharacter> linkedCharacters = new List<EnemyCharacter>();
@@ -23,6 +36,51 @@ public class EnemyGroup : MonoBehaviour {
     public int RandomCharacterIndex = 0;
 
     MyCameraController myCamera;
+
+    public int TotalSpawning()
+    {
+        int total = 0;
+        foreach (SpawnInterval spawn in Spawns)
+        {
+            total += spawn.amount;
+        }
+        return total;
+    }
+    public void SpawnForTurn(GameObject spawner, int turnNumber, List<Hex> SpawnHexes)
+    {
+        IEnumerator SpawnEnemy = Spawn(spawner, turnNumber, SpawnHexes);
+        StartCoroutine(SpawnEnemy);
+    }
+    IEnumerator Spawn(GameObject spawner, int turnNumber, List<Hex> SpawnHexes)
+    {
+        foreach (SpawnInterval spawn in Spawns)
+        {
+            if (spawn.turn == turnNumber)
+            {
+                for (int i = 0; i < spawn.amount; i++)
+                {
+                    int total = SpawnHexes.Count;
+                    for (int j = 0; i < total; i++)
+                    {
+                        int randIndex = Random.Range(0, SpawnHexes.Count);
+                        Hex hex = SpawnHexes[randIndex];
+                        if (hex.EntityHolding == null)
+                        {
+                            hex.AddSpawner(spawner, EnemyPrefab);
+                            myCamera.SetTarget(hex.transform);
+                            yield return new WaitForSeconds(.7f);
+                            break;
+                        }
+                        else
+                        {
+                            SpawnHexes.Remove(hex);
+                        }
+                    }
+                }
+            }
+        }
+        FindObjectOfType<EnemyController>().Spawn();
+    }
 
     // Use this for initialization
     private void Awake()
@@ -40,10 +98,31 @@ public class EnemyGroup : MonoBehaviour {
         }
     }
 
-    public ActionSet GetRandomActionSet()
+    public ActionSet GetRandomEngageActionSet()
     {
-        int randomNum = Random.Range(0, AvailableActions.Count);
-        return AvailableActions[randomNum];
+        int randomNum = Random.Range(0, EngagingActions.Count);
+        return EngagingActions[randomNum];
+    }
+
+    public ActionSet GetRandomDisengageActionSet()
+    {
+        int randomNum = Random.Range(0, DisengagingActions.Count);
+        return DisengagingActions[randomNum];
+    }
+
+    public ActionSet GetRandomActionSet(ActionSet previousSet)
+    {
+        List<ActionSet> sets = new List<ActionSet>();
+        foreach(ActionSet set in AvailableActions)
+        {
+            sets.Add(set);
+        }
+        if (sets.Contains(previousSet))
+        {
+            sets.Remove(previousSet);
+        }
+        int randomNum = Random.Range(0, sets.Count);
+        return sets[randomNum];
     }
 
     void Start()

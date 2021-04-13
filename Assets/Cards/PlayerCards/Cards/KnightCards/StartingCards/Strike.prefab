@@ -645,7 +645,9 @@ MonoBehaviour:
       thisAOEType: 0
       Targets: 0
       Damage: 6
-    thisDeBuff: 0
+    thisDeBuff:
+      thisDeBuffType: 0
+      Amount: 0
     Range: 1
 --- !u!1 &1377547490320386
 GameObject:
@@ -801,7 +803,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Strike
+  m_Text: 'Strike
+
+'
 --- !u!114 &2320771871917934606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1449,19 +1453,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NameText: {fileID: 0}
   AbilityLinePositions: []
+  Exaustion: 0
   CardRarity: 0
   price: 0
   EnergyText: {fileID: 0}
-  PrefabAssociatedWith: {fileID: 0}
+  PrefabAssociatedWith: {fileID: 1848688880243040}
+  UpgradePrefab: {fileID: 9132529222496728330, guid: 9f02e7f6ff8aeb94f984fc5e48c9204f,
+    type: 3}
   EnergyAmount: 1
   cardAbility: {fileID: 114461174265268588}
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1027092758028078}
-  FrontFacing: 1
-  FrontSide: {fileID: 8877596054679371900}
-  BackSide: {fileID: 6271127251086419108}
-  flipping: 0
   InTheHand: 0
 --- !u!1 &1896630873532808
 GameObject:
@@ -2159,7 +2162,9 @@ MonoBehaviour:
       thisAOEType: 0
       Targets: 0
       Damage: 0
-    thisDeBuff: 0
+    thisDeBuff:
+      thisDeBuffType: 0
+      Amount: 0
     Range: 1
 --- !u!1 &4828344364985527320
 GameObject:

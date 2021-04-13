@@ -10,7 +10,11 @@ public enum Location
     Shop = 2,
     Rest = 3,
     Chest = 4,
-    Start = 5
+    Start = 5,
+    Furnace = 6,
+    Boss = 7,
+    Anvil = 8,
+    Artifact = 9
 }
 public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
 {
@@ -21,10 +25,14 @@ public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
     public Location myLocation;
 
     public Sprite Enemy;
+    public Sprite Boss;
     public Sprite Shop;
     public Sprite Rest;
     public Sprite Chest;
     public Sprite StartSprite;
+    public Sprite Furnace;
+    public Sprite Anvil;
+    public Sprite Artifact;
 
     public Color UnusedColor;
 
@@ -102,6 +110,13 @@ public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
         LocationSprite = GetComponent<Image>();
     }
 
+    public void SetAsArtifactArea()
+    {
+        LocationSprite = GetComponent<Image>();
+        LocationSprite.sprite = Artifact;
+        myLocation = Location.Artifact;
+    }
+
     public void SetAsRestArea()
     {
         LocationSprite = GetComponent<Image>();
@@ -114,6 +129,13 @@ public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
         LocationSprite = GetComponent<Image>();
         LocationSprite.sprite = Enemy;
         myLocation = Location.Enemy;
+    }
+
+    public void SetAsBoss()
+    {
+        LocationSprite = GetComponent<Image>();
+        LocationSprite.sprite = Boss;
+        myLocation = Location.Boss;
     }
 
     public void SetAsShop()
@@ -130,6 +152,20 @@ public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
         myLocation = Location.Chest;
     }
 
+    public void SetAsAnvil()
+    {
+        LocationSprite = GetComponent<Image>();
+        LocationSprite.sprite = Anvil;
+        myLocation = Location.Anvil;
+    }
+
+    public void SetAsFurnace()
+    {
+        LocationSprite = GetComponent<Image>();
+        LocationSprite.sprite = Furnace;
+        myLocation = Location.Furnace;
+    }
+
     public void SetAsStart()
     {
         LocationSprite = GetComponent<Image>();
@@ -142,7 +178,11 @@ public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
         switch (myLocation)
         {
             case Location.Enemy:
-                FindObjectOfType<NewGroupStorage>().IncrimentLevel();
+                FindObjectOfType<NewGroupStorage>().IncrimentChallengeRating();
+                FindObjectOfType<LevelManager>().LoadLevelWithLoading();
+                break;
+            case Location.Boss:
+                FindObjectOfType<NewGroupStorage>().SetNextLevelAsBoss();
                 FindObjectOfType<LevelManager>().LoadLevelWithLoading();
                 break;
             case Location.Shop:
@@ -153,6 +193,15 @@ public class LocationArea : PathPart, IPointerEnterHandler, IPointerDownHandler
                 break;
             case Location.Chest:
                 FindObjectOfType<LevelManager>().LoadLevel("ChestRoom");
+                break;
+            case Location.Furnace:
+                FindObjectOfType<LevelManager>().LoadLevel("Furnace");
+                break;
+            case Location.Anvil:
+                FindObjectOfType<LevelManager>().LoadLevel("Anvil");
+                break;
+            case Location.Artifact:
+                FindObjectOfType<LevelManager>().LoadLevel("Artifact");
                 break;
         }
     }

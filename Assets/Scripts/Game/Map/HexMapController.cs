@@ -375,6 +375,67 @@ public class HexMapController : MonoBehaviour {
         return AdjacentNodesAvailable;
     }
 
+    public Vector2 GetBestDirection(Node start, Node target, AOEType type)
+    {
+        //int closest = 1000;
+        Vector2[] directions = GetDirections();
+        Vector2 bestDirection = directions[0];
+        int lowestAvg = 10000;
+        foreach (Vector2 direction in directions)
+        {
+            int directionAvg = 0;
+            List<Node> nodes = GetAOE(type, start, GetNodeInDirection(direction, start));
+            foreach(Node node in nodes)
+            {
+                directionAvg += GetDistance(node, target);
+            }
+            directionAvg = directionAvg / nodes.Count;
+            if (directionAvg < lowestAvg)
+            {
+                bestDirection = direction;
+                lowestAvg = directionAvg;
+            }
+        }
+
+        //List<Vector2> availableDirections = new List<Vector2>();
+        //foreach(Vector2 direction in directions) { availableDirections.Add(direction); }
+        //Vector2 bestDirection = Vector2.zero;
+        //List<Node> LastNodeInDirection = new List<Node>();
+        //foreach(Vector2 direction in availableDirections) { LastNodeInDirection.Add(start); }
+        //int i = 0;
+        //int amountTimesTied = 0;
+        //while(availableDirections.Count > 1)
+        //{
+        //    Node node = GetNodeInDirection(availableDirections[i], LastNodeInDirection[i]);
+        //    LastNodeInDirection[i] = node;
+        //    int distance = GetDistance(node, target);
+        //    if (distance < closest)
+        //    {
+        //        closest = distance;
+        //        bestDirection = availableDirections[i];
+        //    }
+        //    else if (distance == closest)
+        //    {
+        //        amountTimesTied++;
+        //        if (amountTimesTied > 2) { break; }
+        //    }
+        //    else
+        //    {
+        //        availableDirections.RemoveAt(i);
+        //        LastNodeInDirection.RemoveAt(i);
+        //    }
+        //    i++;
+        //    if (i >= availableDirections.Count) { i = 0; }
+        //}
+        return bestDirection;
+    }
+
+    public List<Node> GetEnemyAOE(AOEType aoeType, Node OriginNode, Node targetNode)
+    {
+        Node nodeInBestDirection = GetNodeInDirection(GetBestDirection(OriginNode, targetNode, aoeType), OriginNode);
+        return GetAOE(aoeType, OriginNode, nodeInBestDirection);
+    }
+
     public List<Node> GetAOE(AOEType aoeType, Node OriginNode, Node StartNode)
     {
         List<Node> NodesinAOE = new List<Node>();
@@ -436,8 +497,29 @@ public class HexMapController : MonoBehaviour {
             case AOEType.Triangle:
 
                 break;
+            case AOEType.Wave:
+                Vector2 waveDirection = FindDirection(OriginNode, StartNode);
+                Node closeNode = GetNextClockwizeNode(OriginNode, StartNode, waveDirection);
+                Vector2 line1Direction = FindDirection(OriginNode, StartNode);
+                Node farNode1 = GetNextNodeInDirection(StartNode, line1Direction);
+                Node NodeFarMiddleNode = GetNextClockwizeNode(StartNode, farNode1, waveDirection);
+                Vector2 line2Direction = FindDirection(OriginNode, closeNode);
+                Node FarNode2 = GetNextNodeInDirection(closeNode, line2Direction);
+                if (IsPossibleNode(closeNode)){ NodesinAOE.Add(closeNode); }
+                if (IsPossibleNode(farNode1)){ NodesinAOE.Add(farNode1); }
+                if (IsPossibleNode(NodeFarMiddleNode)) { NodesinAOE.Add(NodeFarMiddleNode); }
+                if (IsPossibleNode(FarNode2)) { NodesinAOE.Add(FarNode2); }
+                NodesinAOE.Add(StartNode);
+                break;
         }
         return NodesinAOE;
+    }
+
+    bool IsPossibleNode(Node node)
+    {
+        if (node.edge) { return false; }
+        if (!node.Shown) { return false; }
+        return true;
     }
 
     bool IsAPossibleConnectedNode(Node node1, Node node2)
@@ -506,6 +588,20 @@ public class HexMapController : MonoBehaviour {
         return nextNode;
     }
 
+    public Node GetNextClockwizeNode(Node StartNode, Node EndNode, Vector2 DirectionOfEndNode)
+    {
+        int index = GetDirectionIndex(DirectionOfEndNode);
+        if (index == -1)
+        {
+            Debug.LogError("Direction found is incompatable");
+            return null;
+        }
+        index = index == 0 ? 5 : index - 1;
+        Vector2 nextDirection = GetDirections()[index];
+        Node nextNode = GetNodeInDirection(nextDirection, StartNode);
+        return nextNode;
+    }
+
     public Node GetNextCounterClockwizeNode(Node StartNode, Node EndNode, Vector2 DirectionOfEndNode)
     {
         int index = GetDirectionIndex(DirectionOfEndNode);
@@ -519,7 +615,7 @@ public class HexMapController : MonoBehaviour {
         return nextNode;
     }
 
-    Node GetNodeInDirection(Vector2 direction, Node startNode)
+    public Node GetNodeInDirection(Vector2 direction, Node startNode)
     {
         if (startNode == null) { return null; }
         return GetNode(startNode.q + (int)direction.x, startNode.r + (int)direction.y);

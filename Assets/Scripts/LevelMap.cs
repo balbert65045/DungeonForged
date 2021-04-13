@@ -70,7 +70,7 @@ public class LevelMap : MonoBehaviour {
             }
             else
             {
-                FindObjectOfType<NewGroupStorage>().IncrimentLevel();
+                FindObjectOfType<NewGroupStorage>().IncrimentChallengeRating();
                 FindObjectOfType<LevelManager>().LoadLevelWithLoading();
             }
         }

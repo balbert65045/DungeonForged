@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour {
 
+    public Sprite characterIcon;
+
     public Hex HexOn;
+
+    public bool IsPlayer() { return GetComponent<PlayerCharacter>() != null; }
+    public bool IsEnemy() { return GetComponent<EnemyCharacter>() != null; }
+
+    public bool IsEnemySpawner() { return GetComponent<EnemySpawner>() != null; }
 
     public void StartOnHex(Hex hex)
     {

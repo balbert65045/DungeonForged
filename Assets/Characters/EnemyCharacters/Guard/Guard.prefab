@@ -2548,8 +2548,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f47082266ca7ef43a30894abe104ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexOn: {fileID: 0}
   characterIcon: {fileID: 21300000, guid: 459f8a254dde28b44874341eb7e2284b, type: 3}
+  HexOn: {fileID: 0}
   myCT: 1
   MaxMoveDistance: 15
   CurrentMoveDistance: 0
@@ -2562,13 +2562,19 @@ MonoBehaviour:
   NodesInWalkingDistance: []
   NodesInActionRange: []
   CombatNodes: []
-  myDeBuffs: 
-  deBuffApplied: 0
+  myDeBuffs: []
+  InCreaseAmount: 0
+  deBuffApplied:
+    thisDeBuffType: 0
+    Amount: 0
+  PreviewCharacter: {fileID: 5010606163253042267, guid: 34204420e528c2c4eb9e7e16119b4a9d,
+    type: 3}
   EnemyChallengeRating: 1
   XpOnDeath: 10
   GoldHolding: 5
   CharacterName: Guard
   enemySprite: {fileID: 21300000, guid: 33cc2533abe2e59459afbc72636bcfaf, type: 3}
+  previewMoveHexes: []
 --- !u!114 &5166828192322046282
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour {
     public bool CardsPlayable = true;
     public List<Action> CurrentActions;
     public Action CurrentAction;
+
+
     public void ShowStagedAction(List<Action> actions)
     {
         CurrentActions = actions;
@@ -37,6 +39,14 @@ public class PlayerController : MonoBehaviour {
         }
 
         CurrentAction = actions[0];
+        ShowArea();
+        endActionButton.gameObject.SetActive(true);
+        SelectPlayerCharacter.ShowActionOnHealthBar(CurrentActions);
+    }
+
+    void ShowArea()
+    {
+        if (CurrentActions.Count == 0) { return; }
         if (CurrentAction.thisActionType == ActionType.Movement)
         {
             SelectPlayerCharacter.ShowMoveDistance(CurrentAction.Range);
@@ -45,8 +55,6 @@ public class PlayerController : MonoBehaviour {
         {
             SelectPlayerCharacter.ShowAction(CurrentAction.Range, CurrentAction.thisActionType);
         }
-        endActionButton.gameObject.SetActive(true);
-        SelectPlayerCharacter.ShowActionOnHealthBar(CurrentActions);
     }
 
     public void BeginGame()
@@ -64,6 +72,7 @@ public class PlayerController : MonoBehaviour {
         actionButton = FindObjectOfType<PlayerActionButton>();
         turnOrder = FindObjectOfType<TurnOrder>();
         endActionButton.gameObject.SetActive(false);
+        FindObjectOfType<PlayerTopBar>().HideBar();
         //..
         //StartCoroutine("StartGame");
         //actionButton.gameObject.SetActive(false);
@@ -75,6 +84,7 @@ public class PlayerController : MonoBehaviour {
         //myCharacters.Clear();
         //myCharacters.AddRange(FindObjectsOfType<PlayerCharacter>());
         //FindObjectOfType<PlayerCurrency>().SetGoldValue(GoldHolding);
+        FindObjectOfType<EnemyController>().StartFirstActions();
         AllowNewTurns();
     }
 
@@ -82,7 +92,55 @@ public class PlayerController : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(1))
         {
-            UseAction(CurrentAction);
+            if (enemySelected == null)
+            {
+                UseAction(CurrentAction);
+            }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!usingAction) 
+            {
+                SelectEnemy();
+            }
+        }
+    }
+
+    bool OverCard()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
+    }
+
+    public EnemyCharacter enemySelected = null;
+    void SelectEnemy()
+    {
+        if (enemySelected != null) { enemySelected.RemoveAreas(); }
+        if (OverCard()) {
+            enemySelected = null;
+            return; 
+        }
+        Transform HexHit = raycaster.HexRaycast();
+        Hex hexSelected = null;
+        if (HexHit != null && HexHit.GetComponent<Hex>()) { hexSelected = HexHit.GetComponent<Hex>(); }
+        if (hexSelected == null) {
+            enemySelected = null;
+            ShowArea();
+            return; 
+        }
+        if (!hexSelected.HasEnemy()) {
+            enemySelected = null;
+            ShowArea();
+            return;
+        }
+        else
+        {
+            RemoveArea();
+            enemySelected = hexSelected.GetEnemy();
+            enemySelected.Selected();
         }
     }
 
@@ -141,7 +199,8 @@ public class PlayerController : MonoBehaviour {
         else
         {
             List<Character> charactersActingOn = CheckForPositiveAction(action, SelectPlayerCharacter, hexSelected);
-            if (charactersActingOn.Count != 0)
+            if (charactersActingOn == null) { return; }
+            else if (charactersActingOn.Count != 0)
             {
                 usingAction = true;
                 PerformAction(action, charactersActingOn);
@@ -213,7 +272,10 @@ public class PlayerController : MonoBehaviour {
     void PerformAction(Action action, List<Character> characters)
     {
         RemoveArea();
-        if (action.thisActionType == ActionType.Attack) { SelectPlayerCharacter.Attack(action.thisAOE.Damage, action.thisDeBuff, characters.ToArray()); }
+        if (action.thisActionType == ActionType.Attack) {
+            bool ranged = action.Range > 1;
+            SelectPlayerCharacter.Attack(action.thisAOE.Damage, action.thisDeBuff, characters.ToArray(), ranged); 
+        }
         else { SelectPlayerCharacter.GetComponent<CharacterAnimationController>().DoBuff(action.thisActionType, action.thisAOE.Damage, characters); }
     }
 
@@ -311,7 +373,19 @@ public class PlayerController : MonoBehaviour {
         SelectPlayerCharacter.GetMyNewHand().DrawNewHand();
         SelectPlayerCharacter.BeginTurn();
         yield return new WaitForSeconds(.8f);
-        if (SelectPlayerCharacter.myDeBuffs.Contains(DeBuff.Stun)) { EndPlayerTurn(); }
+        if (turnOrder.TurnNumber == 0)
+        {
+            if (SelectPlayerCharacter.hasArtifact(ArtifactType.MoveStart))
+            {
+                FindObjectOfType<NewHand>().HideHand();
+                CurrentActions.Add(new Action(ActionType.Movement, new AOE(AOEType.SingleTarget, 0, 0), 2, new DeBuff(DeBuffType.None, 0)));
+                CurrentAction = CurrentActions[0];
+                SelectPlayerCharacter.ShowMoveDistance(CurrentAction.Range);
+                SelectPlayerCharacter.ShowActionOnHealthBar(CurrentActions);
+                endActionButton.gameObject.SetActive(true);
+            }
+        }
+        if (SelectPlayerCharacter.MyDeBuffsHas(DeBuffType.Stun)) { EndPlayerTurn(); }
         else { AllowEndTurn(); }
     }
 
@@ -384,15 +458,97 @@ public class PlayerController : MonoBehaviour {
         FindObjectOfType<NewHand>().ShowHand(); 
         FindObjectOfType<StagingArea>().DiscardUsedCards();
         FindObjectOfType<StagingArea>().ClearStagedAction();
+        CurrentAction = new Action(ActionType.None, new AOE(AOEType.SingleTarget, 0, 0), 0, new DeBuff(DeBuffType.None, 0));
         AllowEndTurn();
         UnHighlightHexes();
+    }
+
+    void AddMovement(PlayerCharacter character)
+    {
+        int amount = 1;
+        if (character.hasArtifact(ArtifactType.HexMoveIncrease)) {
+            amount = 2;
+        }
+        CurrentActions.Add(new Action(ActionType.Movement, new AOE(AOEType.SingleTarget, 0, 0), amount, new DeBuff(DeBuffType.None, 0)));
+    }
+
+    void AddShield(PlayerCharacter character)
+    {
+        int amount = 3;
+        if (character.hasArtifact(ArtifactType.HexShieldIncrease))
+        {
+            amount = 6;
+        }
+        List<Character> charactersShielding = new List<Character>();
+        charactersShielding.Add(character);
+        RemoveActionUsed();
+        hexVisualizer.HexChange();
+        PerformAction(new Action(ActionType.Shield, new AOE(AOEType.SingleTarget, 1, amount), amount, new DeBuff(DeBuffType.None, 0)), charactersShielding);
+    }
+
+    void AddDraw(PlayerCharacter character)
+    {
+        int amountDrawn = 1;
+        if (character.hasArtifact(ArtifactType.HexDrawIncrease))
+        {
+            amountDrawn = 2;
+        }
+        RemoveActionUsed();
+        hexVisualizer.HexChange();
+        UseImmediateAction(new Action(ActionType.DrawCard, new AOE(AOEType.SingleTarget, 1, amountDrawn), amountDrawn, new DeBuff(DeBuffType.None, 0)));
+    }
+
+    public void AddModifier(ModifierTypes modifier, PlayerCharacter character)
+    {
+        switch (modifier)
+        {
+            case ModifierTypes.Attack:
+                character.IncreaseAttack();
+                RemoveActionUsed();
+                ActionFinished();
+                break;
+            case ModifierTypes.Move:
+                AddMovement(character);
+                RemoveActionUsed();
+                ActionFinished();
+                break;
+            case ModifierTypes.Shield:
+                AddShield(character);
+                break;
+            case ModifierTypes.Draw:
+                AddDraw(character);
+                break;
+            case ModifierTypes.Heal:
+                int amountHealed = 3;
+                List<Character> charactersHealing = new List<Character>();
+                charactersHealing.Add(character);
+                RemoveActionUsed();
+                hexVisualizer.HexChange();
+                PerformAction(new Action(ActionType.Heal, new AOE(AOEType.SingleTarget, 1, amountHealed), amountHealed, new DeBuff(DeBuffType.None, 0)), charactersHealing);
+                break;
+            case ModifierTypes.Money:
+                int goldAmount = Random.Range(10, 30);
+                character.PickUpGold(goldAmount);
+                RemoveActionUsed();
+                ActionFinished();
+                break;
+        }
     }
 
     //Callbacks
     public void FinishedMoving(PlayerCharacter characterFinished)
     {
-        RemoveActionUsed();
-        ActionFinished();
+        if (characterFinished.HexOn.myHexModifier != null)
+        {
+            AddModifier(characterFinished.HexOn.myHexModifier.myModifier, characterFinished);
+            Destroy(characterFinished.HexOn.myHexModifier.gameObject);
+            hexVisualizer.UnhighlightHexes();
+        }
+        else
+        {
+            RemoveActionUsed();
+            ActionFinished();
+        }
     }
 
     public void FinishedAttacking(PlayerCharacter characterFinished)

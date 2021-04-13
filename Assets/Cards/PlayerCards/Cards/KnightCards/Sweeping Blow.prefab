@@ -1246,7 +1246,9 @@ MonoBehaviour:
       thisAOEType: 2
       Targets: 0
       Damage: 8
-    thisDeBuff: 0
+    thisDeBuff:
+      thisDeBuffType: 0
+      Amount: 0
     Range: 1
 --- !u!1 &1663073399988092
 GameObject:
@@ -1648,16 +1650,14 @@ MonoBehaviour:
   CardRarity: 1
   price: 70
   EnergyText: {fileID: 114765871671508540}
-  PrefabAssociatedWith: {fileID: 0}
+  PrefabAssociatedWith: {fileID: 1912433466513694}
+  UpgradePrefab: {fileID: 182083640584611760, guid: 3d9bc76017447b6449fed5974016bdc9,
+    type: 3}
   EnergyAmount: 1
   cardAbility: {fileID: 114778630724343894}
   Returning: 0
   Used: 0
   UnPlayablePanel: {fileID: 1172612792752454}
-  FrontFacing: 1
-  FrontSide: {fileID: 1228735158685414893}
-  BackSide: {fileID: 1067025307954820583}
-  flipping: 0
   InTheHand: 0
 --- !u!1 &391505186485112172
 GameObject:
@@ -2746,7 +2746,9 @@ MonoBehaviour:
       thisAOEType: 0
       Targets: 0
       Damage: 0
-    thisDeBuff: 0
+    thisDeBuff:
+      thisDeBuffType: 0
+      Amount: 0
     Range: 1
 --- !u!1 &6406332903543903253
 GameObject:

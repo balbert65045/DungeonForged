@@ -113,14 +113,15 @@ public class StagingArea : MonoBehaviour {
     public void ReturnLastCardToHand()
     {
         NewCard card = GetLastCard();
-        FindObjectOfType<EnergyAmount>().AddEnergy(card.CurrentEnergyAmount());
+        FindObjectOfType<EnergyAmount>().AddEnergy(card.EnergyAmount);
         int index = card.transform.parent.GetSiblingIndex();
         if (index == 0) {
             ClearStagedAction();
             FindObjectOfType<NewHand>().MakeAllCardsPlayable();
         }
         else {
-            SubtractToStagedAction(card.FrontFacing ? card.cardAbility.Actions : card.backActions());
+            // SubtractToStagedAction(card.FrontFacing ? card.cardAbility.Actions : card.backActions());
+            SubtractToStagedAction(card.cardAbility.Actions);
         }
         FindObjectOfType<NewHand>().PlaceCardOnNextAvailableSpot(card);
     }
@@ -144,8 +145,10 @@ public class StagingArea : MonoBehaviour {
             if (Positions[i].GetComponentInChildren<NewCard>() == null)
             {
                 PlaceCard(i, card);
-                if (i == 0) { SetFirstAction(card.FrontFacing ? card.cardAbility.Actions : card.backActions()); }
-                else { AddToStagedAction(card.FrontFacing ? card.cardAbility.Actions: card.backActions()); }
+                //if (i == 0) { SetFirstAction(card.FrontFacing ? card.cardAbility.Actions : card.backActions()); }
+                //else { AddToStagedAction(card.FrontFacing ? card.cardAbility.Actions: card.backActions()); }
+                if (i == 0) { SetFirstAction(card.cardAbility.Actions); }
+                else { AddToStagedAction(card.cardAbility.Actions); }
                 return;
             }
         }
@@ -156,8 +159,8 @@ public class StagingArea : MonoBehaviour {
         card.transform.SetParent(Positions[index].transform);
         card.transform.localScale = new Vector3(1, 1, 1);
         card.transform.localPosition = Vector3.zero;
-        card.flipping = false;
-        if (!card.FrontFacing) { card.FlipBack(); }
+        //card.flipping = false;
+        //if (!card.FrontFacing) { card.FlipBack(); }
         card.transform.localRotation = Quaternion.identity;
         card.SetCurrentParent(card.transform.parent);
     }

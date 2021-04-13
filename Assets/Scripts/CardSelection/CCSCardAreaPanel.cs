@@ -11,10 +11,21 @@ public class CCSCardAreaPanel : MonoBehaviour {
     public int TotalCardsObtained = 0;
     
 
-    public void ShowCards(string characterName)
+    public void ShowCards(string characterName, bool includeUpgraded = true)
     {
         TotalCardsObtained = 0;
         List<GameObject> CardsObtained = FindObjectOfType<NewGroupStorage>().GetDeck(characterName);
+        if (!includeUpgraded)
+        {
+            List<GameObject> Cards = new List<GameObject>();
+            foreach (GameObject card in CardsObtained) { Cards.Add(card); }
+            foreach (GameObject card in Cards) { 
+                if(card.GetComponent<NewCard>().UpgradePrefab == null)
+                {
+                    CardsObtained.Remove(card);
+                }
+            }
+        }
         AdjustContentSize(CardsObtained.Count);
         AddCardsToPanel(CardsObtained);
     }
@@ -53,6 +64,7 @@ public class CCSCardAreaPanel : MonoBehaviour {
         GameObject card = Instantiate(prefab, newPos.transform);
         card.transform.localPosition = Vector3.zero;
         card.transform.localScale = new Vector3(.85f, .85f, 2.385f);
+        card.GetComponent<NewCard>().PrefabAssociatedWith = prefab;
 
         newPos.transform.localPosition = new Vector3(x, y, 0);
         TotalCardsObtained++;

@@ -96,16 +96,27 @@ public class HealthBar : MonoBehaviour {
         CurrnetIndicators.Add(AI);
     }
 
-    public void RemoveDeBuff(DeBuff debuff)
+    public void SetDeBuffAmount(DeBuffType deBuffType, int Amount)
+    {
+        for (int i = 0; i < DeBuffsIndicatorsActive.Count; i++)
+        {
+            if (DeBuffsIndicatorsActive[i].myDeBuff.thisDeBuffType == deBuffType)
+            {
+                DeBuffsIndicatorsActive[i].SetAmount(Amount);
+            }
+        }
+    }
+
+    public void RemoveDeBuff(DeBuffType debuff)
     {
         bool shift = false;
         for(int i = 0; i < DeBuffsIndicatorsActive.Count; i++)
         {
-            if (DeBuffsIndicatorsActive[i].myDeBuff == debuff)
+            if (DeBuffsIndicatorsActive[i].myDeBuff.thisDeBuffType == debuff)
             {
                 DeBuffIndicator indicatorToRemove = DeBuffsIndicatorsActive[i];
                 DeBuffsIndicatorsActive.Remove(indicatorToRemove);
-                Destroy(indicatorToRemove.gameObject);
+                Destroy(indicatorToRemove.transform.parent.gameObject);
                 shift = true;
                 continue;
             }
@@ -120,9 +131,9 @@ public class HealthBar : MonoBehaviour {
     {
         GameObject thisDeBuff = Instantiate(DeBuffPrefab, transform);
         thisDeBuff.transform.localRotation = Quaternion.identity;
-        thisDeBuff.transform.localPosition = new Vector3(-1 + .4f* DeBuffsIndicatorsActive.Count, -0.1f, 0);
-        DeBuffsIndicatorsActive.Add(thisDeBuff.GetComponent<DeBuffIndicator>());
-        thisDeBuff.GetComponent<DeBuffIndicator>().ShowDebuff(debuff);
+        thisDeBuff.transform.localPosition = new Vector3(-.8f + .8f* DeBuffsIndicatorsActive.Count, -0.185f, 0);
+        DeBuffsIndicatorsActive.Add(thisDeBuff.GetComponentInChildren<DeBuffIndicator>());
+        thisDeBuff.GetComponentInChildren<DeBuffIndicator>().ShowDebuff(debuff);
         UpdateDamageVisualsFromDeBuff(debuff);
     }
 
@@ -147,6 +158,27 @@ public class HealthBar : MonoBehaviour {
         CurrentHealthText.text = CurrentHealth.ToString();
         MaxHealthText.text = MaxHealth.ToString();
         HpBar.SetHP((float)currentHealth/(float)maxHealth);
+    }
+    public void ResetShield(int amount)
+    {
+        CurrentShield = 0;
+        if (amount == 0)
+        {
+            ArmorSymbol.gameObject.SetActive(false);
+            ArmorValue.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetShield(int amount)
+    {
+        if (CurrentShield == 0)
+        {
+            ArmorSymbol.gameObject.SetActive(true);
+            ArmorValue.gameObject.SetActive(true);
+        }
+
+        ArmorValue.text = (CurrentShield + amount).ToString();
+        CurrentShield += amount;
     }
 
     public void RemoveShield(int amount)
@@ -198,7 +230,11 @@ public class HealthBar : MonoBehaviour {
 
     IEnumerator AddingHealth(int healthAmount)
     {
-        yield return null; 
+        yield return null;
+        HealValue.gameObject.SetActive(true);
+        HealValue.text = healthAmount.ToString();
+        yield return new WaitForSeconds(.2f);
+        HealValue.gameObject.SetActive(false);
         CurrentHealth = Mathf.Clamp(CurrentHealth + healthAmount, 0, MaxHealth);
         CurrentHealthText.text = CurrentHealth.ToString();
         HpBar.SetHP((float)CurrentHealth / (float)MaxHealth);

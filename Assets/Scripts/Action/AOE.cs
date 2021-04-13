@@ -11,7 +11,8 @@ public enum AOEType
     Surounding = 4, 
     Circle = 5,
     GreatCleave = 6,
-    LargeLine = 7
+    LargeLine = 7,
+    Wave = 8
 }
 
 [System.Serializable]

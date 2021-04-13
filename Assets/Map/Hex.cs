@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Hex : MonoBehaviour {
 
+    public GameObject HexModifierPrefab;
+    public HexModifier myHexModifier = null;
+
     public GameObject OutLine;
     public GameObject DoorPrefab;
     public GameObject ExitPrefab;
@@ -36,12 +39,26 @@ public class Hex : MonoBehaviour {
         {
             HideHex();
         }
+        if (GetComponentInChildren<HexModifier>() != null)
+        {
+            myHexModifier = GetComponentInChildren<HexModifier>();
+        }
     }
 
     public bool HasEnemy() { return EntityHolding != null && EntityHolding.GetComponent<EnemyCharacter>() != null; }
     public EnemyCharacter GetEnemy() { return EntityHolding.GetComponent<EnemyCharacter>(); }
     public bool HasPlayer() { return EntityHolding != null && EntityHolding.GetComponent<PlayerCharacter>() != null; }
     public bool HasCharacter() { return EntityHolding != null && EntityHolding.GetComponent<Character>() != null; }
+
+    public void AddSpawner(GameObject Spawner, GameObject ObjectToSpawn)
+    {
+        Vector3 offset = Spawner.GetComponent<Obstacle>().Offset;
+        EntityHolding = Instantiate(Spawner, this.transform).GetComponent<Entity>();
+        EntityHolding.transform.localPosition = offset;
+        EntityHolding.transform.rotation = Quaternion.Euler(Spawner.GetComponent<Obstacle>().Rotation);
+        EntityHolding.HexOn = this;
+        EntityHolding.GetComponent<EnemySpawner>().EnemyToSpawn = ObjectToSpawn;
+    }
 
     public void OpenHex(string roomName)
     {
@@ -53,6 +70,15 @@ public class Hex : MonoBehaviour {
         GetComponent<Node>().Shown = true;
         ShowMoney();
         if (EntityToSpawn != null) { CreateCharacter(); }
+    }
+
+    public void CreateHexModifier()
+    {
+        GameObject HexMod = Instantiate(HexModifierPrefab, this.transform);
+        HexMod.transform.localPosition = Vector3.zero;
+        myHexModifier = HexMod.GetComponent<HexModifier>();
+        int RandMod = Random.Range(1, 7);
+        myHexModifier.SetModifierType((ModifierTypes)RandMod);
     }
 
     public int PickUpMoney()
@@ -153,6 +179,13 @@ public class Hex : MonoBehaviour {
         return objectMade;
     }
 
+    public GameObject SpawnPreview(GameObject preview)
+    {
+        Vector3 StartPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 startingRot = new Vector3(0, 90, 0);
+        return Instantiate(preview, StartPos, Quaternion.Euler(startingRot), transform);
+    }
+
     public GameObject GenerateCharacter()
     {
         if (EntityToSpawn != null)
@@ -234,6 +267,24 @@ public class Hex : MonoBehaviour {
     public void returnToPreviousColor()
     {
         //GetComponent<MeshRenderer>().material = OGMaterial;
+    }
+
+    public void SetToAOE()
+    {
+        AOEVisualization aoeVis = GetComponent<AOEVisualization>();
+        OGMaterial = aoeVis.AOEMaterial;
+        GetComponent<MeshRenderer>().material = OGMaterial;
+        aoeVis.CreateAOESprite();
+    }
+
+    public void UnSetAOE()
+    {
+        AOEVisualization aoeVis = GetComponent<AOEVisualization>();
+        if (aoeVis.DestroyAOESprite())
+        {
+            OGMaterial = InvisibleMaterial;
+            GetComponent<MeshRenderer>().material = OGMaterial;
+        }
     }
 
     public void UnHighlight()

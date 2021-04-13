@@ -9,8 +9,17 @@ public class GameManager : MonoBehaviour {
 
     public void BeginGame(List<GameObject> PlayerCharacters)
     {
-        FindObjectOfType<ProceduralMapCreator>().BuildMapToStart(PlayerCharacters);
+        //FindObjectOfType<ProceduralMapCreator>().BuildMapToStart(PlayerCharacters);
+        FindObjectOfType<PlayerStartPos>().GetComponent<Hex>().EntityToSpawn = PlayerCharacters[0].GetComponent<Entity>();
+        FindObjectOfType<PlayerStartPos>().GetComponent<Hex>().CreateCharacter();
         FindObjectOfType<HexMapController>().SetHexes();
+        int totalEnemiesOut = FindObjectsOfType<EnemyCharacter>().Length;
+        EnemyGroup[] enemyGroups = FindObjectsOfType<EnemyGroup>();
+        foreach (EnemyGroup eg in enemyGroups)
+        {
+            totalEnemiesOut += eg.TotalSpawning();
+        }
+        FindObjectOfType<ObjectiveArea>().SetTotalEnemies(totalEnemiesOut);
         FindObjectOfType<PlayerController>().BeginGame();
     }
 
@@ -22,6 +31,7 @@ public class GameManager : MonoBehaviour {
 
     public void LevelComplete()
     {
+        FindObjectOfType<TurnOrder>().ResetTurnNumber();
         CardStorage[] storages = FindObjectOfType<NewGroupStorage>().MyGroupCardStorage;
         PlayerCharacter[] characters = FindObjectsOfType<PlayerCharacter>();
         foreach(CardStorage storage in storages)
@@ -41,7 +51,8 @@ public class GameManager : MonoBehaviour {
                 storage.CharacterCurrentHealth = 0;
             }
         }
-        FindObjectOfType<LevelManager>().LoadLevel("CardSelection");
+        FindObjectOfType<NewGroupStorage>().IncrimentLevel();
+        FindObjectOfType<LevelManager>().LoadLevel("Map");
     }
 
     private void OnLevelWasLoaded(int level)

@@ -36,7 +36,7 @@ public class DrawPile : CardPileActioner
             CardsCurrentlyInPile.Add(card);
         }
         SetText();
-        GetComponentInParent<PlayerDeck>().AddExaustToDiscardPile();
+        //GetComponentInParent<PlayerDeck>().AddExaustToDiscardPile();
     }
 
     public void AddCardToDrawPile(NewCard card)

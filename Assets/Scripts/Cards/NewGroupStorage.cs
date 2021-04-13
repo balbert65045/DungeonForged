@@ -10,6 +10,16 @@ public class CardStorage
     public int CharacterMaxHealth = 0;
     public int CharacterCurrentHealth = 0;
     public List<GameObject> CardsInDeck = new List<GameObject>();
+    public List<GameObject> Artifacts = new List<GameObject>();
+    public List<ArtifactType> ArtifactsHolding()
+    {
+        List<ArtifactType> types = new List<ArtifactType>();
+        foreach(GameObject artifact in Artifacts)
+        {
+            types.Add(artifact.GetComponent<Artifact>().artifactType);
+        }
+        return types;
+    }
     public void AddCardToDeck(GameObject Card) { CardsInDeck.Add(Card); }
     public void RemoveCardFromDeck(GameObject Card) { CardsInDeck.Remove(Card); }
 }
@@ -17,6 +27,11 @@ public class CardStorage
 public class NewGroupStorage : MonoBehaviour {
 
     public int LevelIndex = 0;
+    public bool BossNext = false;
+    public int LevelChallengeRating = 2;
+
+    public void SetNextLevelAsBoss() { BossNext = true; }
+    public void IncrimentChallengeRating() { LevelChallengeRating++; }
     public void IncrimentLevel() { LevelIndex++; }
 
     public CardStorage[] MyGroupCardStorage = new CardStorage[2];
@@ -27,6 +42,12 @@ public class NewGroupStorage : MonoBehaviour {
     }
 
     int index = 0;
+
+    public void AddArtifact(GameObject Artifact)
+    {
+        MyGroupCardStorage[0].Artifacts.Add(Artifact);
+    }
+
     public void CreateCharacterStorage(CSCharacter character)
     {
         if (index < MyGroupCardStorage.Length)

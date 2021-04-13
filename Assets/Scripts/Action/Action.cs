@@ -19,7 +19,7 @@ public enum ActionType
     None = 13,
 }
 
-public enum DeBuff
+public enum DeBuffType
 {
     None = 0,
     Bleed = 1,
@@ -29,6 +29,22 @@ public enum DeBuff
     Stun = 5,
     Disarm = 6,
     Slow = 7,
+
+    IncreaseAttack = 9,
+    IncreaseMove = 10
+}
+
+[System.Serializable]
+public struct DeBuff
+{
+    public DeBuffType thisDeBuffType;
+    public int Amount;
+
+    public DeBuff(DeBuffType deBuff, int amount)
+    {
+        thisDeBuffType = deBuff;
+        Amount = amount;
+    }
 }
 
 [System.Serializable]
@@ -39,11 +55,11 @@ public struct Action {
     public DeBuff thisDeBuff;
     public int Range;
 
-    public Action(ActionType actionType, AOE aoe, int amount, DeBuff deBuff)
+    public Action(ActionType actionType, AOE aoe, int amount, DeBuff debuff)
     {
         thisActionType = actionType;
         thisAOE = aoe;
         Range = amount;
-        thisDeBuff = deBuff;
+        thisDeBuff = debuff;
     }
 }

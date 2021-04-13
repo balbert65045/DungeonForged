@@ -10,11 +10,13 @@ public class TurnOrder : MonoBehaviour {
     public List<GameObject> OtherSpots;
     public List<GameObject> ActiveOtherSpots;
 
+    public int TurnNumber = 0;
+    public void ResetTurnNumber() { TurnNumber = 0; }
 
     public int characterIndex = 0;
     public int LastCharacterIndex = 0;
-    public List<Character> CharactersInCombat;
-    public Character GetCurrentCharacter() { return CharactersInCombat[characterIndex]; }
+    public List<Entity> CharactersInCombat;
+    public Entity GetCurrentCharacter() { return CharactersInCombat[characterIndex]; }
 
     public GameObject CharacterTurnIndicatorPrefab;
     public GameObject NewTurnPrefab;
@@ -37,7 +39,7 @@ public class TurnOrder : MonoBehaviour {
         DestroyPreviousIndicators();
         for (int i = 0; i < ActiveOtherSpots.Count + 1; i++)
         {
-            Character character = CharactersInCombat[LastCharacterIndex];
+            Entity character = CharactersInCombat[LastCharacterIndex];
             CharacterTurnIndicator newIndicator;
             if (i == 0) { newIndicator = CreateNewTurnIndicator(ActiveSpot, character); }
             else { newIndicator = CreateNewTurnIndicator(ActiveOtherSpots[i - 1], character); }
@@ -106,15 +108,19 @@ public class TurnOrder : MonoBehaviour {
             else { Indicator.transform.SetParent(ActiveOtherSpots[i - 1].transform); }
             Indicator.SetShift();
         }
-        Character character = CharactersInCombat[LastCharacterIndex];
-        CharacterTurnIndicator NewIndicator = CreateNewTurnIndicator(OtherSpots[ActiveOtherSpots.Count], character);
-        NewIndicator.transform.SetParent(OtherSpots[ActiveOtherSpots.Count - 1].transform);
-        NewIndicator.SetShift();
+        Entity character = CharactersInCombat[LastCharacterIndex];
+        if (!character.IsEnemySpawner())
+        {
+            CharacterTurnIndicator NewIndicator = CreateNewTurnIndicator(OtherSpots[ActiveOtherSpots.Count], character);
+            NewIndicator.transform.SetParent(OtherSpots[ActiveOtherSpots.Count - 1].transform);
+            NewIndicator.SetShift();
+        }
         IncrimentCharacterIndex();
         IncrimentLastCharacterIndex();
+        if (GetCurrentCharacter().IsPlayer()) { TurnNumber++; }
     }
 
-    CharacterTurnIndicator CreateNewTurnIndicator(GameObject parent, Character character)
+    CharacterTurnIndicator CreateNewTurnIndicator(GameObject parent, Entity character)
     {
         GameObject IndicatorObj = Instantiate(CharacterTurnIndicatorPrefab, parent.transform);
         CharacterTurnIndicator Indicator = IndicatorObj.GetComponent<CharacterTurnIndicator>();
@@ -124,7 +130,7 @@ public class TurnOrder : MonoBehaviour {
         return Indicator;
     }
 
-    int GetCharacterCharacterIndex(Character character)
+    int GetCharacterCharacterIndex(Entity character)
     {
         for (int i = 0; i < CharactersInCombat.Count; i++)
         {
@@ -133,7 +139,7 @@ public class TurnOrder : MonoBehaviour {
         return 0;
     }
 
-    public void CharacterRemoved(Character character)
+    public void CharacterRemoved(Entity character)
     {
         int deadCharacterIndex = GetCharacterCharacterIndex(character);
         CharactersInCombat.Remove(character);
@@ -141,10 +147,16 @@ public class TurnOrder : MonoBehaviour {
         CreateInitialIndicators();
     }
 
-    public void AddCharacter(Character character)
+    public void AddCharacter(Entity character)
     {
         if (character.IsPlayer()) { CharactersInCombat.Insert(PlayerCharacters(), character);}
         else { CharactersInCombat.Add(character); }
         CreateInitialIndicators();
+    }
+
+    public void NewCharacter(Entity character)
+    {
+        CharactersInCombat[characterIndex] = character;
+        CharacterTurnIndicator NewIndicator = CreateNewTurnIndicator(OtherSpots[ActiveOtherSpots.Count - 1], character);
     }
 }

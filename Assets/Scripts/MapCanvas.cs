@@ -7,7 +7,6 @@ public class MapCanvas : MonoBehaviour
 {
     public MapButton mapButton;
     public LocationMap locationMap;
-    public GameObject TopBar;
 
     private void Awake()
     {
@@ -18,7 +17,7 @@ public class MapCanvas : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
-        if (SceneManager.GetActiveScene().name == "Loading" || SceneManager.GetActiveScene().name == "CardSelection")
+        if (SceneManager.GetActiveScene().name == "Loading" || SceneManager.GetActiveScene().name == "Map")
         {
             HideMapButton();
         }
@@ -26,30 +25,6 @@ public class MapCanvas : MonoBehaviour
         {
             ShowMapButton();
         }
-
-        if (SceneManager.GetActiveScene().name == "Loading")
-        {
-            HideTopBar();
-        }
-        else if (SceneManager.GetActiveScene().name == "CardSelection" || SceneManager.GetActiveScene().name == "Store" || SceneManager.GetActiveScene().name == "Rest")
-        {
-            ShowTopBar();
-        }
-        else
-        {
-            HideTopBar();
-        }
-
-    }
-
-    public void ShowTopBar()
-    {
-        if (TopBar != null) { TopBar.SetActive(true); }
-    }
-
-    public void HideTopBar()
-    {
-        if (TopBar != null) { TopBar.SetActive(false); }
     }
 
     public void HideMapButton()

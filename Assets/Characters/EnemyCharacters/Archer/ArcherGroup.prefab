@@ -45,6 +45,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterIcon: {fileID: 21300000, guid: 93641462c8a68624c8425002fe016275, type: 3}
   CharacterNameLinkedTo: Archer
+  EnemyPrefab: {fileID: 5501292017463285131, guid: 7e9f6a4a8f6cd4d4d950b34781739b02,
+    type: 3}
+  Spawns:
+  - amount: 1
+    turn: 3
+  - amount: 1
+    turn: 4
+  MaxIdealRange: 3
+  MinIdealRange: 2
+  EngagingActions:
+  - Actions:
+    - thisActionType: 1
+      thisAOE:
+        thisAOEType: 0
+        Targets: 0
+        Damage: 0
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
+      Range: 3
+    - thisActionType: 2
+      thisAOE:
+        thisAOEType: 0
+        Targets: 1
+        Damage: 2
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
+      Range: 2
   AvailableActions:
   - Actions:
     - thisActionType: 1
@@ -52,14 +81,18 @@ MonoBehaviour:
         thisAOEType: 0
         Targets: 0
         Damage: 0
-      thisDeBuff: 0
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
       Range: 1
     - thisActionType: 2
       thisAOE:
         thisAOEType: 0
         Targets: 0
-        Damage: 8
-      thisDeBuff: 0
+        Damage: 6
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
       Range: 2
   - Actions:
     - thisActionType: 1
@@ -67,68 +100,59 @@ MonoBehaviour:
         thisAOEType: 0
         Targets: 0
         Damage: 0
-      thisDeBuff: 0
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
       Range: 2
     - thisActionType: 2
       thisAOE:
         thisAOEType: 0
         Targets: 0
         Damage: 5
-      thisDeBuff: 0
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
       Range: 2
   - Actions:
-    - thisActionType: 1
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 0
-      thisDeBuff: 0
-      Range: 3
     - thisActionType: 2
       thisAOE:
         thisAOEType: 0
         Targets: 0
-        Damage: 2
-      thisDeBuff: 0
-      Range: 2
+        Damage: 3
+      thisDeBuff:
+        thisDeBuffType: 3
+        Amount: 1
+      Range: 3
   - Actions:
     - thisActionType: 2
       thisAOE:
         thisAOEType: 0
         Targets: 0
         Damage: 7
-      thisDeBuff: 0
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
       Range: 3
-  - Actions:
-    - thisActionType: 2
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 4
-      thisDeBuff: 0
-      Range: 2
-    - thisActionType: 2
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 4
-      thisDeBuff: 0
-      Range: 2
+  DisengagingActions:
   - Actions:
     - thisActionType: 1
       thisAOE:
         thisAOEType: 0
         Targets: 0
-        Damage: 4
-      thisDeBuff: 0
+        Damage: 0
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
       Range: 1
     - thisActionType: 2
       thisAOE:
         thisAOEType: 0
-        Targets: 0
-        Damage: 2
-      thisDeBuff: 3
-      Range: 3
+        Targets: 1
+        Damage: 4
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
+      Range: 2
   CurrentActionSet:
     Actions: []
   linkedCharacters: []

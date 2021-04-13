@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyCharacter : Character {
 
+
+    public GameObject PreviewCharacter;
     public int EnemyChallengeRating = 1;
     public float XpOnDeath = 10;
     public int GoldHolding = 5;
@@ -33,17 +35,135 @@ public class EnemyCharacter : Character {
             myHealthBar.CreateHealthBar(health, maxHealth);
         }
         FindObjectOfType<EnemyController>().LinkSpawnedCharacter(this);
-        Shield(baseArmor, this);
+        if (baseArmor > 0) { myHealthBar.AddShield(baseArmor); }
         HexMap = FindObjectOfType<HexMapController>();
         GetComponent<CharacterAnimationController>().SwitchCombatState(true);
-        ShowNewAction();
-        FindObjectOfType<TurnOrder>().AddCharacter(this);
+        //ShowNewAction();
+        if (!FindObjectOfType<EnemyController>().GameInPlay)
+        {
+            FindObjectOfType<TurnOrder>().AddCharacter(this);
+        }
+        else
+        {
+            FindObjectOfType<TurnOrder>().NewCharacter(this);
+        }
     }
 
     public void ShowNewAction()
     {
-        currentActionSet = GetGroup().GetRandomActionSet();
+        ClosestCharacter = BreadthFirst();
+        int distance = FindObjectOfType<HexMapController>().GetDistance(ClosestCharacter.HexOn.HexNode, HexOn.HexNode);
+        if (distance > GetGroup().MaxIdealRange) { currentActionSet = GetGroup().GetRandomEngageActionSet(); }
+        else if (distance < GetGroup().MinIdealRange) { currentActionSet = GetGroup().GetRandomDisengageActionSet(); }
+        else { currentActionSet = GetGroup().GetRandomActionSet(currentActionSet); }
         myHealthBar.ShowActions(currentActionSet.Actions, myDeBuffs);
+        if (currentActionSet.Actions[0].thisActionType == ActionType.Attack && currentActionSet.Actions[0].thisAOE.thisAOEType != AOEType.SingleTarget)
+        {
+            AoeTargetHex = ClosestCharacter.HexOn;
+            Node nodeInBestDirection = HexMap.GetNodeInDirection(HexMap.GetBestDirection(HexOn.HexNode, AoeTargetHex.HexNode, currentActionSet.Actions[0].thisAOE.thisAOEType), HexOn.HexNode);
+            transform.LookAt(new Vector3(nodeInBestDirection.transform.position.x, transform.position.y, nodeInBestDirection.transform.position.z));
+            List<Node> nodesInAOE = FindObjectOfType<HexMapController>().GetAOE(currentActionSet.Actions[0].thisAOE.thisAOEType, HexOn.HexNode, nodeInBestDirection);
+            foreach(Node node in nodesInAOE)
+            {
+                node.NodeHex.SetToAOE();
+            }
+        }
+    }
+
+    public void Selected()
+    {
+        previewMoveHexes.Clear();
+        for (int i = 0; i < currentActionSet.Actions.Count; i++)
+        {
+            int range = currentActionSet.Actions[i].Range;
+            if (currentActionSet.Actions[i].thisActionType == ActionType.Movement)
+            {
+                ShowMove(range);
+            }
+            else if (currentActionSet.Actions[i].thisActionType == ActionType.Attack)
+            {
+                attackAOEType = currentActionSet.Actions[i].thisAOE.thisAOEType;
+                previewAttackRange = range;
+                ShowAttackOnHexOn();
+            }
+        }
+    }
+
+    Hex AoeTargetHex;
+    AOEType attackAOEType = AOEType.SingleTarget;
+    int previewAttackRange = 0;
+    GameObject Preview = null;
+
+    public void RemoveAreas()
+    {
+        if (Preview != null) { Destroy(Preview); }
+        FindObjectOfType<EnemyController>().RemoveAreas();
+    }
+
+    public void VisualizeAttack(Hex hex)
+    {
+        if (Preview != null) { Destroy(Preview); }
+        if (hex.EntityHolding != null) { return; }
+        Preview = hex.SpawnPreview(PreviewCharacter);
+        ShowPreviewAttack(hex);
+    }
+
+    public void ShowAttackOnHexOn()
+    {
+        if (Preview != null) { Destroy(Preview); }
+        ShowPreviewAttack(HexOn);
+    }
+
+    public void ShowPreviewAttack( Hex hex)
+    {
+        if (previewAttackRange == 0) { return; }
+        List<Node> nodes = null;
+        if (attackAOEType == AOEType.SingleTarget) { nodes = HexMap.GetNodesInLOS(hex.HexNode, previewAttackRange); }
+        else { nodes = HexMap.GetEnemyAOE(attackAOEType, HexOn.HexNode, AoeTargetHex.HexNode); }
+        List<Node> nodesInRange = new List<Node>();
+        if (MyDeBuffsHas(DeBuffType.Disarm)) { }
+        else
+        {
+            foreach (Node node in nodes)
+            {
+                if (!node.Shown) { continue; }
+                if (node.edge) { continue; }
+                nodesInRange.Add(node);
+            }
+            if (nodesInRange.Contains(hex.HexNode)) { nodesInRange.Remove(hex.HexNode); }
+        }
+
+        //Have to do this because of silly variable being added
+        List<Node> nodesToSurround = new List<Node>();
+        foreach (Node node in nodesInRange) { nodesToSurround.Add(node); }
+        if (NodesInActionRange.Count == 0) { nodesToSurround.Add(hex.HexNode); }
+
+        List<Vector3> points = new List<Vector3>();
+        points = HexMap.GetHexesSurrounding(hex.HexNode, nodesToSurround);
+        FindObjectOfType<EnemyController>().CreateOtherArea(points, ActionType.Attack);
+    }
+
+    public List<Node> previewMoveHexes;
+    void ShowMove(int moveRange)
+    {
+        if (MyDeBuffsHas(DeBuffType.Immobelized)) { moveRange = 0; }
+        else if (MyDeBuffsHas(DeBuffType.Slow)) { moveRange--; }
+        List<Node> nodesInDistance = aStar.Diskatas(HexOn.HexNode, moveRange, myCT);
+        previewMoveHexes = new List<Node>();
+        foreach (Node node in nodesInDistance)
+        {
+            if (!node.Shown || node.edge) { continue; }
+            previewMoveHexes.Add(node);
+            if (node.NodeHex.EntityHolding != null) { continue; }
+        }
+        previewMoveHexes.Add(HexOn.HexNode);
+        ShowMoveArea(previewMoveHexes);
+    }
+
+    public void ShowMoveArea(List<Node> nodes)
+    {
+        List<Vector3> points = HexMap.GetHexesSurrounding(HexOn.HexNode, nodes);
+        FindObjectOfType<EnemyController>().CreateMoveArea(points, ActionType.Movement);
     }
 
     //OTHER//
@@ -64,6 +184,13 @@ public class EnemyCharacter : Character {
     public override void Die()
     {
         GetGroup().UnLinkCharacterToGroup(this);
+        if (attackAOEType != AOEType.SingleTarget)
+        {
+            foreach (Node node in NodesInActionRange)
+            {
+                node.NodeHex.UnSetAOE();
+            }
+        }
         FindObjectOfType<ObjectiveArea>().EnemyDied();
         //HexOn.goldHolding += GoldHolding;
         //HexOn.ShowMoney();
@@ -86,8 +213,16 @@ public class EnemyCharacter : Character {
     public override void FinishedAttacking(bool dead = false)
     {
         base.FinishedAttacking();
-        if (charactersAttackingAt == null || CharactersFinishedTakingDamage >= charactersAttackingAt.Count) 
-        { 
+        if (attackAOEType != AOEType.SingleTarget)
+        {
+            foreach(Node node in NodesInActionRange)
+            {
+                node.NodeHex.UnSetAOE();
+            }
+        }
+        if (charactersAttackingAt == null || charactersAttackingAt.Count == 0 || CharactersFinishedTakingDamage >= charactersAttackingAt.Count) 
+        {
+            charactersAttackingAt.Clear();
             if (!dead) { StartCoroutine("FinisheAttackDelay"); }
             else { finishedAction(); }
         }
@@ -131,7 +266,7 @@ public class EnemyCharacter : Character {
         ClosestCharacter = null;
         actionSetIndex = 0;
         BeginTurn();
-        if (myDeBuffs.Contains(DeBuff.Stun)) { 
+        if (MyDeBuffsHas(DeBuffType.Stun)) { 
             finishedActions();
             return;
         }
@@ -158,14 +293,21 @@ public class EnemyCharacter : Character {
     }
 
     DeBuff deBuffApplying;
+    bool RangedAttack = false;
     void UseAttack(Action action)
     {
         if (ClosestCharacter == null) { ClosestCharacter = BreadthFirst(); }
         TargetHex = ClosestCharacter.HexOn;
+        attackAOEType = action.thisAOE.thisAOEType;
         GetAttackHexes(action.Range);
-        if (HexInActionRange(TargetHex) && !myDeBuffs.Contains(DeBuff.Disarm)) {
+        if (HexInActionRange(TargetHex) && !MyDeBuffsHas(DeBuffType.Disarm)) {
             CurrentAttack = action.thisAOE.Damage;
             deBuffApplying = action.thisDeBuff;
+            RangedAttack = action.Range > 1;
+            StartCoroutine("ShowAttack");
+        }
+        else if (attackAOEType != AOEType.SingleTarget)
+        {
             StartCoroutine("ShowAttack");
         }
         else { FinishedAttacking(); }
@@ -191,20 +333,31 @@ public class EnemyCharacter : Character {
         }
         TargetHex = ClosestCharacter.HexOn;
         GetAttackHexes(CurrentAttackRange);
-        if (HexInActionRange(TargetHex) || myDeBuffs.Contains(DeBuff.Immobelized))
+        if ((HexInActionRange(TargetHex) && !TakingDisadvantageWithRangedAttack()) || MyDeBuffsHas(DeBuffType.Immobelized))
         {
             finishedAction();
         } else
         {
             CurrentMoveRange = action.Range;
-            if (myDeBuffs.Contains(DeBuff.Slow)) { CurrentMoveRange--; }
+            if (MyDeBuffsHas(DeBuffType.Slow)) { CurrentMoveRange--; }
             StartCoroutine("Move");
         }
     }
 
+    bool TakingDisadvantageWithRangedAttack()
+    {
+        if (CurrentAttackRange > 1 && InMeleeRange(ClosestCharacter))
+        {
+            return true;
+        }
+        return false;
+    }
+
     IEnumerator Move()
     {
-        List<Node> nodePath = getPathToTargettoAttack(TargetHex, CurrentAttackRange);
+        List<Node> nodePath = null;
+        if (TakingDisadvantageWithRangedAttack()) { nodePath = MoveAwayFromTarget(TargetHex); }
+        else { nodePath = getPathToTargettoAttack(TargetHex, CurrentAttackRange); }
         if (nodePath.Count == 0) { FinishedMoving(HexOn); }
         else
         {
@@ -293,18 +446,37 @@ public class EnemyCharacter : Character {
         hexVisualizer.HighlightAttackRangeHex(HexOn);
         yield return new WaitForSeconds(.5f);
         List<Character> charactersAttacking = new List<Character>();
-        charactersAttacking.Add(TargetHex.EntityHolding.GetComponent<Character>());
-        foreach(Character character in charactersAttacking)
+        if (NodesInActionRange.Contains(TargetHex.HexNode)) 
         {
-            hexVisualizer.HighlightAttackAreaHex(character.HexOn);
+            charactersAttacking.Add(TargetHex.EntityHolding.GetComponent<Character>());
+            foreach (Character character in charactersAttacking)
+            {
+                hexVisualizer.HighlightAttackAreaHex(character.HexOn);
+            }
         }
-        Attack(CurrentAttack, deBuffApplying, charactersAttacking.ToArray());
+        if (attackAOEType != AOEType.SingleTarget)
+        {
+            foreach(Node node in NodesInActionRange)
+            {
+                hexVisualizer.HighlightAttackAreaHex(node.NodeHex);
+            }
+        }
+        if (charactersAttacking.Count == 0)
+        {
+            MakeAttack();
+        }
+        else
+        {
+            Attack(CurrentAttack, deBuffApplying, charactersAttacking.ToArray(), RangedAttack);
+        }
     }
 
     public void GetAttackHexes(int Range)
     {
         SetCurrentAttackRange(Range);
-        List<Node> nodes = HexMap.GetNodesInLOS(HexOn.HexNode, Range);
+        List<Node> nodes = null;
+        if (attackAOEType == AOEType.SingleTarget) { nodes = HexMap.GetNodesInLOS(HexOn.HexNode, Range); }
+        else { nodes = HexMap.GetEnemyAOE(attackAOEType, HexOn.HexNode, AoeTargetHex.HexNode); }
         NodesInActionRange.Clear();
         foreach (Node node in nodes)
         {
@@ -313,7 +485,47 @@ public class EnemyCharacter : Character {
         }
     }
 
+    Node BreadthFirstAway(Node target)
+    {
+        List<Hex> frontier = new List<Hex>();
+        frontier.Add(HexOn);
+        List<Hex> visited = new List<Hex>();
+        return BreadthFirstAwaySearch(frontier, visited, target);
+    }
+
+
+    Node BreadthFirstAwaySearch(List<Hex> Frontier, List<Hex> Visited, Node target)
+    {
+        if (Frontier.Count == 0) { return null; }
+        List<Hex> newFrontier = new List<Hex>();
+        foreach (Hex current in Frontier)
+        {
+            List<Node> neihbors = HexMap.GetRealNeighbors(current.HexNode);
+            if (neihbors.Contains(target)) { neihbors.Remove(target); }
+            foreach (Node next in neihbors)
+            {
+                if (!Visited.Contains(next.NodeHex))
+                {
+                    if (!HexMap.GetRealNeighbors(next).Contains(target))
+                    {
+                        return next;
+                    }
+                    newFrontier.Add(next.NodeHex);
+                    Visited.Add(next.NodeHex);
+                }
+            }
+        }
+        return BreadthFirstAwaySearch(newFrontier, Visited, target);
+    }
+
     //PATHING
+    public List<Node> MoveAwayFromTarget(Hex target)
+    {
+        Node NodeLookingToMoveTo = BreadthFirstAway(target.HexNode);
+        if (NodeLookingToMoveTo != null) { return FindObjectOfType<AStar>().FindPathWithMoveLimit(HexOn.HexNode, NodeLookingToMoveTo, myCT, CurrentMoveRange); }
+        else { return new List<Node>(); }
+    }
+
     public List<Node> getPathToTargettoAttack(Hex target, int range)
     {
         List<Node> possibleNodes = HexMap.GetNodesInLOS(target.HexNode, range);

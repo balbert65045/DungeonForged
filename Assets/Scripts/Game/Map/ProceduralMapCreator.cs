@@ -57,7 +57,10 @@ public class ProceduralMapCreator : MonoBehaviour {
     public GameObject ExplorationChestPrefab;
     public GameObject CombatChestPrefab;
     public List<GameObject> ObstaclePool = new List<GameObject>();
+
     public List<GameObject> EnemyPool = new List<GameObject>();
+    public List<GameObject> EnemyPoolLevel2 = new List<GameObject>();
+
     public List<GameObject> PlayerCharacters = new List<GameObject>();
 
     HexMapController hexMap;
@@ -121,6 +124,7 @@ public class ProceduralMapCreator : MonoBehaviour {
         RoomsMade = new List<Rooms>();
         doorsAvailable = new List<Door>();
 
+        ChallengeRating = FindObjectOfType<NewGroupStorage>().LevelChallengeRating;
         CurrentChallengeRating = ChallengeRating;
         hexMap = FindObjectOfType<HexMapController>();
         hexMap.CreateTable();
@@ -281,15 +285,16 @@ public class ProceduralMapCreator : MonoBehaviour {
         string RoomName = ((char)((int)('A') + RoomIndex)).ToString();
         Node StartNode = hexMap.GetNode(25, 23);
         foreach(Hex hex in hexes) { hex.GetComponent<Node>().Shown = true; }
-        List<Hex> playerHexes = AddPlayerCharactersToRoom();
-        List<Hex> EnemyHexes = new List<Hex>();
-        foreach(Hex hex in hexes)
-        {
-            if (!playerHexes.Contains(hex)) { EnemyHexes.Add(hex); }
-        }
-        AddEnemies(EnemyHexes);
-        AddObstaclesToRoom(hexes);
-        AddGoldToRooms(hexes);
+        //List<Hex> playerHexes = AddPlayerCharactersToRoom();
+        //List<Hex> EnemyHexes = new List<Hex>();
+        //foreach(Hex hex in hexes)
+        //{
+        //    if (!playerHexes.Contains(hex)) { EnemyHexes.Add(hex); }
+        //}
+        //AddEnemies(EnemyHexes);
+        //AddObstaclesToRoom(hexes);
+        //AddHexModifiersToRoom(hexes);
+        //AddGoldToRooms(hexes);
         SetStartNode(StartNode, RoomName);
         hexes.Add(StartNode.GetComponent<Hex>());
         ShowHexSet(hexes, RoomName);
@@ -335,7 +340,7 @@ public class ProceduralMapCreator : MonoBehaviour {
             Node SpawnNode = null;
             if (index == 0)
             {
-                SpawnNode = hexMap.GetNode(21, 23);
+                SpawnNode = hexMap.GetNode(24, 23);
             }
             else if (index == 1)
             {
@@ -465,19 +470,40 @@ public class ProceduralMapCreator : MonoBehaviour {
         if (CurrentChallengeRating <= 0) { return; }
         List<Hex> NonEdgeHexes = GetNonEdgeHexes(hexes);
         int EnemiesToSpawn = 4;
-        int RoomChallengeRating = 0;
         for (int i= 0; i< EnemiesToSpawn; i++)
         {
-            if (CurrentChallengeRating - RoomChallengeRating <= 0) { break; }
-            GameObject RandomEnemy = EnemyPool[Random.Range(0, EnemyPool.Count)];
+            if (CurrentChallengeRating <= 0) { break; }
+            GameObject RandomEnemy = null;
+            if (CurrentChallengeRating >= 4) { RandomEnemy = EnemyPoolLevel2[Random.Range(0, EnemyPoolLevel2.Count)]; }
+            else { RandomEnemy = EnemyPool[Random.Range(0, EnemyPool.Count)]; }
             if (NonEdgeHexes.Count <= 0) { continue; }
             Hex RandomHex = NonEdgeHexes[Random.Range(0, NonEdgeHexes.Count)];
             RandomHex.EntityToSpawn = RandomEnemy.GetComponent<Entity>();
             NonEdgeHexes.Remove(RandomHex);
-            RoomChallengeRating += RandomEnemy.GetComponent<EnemyCharacter>().EnemyChallengeRating;
+            CurrentChallengeRating -= RandomEnemy.GetComponent<EnemyCharacter>().EnemyChallengeRating;
             totalEnemiesOut++;
         }
-        CurrentChallengeRating -= RoomChallengeRating;
+    }
+
+    void AddHexModifiersToRoom(List<Hex> hexes)
+    {
+        List<Hex> NonEdgeHexes = GetNonEdgeHexes(hexes);
+        int MaximumHexModifiers = 5;
+        int HexModIndex = 0;
+        List<Hex> hexPool = new List<Hex>();
+        foreach (Hex hex in hexes) { hexPool.Add(hex); }
+        while(HexModIndex < MaximumHexModifiers)
+        {
+            if (hexPool.Count <= 0) { return; }
+            int RandomLocation = Random.Range(0, hexPool.Count);
+            Hex AttemptHex = hexPool[RandomLocation];
+            hexPool.RemoveAt(RandomLocation);
+            if (HexNotNextToOtherHexModifier(AttemptHex))
+            {
+                AttemptHex.CreateHexModifier();
+                HexModIndex++;
+            }
+        }
     }
 
     void AddObstaclesToRoom(List<Hex> hexes)
@@ -491,6 +517,7 @@ public class ProceduralMapCreator : MonoBehaviour {
             if (hexPool.Count <= 0) { return; }
             int RandomLocation = Random.Range(0, hexPool.Count);
             Hex AttemptHex = hexPool[RandomLocation];
+
            if (HexNotNextToOtherObstacleOrDoor(AttemptHex))
             {
                 int RandomObstacleIndex = Random.Range(0, ObstaclePool.Count);
@@ -556,6 +583,18 @@ public class ProceduralMapCreator : MonoBehaviour {
         GameObject chestCharacter = CharactersThatNeedAChest[randomIndex];
         CharactersThatNeedAChest.RemoveAt(randomIndex);
         return chestCharacter.GetComponent<PlayerCharacter>().CharacterName;
+    }
+
+    bool HexNotNextToOtherHexModifier(Hex hex)
+    {
+        if (hex.GetComponent<Node>().edge) { return false; }
+        if (hex.EntityToSpawn != null) { return false; }
+        List<Node> AdjacentNodes = hexMap.GetNeighborsNoRoom(hex.GetComponent<Node>());
+        foreach (Node node in AdjacentNodes)
+        {
+            if (node.GetComponentInChildren<HexModifier>() != null) { return false; }
+        }
+        return true;
     }
 
     bool HexNotNextToOtherObstacleOrDoor(Hex hex)

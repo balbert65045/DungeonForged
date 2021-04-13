@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class CharacterTurnIndicator : MonoBehaviour {
 
-    public Character characterLinkedTo;
+    public Entity characterLinkedTo;
     public Image CharacterImage;
 
-    public void SetCharacter(Character character)
+    public void SetCharacter(Entity character)
     {
         characterLinkedTo = character;
         SetCharacterImage(character.characterIcon);

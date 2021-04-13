@@ -7,7 +7,7 @@ public class LevelClearedPanel : MonoBehaviour {
 
     public GameObject panel;
     public Button LootButton;
-    public List<GameObject> characters;
+    public PlayerCharacter[] characters;
     public Image[] CharacterImages;
     int characterLootIndex = 0;
 
@@ -27,14 +27,14 @@ public class LevelClearedPanel : MonoBehaviour {
 
     public PlayerCharacter GetCurrentlootPlayer()
     {
-        return characters[characterLootIndex].GetComponent<PlayerCharacter>();
+        return characters[characterLootIndex];
     }
 
     public void TurnOnPanel()
     {
         FindObjectOfType<PlayersDecks>().gameObject.SetActive(false);
         panel.SetActive(true);
-        characters = FindObjectOfType<ProceduralMapCreator>().PlayerCharacters;
+        characters = FindObjectsOfType<PlayerCharacter>();
         CharacterImages[0].sprite = characters[0].GetComponent<PlayerCharacter>().characterSymbol;
     }
 
@@ -42,7 +42,7 @@ public class LevelClearedPanel : MonoBehaviour {
     {
         CharacterImages[characterLootIndex].transform.parent.GetComponent<Image>().color = Color.gray;
         characterLootIndex++;
-        if (characterLootIndex >= characters.Count) {
+        if (characterLootIndex >= characters.Length) {
             FindObjectOfType<PlayerController>().AddGold(20);
             FindObjectOfType<GameManager>().LevelComplete();
             return;
@@ -59,6 +59,6 @@ public class LevelClearedPanel : MonoBehaviour {
     public void ShowLoot()
     {
         LootButton.interactable = false;
-        GetComponentInChildren<CardLoot>().ShowThreeCards(characters[characterLootIndex].GetComponent<PlayerCharacter>().myType);
+        GetComponentInChildren<CardLoot>().ShowThreeCards(FindObjectOfType<NewGroupStorage>().MyGroupCardStorage[0].characterType);
     }
 }

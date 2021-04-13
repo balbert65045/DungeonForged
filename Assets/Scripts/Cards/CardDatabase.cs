@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CardDatabase : MonoBehaviour {
 
+    public GameObject[] Artifacts;
 
     public GameObject[] KnightCards;
     public GameObject[] BarbarianCards;
@@ -15,6 +16,19 @@ public class CardDatabase : MonoBehaviour {
         CardDatabase[] cardDatabases = FindObjectsOfType<CardDatabase>();
         if (cardDatabases.Length > 1) { Destroy(cardDatabases[1].gameObject); }
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    public GameObject GetRandomArtifact(List<ArtifactType> artifactsHolding)
+    {
+        List<GameObject> AvailableArtifacts = new List<GameObject>();
+        foreach(GameObject artifact in Artifacts) { AvailableArtifacts.Add(artifact); }
+        for(int i = 0; i < Artifacts.Length; i++)
+        {
+            int RandomIndex = Random.Range(0, AvailableArtifacts.Count);
+            if (!artifactsHolding.Contains(AvailableArtifacts[RandomIndex].GetComponent<Artifact>().artifactType)){ return AvailableArtifacts[RandomIndex]; }
+            AvailableArtifacts.Remove(AvailableArtifacts[RandomIndex]);
+        }
+        return null;
     }
 
     public GameObject[] Select6RandomCards(PlayerCharacterType characterType)
@@ -94,7 +108,6 @@ public class CardDatabase : MonoBehaviour {
             }
         }
         int randomRoll = Random.Range(0, 100);
-        Debug.Log(randomRoll);
         GameObject card = null;
         if (randomRoll >= 0 && randomRoll < 60) { card = CommonCardList[Random.Range(0, CommonCardList.Count)]; }
         if (randomRoll >= 60 && randomRoll < 90) { card = UncommonCardList[Random.Range(0, UncommonCardList.Count)]; }

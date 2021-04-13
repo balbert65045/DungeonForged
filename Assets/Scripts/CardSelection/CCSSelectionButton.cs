@@ -12,6 +12,21 @@ public class CCSSelectionButton : MonoBehaviour {
     int health;
     int MaxHealth;
 
+    public GameObject[] ArtifactPositions;
+
+    public void AddArtifact(GameObject artifact)
+    {
+        for(int i = 0; i < ArtifactPositions.Length; i++)
+        {
+            if (ArtifactPositions[i].transform.childCount == 0)
+            {
+                GameObject artifactInstance = Instantiate(artifact, ArtifactPositions[i].transform);
+                artifactInstance.transform.localPosition = Vector3.zero;
+                break;
+            }
+        }
+    }
+
     public void FocusOnCharacter()
     {
         FindObjectOfType<CCSCardPanel>().ShowCharacterCards(CharacterName);
@@ -23,6 +38,12 @@ public class CCSSelectionButton : MonoBehaviour {
         MaxHealth = maxHealth;
         currentHealthText.text = currentHealth.ToString();
         maxHealthText.text = maxHealth.ToString();
+    }
+
+    public void SetCurrentHp(int currentHealth)
+    {
+        health = currentHealth;
+        currentHealthText.text = currentHealth.ToString();
     }
 
     public void AddHealth(int amount)

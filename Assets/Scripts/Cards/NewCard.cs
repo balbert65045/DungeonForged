@@ -14,7 +14,8 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
 {
     public Action[] backActions()
     {
-        Action action = new Action(ActionType.Movement, new AOE(), 1, DeBuff.None);
+        DeBuff deBuff = new DeBuff(DeBuffType.None, 0);
+        Action action = new Action(ActionType.Movement, new AOE(), 1, deBuff);
         Action[] actions = new Action[] { action };
         return actions;
     }
@@ -24,8 +25,9 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
     public int price;
     public Text EnergyText;
     public GameObject PrefabAssociatedWith;
+    public GameObject UpgradePrefab;
     public int EnergyAmount;
-    public int CurrentEnergyAmount() { return FrontFacing ? EnergyAmount : 0; }
+    //public int CurrentEnergyAmount() { return FrontFacing ? EnergyAmount : 0; }
 
     public CardAbility cardAbility;
     bool Showing = false;
@@ -41,62 +43,6 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
     bool playable = true;
     public GameObject UnPlayablePanel;
 
-    public bool FrontFacing = true;
-    public GameObject FrontSide;
-    public GameObject BackSide;
-    public bool flipping = false;
-
-    public void Flip()
-    {
-        StartCoroutine("FlipCard");
-    }
-
-    public void FlipBack()
-    {
-        FrontSide.SetActive(false);
-        BackSide.SetActive(true);
-        BackSide.transform.localRotation = Quaternion.identity;
-    }
-
-    IEnumerator FlipCard()
-    {
-        flipping = true;
-        bool faceflip = false;
-        if (FrontFacing)
-        {
-            FrontFacing = !FrontFacing;
-            while (transform.localRotation.eulerAngles.y <= 180 && flipping)
-            {
-                transform.Rotate(Vector3.up*5);
-                if (transform.localRotation.eulerAngles.y > 90 && faceflip == false)
-                {
-                    FrontSide.SetActive(false);
-                    BackSide.SetActive(true);
-                    BackSide.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                    faceflip = true;
-                }
-                yield return new WaitForEndOfFrame();
-            }
-        }
-        else
-        {
-            FrontFacing = !FrontFacing;
-            while (transform.localRotation.eulerAngles.y > 180 && flipping)
-            {
-                transform.Rotate(Vector3.up*5);
-                if (transform.localRotation.eulerAngles.y > 270 && faceflip == false)
-                {
-                    FrontSide.SetActive(true);
-                    BackSide.SetActive(false);
-                    faceflip = true;
-                }
-                yield return new WaitForEndOfFrame();
-            }
-        }
-        flipping = false;
-    }
-
-
     public void SetUnPlayable() {
         playable = false;
     }
@@ -111,24 +57,30 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
         {
             if (Exaustion) { return; }
             Dragging = true;
-            StartCoroutine("ShowFlipArea");
+            //StartCoroutine("ShowFlipArea");
         }
         else if (inLoot())
         {
             GetComponentInParent<CardLoot>().AddCardToStorage(this);
         }
-    }
-
-    IEnumerator ShowFlipArea()
-    {
-        yield return new WaitForSeconds(.1f);
-        if (Dragging) { FindObjectOfType<FlipCardArea>().ShowArea(); }
+        else if (InCardSelection())
+        {
+            GetComponentInParent<CardSelectionPanel>().CardSelected(this);
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         Dragging = false;
-        if (inStaging() && FindObjectOfType<PlayerController>().CardsPlayable)
+        if (GetComponentInParent<CSCharacterCardPanel>() != null) 
+        { 
+            return; 
+        }
+        else if (InCardSelection())
+        {
+            return;
+        }
+        else if (inStaging() && FindObjectOfType<PlayerController>().CardsPlayable)
         {
             FindObjectOfType<StagingArea>().ReturnLastCardToHand();
             return;
@@ -138,8 +90,8 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
             if (Exaustion) { return; }
             List<RaycastResult> raysastResults = new List<RaycastResult>();
             EventSystem.current.RaycastAll(eventData, raysastResults);
-            if (OverFlipArea(raysastResults)) { FrontFacing = false; }
-            if (CurrentEnergyAmount() > FindObjectOfType<EnergyAmount>().CurrentEnergyAmount) { unShowCard(); }
+            //if (OverFlipArea(raysastResults)) { FrontFacing = false; }
+            if (EnergyAmount > FindObjectOfType<EnergyAmount>().CurrentEnergyAmount) { unShowCard(); }
             else if (cardAbility.Staging) {
                 InTheHand = false;
                 FindObjectOfType<NewHand>().PutCardInStaging(this); 
@@ -153,7 +105,7 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
         {
             unShowCard();
         }
-        FindObjectOfType<FlipCardArea>().HideArea();
+        //FindObjectOfType<FlipCardArea>().HideArea();
         FindObjectOfType<HexVisualizer>().HexChange();
     }
 
@@ -162,6 +114,8 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
     public bool InTheHand = false;
     bool inHand(){ return InTheHand; }
     bool inStaging() { return GetComponentInParent<StagingArea>() != null; }
+
+    bool InCardSelection() { return GetComponentInParent<CCSCardAreaPanel>(); }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -186,21 +140,14 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
         transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + 2f); 
     }
 
-    public void ShowFront()
-    {
-        if (Exaustion) { return; }
-        FrontFacing = true;
-        FrontSide.SetActive(true);
-        BackSide.SetActive(false);
-    }
     public void unShowCard()
     {
         if (Dragging) { return; }
         if (inStaging()) { return; }
-        flipping = false;
+      //  flipping = false;
         if (GetComponentInParent<CardsPanel>() != null) { return; }
         transform.SetParent(CurrentParent);
-        ShowFront();
+   //     ShowFront();
         transform.localRotation = Quaternion.identity;
         transform.localScale = new Vector3(1,1,1);
         transform.localPosition = Vector3.zero;
@@ -275,10 +222,10 @@ public class NewCard : Card, IPointerEnterHandler, IPointerDownHandler, IPointer
         if (Dragging)
         {
             transform.position = Input.mousePosition;
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (!flipping) { Flip(); }
-            }
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    if (!flipping) { Flip(); }
+            //}
         }
     }
 }

@@ -111,11 +111,21 @@ public class LocationMap : MonoBehaviour
         //ShowPossibleOtherAreas();
     }
 
+    public int PathsTaken = 0;
+
     public void CreatePathsIfNoPaths()
     {
         if (Paths.Count == 0)
         {
-            ShowPossibleOtherAreas();
+            if (PathsTaken >= 3)
+            {
+                CreateBossPath();
+            }
+            else
+            {
+                ShowPossibleOtherAreas();
+                PathsTaken++;
+            }
         }
     }
 
@@ -164,41 +174,106 @@ public class LocationMap : MonoBehaviour
         StartArea.SetAsUsed();
     }
 
+    void CreateBossPath()
+    {
+        Path path = new Path();
+        LocationArea FirstArea = SetupRestArea(StartArea);
+        path.AddToPath(FirstArea.GetComponent<PathPart>());
+        GameObject road1 = CreateTravelPath(StartArea, FirstArea);
+        path.AddToPath(road1.GetComponent<PathPart>());
+        LocationArea SecondArea = SetUpBossArea(FirstArea);
+        path.AddToPath(SecondArea.GetComponent<PathPart>());
+        GameObject road2 = CreateTravelPath(FirstArea, SecondArea);
+        path.AddToPath(road2.GetComponent<PathPart>());
+
+        Paths.Add(path);
+    }
+
     void CreateFirstPath()
     {
         Path path = new Path();
         LocationArea NewArea = SetupArea(StartArea);
-        LocationArea FirstArea = SetupChestArea(NewArea);
+        LocationArea FirstArea = SetupArtifactArea(NewArea);
+        //LocationArea FirstArea = SetupRestArea(NewArea);
         path.AddToPath(FirstArea.GetComponent<PathPart>());
         GameObject road1 = CreateTravelPath(StartArea, FirstArea);
         path.AddToPath(road1.GetComponent<PathPart>());
         LocationArea SecondArea = SetupCombatArea(FirstArea);
+        //LocationArea SecondArea = SetUpBossArea(FirstArea);
         path.AddToPath(SecondArea.GetComponent<PathPart>());
         GameObject road2 = CreateTravelPath(FirstArea, SecondArea);
         path.AddToPath(road2.GetComponent<PathPart>());
+        //LocationArea ThirdArea = SetupCombatArea(SecondArea);
+        //path.AddToPath(ThirdArea.GetComponent<PathPart>());
+        //GameObject road3 = CreateTravelPath(SecondArea, ThirdArea);
+        //path.AddToPath(road3.GetComponent<PathPart>());
 
         Paths.Add(path);
     }
 
     void ShowPossibleOtherAreas()
     {
+        ResetStops();
         CreateAPath();
         CreateAPath();
+    }
+
+    List<Location> StopsAvailable = new List<Location> { Location.Anvil, Location.Artifact, Location.Chest, Location.Shop, Location.Rest, Location.Furnace }; 
+    void ResetStops()
+    {
+        StopsAvailable = new List<Location> { Location.Anvil, Location.Artifact, Location.Chest, Location.Shop, Location.Rest, Location.Furnace };
     }
 
     void CreateAPath()
     {
         Path path = new Path();
-        LocationArea FirstArea = SetupUtilityArea(StartArea);
+        LocationArea FirstArea = SetupArea(StartArea);
+        FirstArea = SetupStop(FirstArea);
         path.AddToPath(FirstArea.GetComponent<PathPart>());
         GameObject road1 = CreateTravelPath(StartArea, FirstArea);
         path.AddToPath(road1.GetComponent<PathPart>());
-        LocationArea SecondArea = SetupCombatArea(FirstArea);
+        LocationArea SecondArea = SetupArea(FirstArea);
+        SecondArea = SetupStop(SecondArea);
         path.AddToPath(SecondArea.GetComponent<PathPart>());
         GameObject road2 = CreateTravelPath(FirstArea, SecondArea);
         path.AddToPath(road2.GetComponent<PathPart>());
+        LocationArea ThirdArea = SetupCombatArea(SecondArea);
+        path.AddToPath(ThirdArea.GetComponent<PathPart>());
+        GameObject road3 = CreateTravelPath(SecondArea, ThirdArea);
+        path.AddToPath(road3.GetComponent<PathPart>());
 
         Paths.Add(path);
+    }
+
+    LocationArea SetupStop(LocationArea area)
+    {
+        LocationArea newStop = null;
+        int RandomIndex = Random.Range(0, StopsAvailable.Count);
+        switch (StopsAvailable[RandomIndex])
+        {
+            case Location.Anvil:
+                newStop = SetupAnvilArea(area);
+                break;
+            case Location.Artifact:
+                newStop = SetupArtifactArea(area);
+                break;
+            case Location.Chest:
+                newStop = SetupChestArea(area);
+                break;
+            case Location.Shop:
+                newStop = SetupShopArea(area);
+                break;
+            case Location.Rest:
+                newStop = SetupRestArea(area);
+                break;
+            case Location.Furnace:
+                newStop = SetupFurnaceArea(area);
+                break;
+
+        }
+        StopsAvailable.RemoveAt(RandomIndex);
+        return newStop;
+
     }
 
     GameObject CreateTravelPath(LocationArea startArea, LocationArea endArea)
@@ -228,9 +303,30 @@ public class LocationMap : MonoBehaviour
         return Road;
     }
 
+    LocationArea SetUpBossArea(LocationArea area)
+    {
+        LocationArea NewArea = SetupArea(area);
+        NewArea.SetAsBoss();
+        NewArea.SetAsUnused();
+        return NewArea;
+    }
+    LocationArea SetupArtifactArea(LocationArea area)
+    {
+        area.SetAsArtifactArea();
+        area.SetAsUnused();
+        return area;
+    }
+
     LocationArea SetupChestArea(LocationArea area)
     {
         area.SetAsChest();
+        area.SetAsUnused();
+        return area;
+    }
+
+    LocationArea SetupAnvilArea(LocationArea area)
+    {
+        area.SetAsAnvil();
         area.SetAsUnused();
         return area;
     }
@@ -249,16 +345,28 @@ public class LocationMap : MonoBehaviour
         return area;
     }
 
+    LocationArea SetupFurnaceArea(LocationArea area)
+    {
+        area.SetAsFurnace();
+        area.SetAsUnused();
+        return area;
+    }
+
     LocationArea SetupUtilityArea(LocationArea area)
     {
         LocationArea NewArea = SetupArea(area);
-        if (Random.Range(0,2) == 0)
+        int random_index = Random.Range(0, 3);
+        if (random_index == 0)
         {
             return SetupShopArea(NewArea);
         }
-        else
+        else if (random_index == 1)
         {
             return SetupRestArea(NewArea);
+        }
+        else
+        {
+            return SetupFurnaceArea(NewArea);
         }
     }
 
