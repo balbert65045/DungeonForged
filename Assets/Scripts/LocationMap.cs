@@ -63,7 +63,7 @@ public class Path
 public class LocationMap : MonoBehaviour
 {
     public Hashtable Map = new Hashtable();
-    LocationArea StartArea;
+    public LocationArea StartArea;
     public List<int> AvailableDirections = new List<int>() { 0, 1, 2, 3 };
 
     public GameObject PathPrefab;
@@ -111,6 +111,35 @@ public class LocationMap : MonoBehaviour
         //ShowPossibleOtherAreas();
     }
 
+    private void Update()
+    {
+        if (pathMovingOn != null) { return; }
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.localPosition = Vector3.Lerp(transform.up * mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            transform.localPosition = Vector3.Lerp(transform.right * mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
+        }
+        else if (Input.GetKey(KeyCode.W))
+        {
+            transform.localPosition = Vector3.Lerp(transform.up * -mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            transform.localPosition = Vector3.Lerp(transform.right * -mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
+        }
+        float x = transform.localPosition.x;
+        float y = transform.localPosition.y;
+        if (transform.localPosition.x > -minWidth * 150) { x = -minWidth * 150; }
+        if (transform.localPosition.x < -maxWidth * 150) { x = -maxWidth * 150; }
+        if (transform.localPosition.y > maxHeight * 150) { y = maxHeight * 150; }
+        if (transform.localPosition.y < minHeight * 150) { y = minHeight * 150; }
+
+        transform.localPosition = new Vector3(x, y, 0);
+    }
+
     public int PathsTaken = 0;
 
     public void CreatePathsIfNoPaths()
@@ -134,14 +163,17 @@ public class LocationMap : MonoBehaviour
         StartCoroutine("Move", path);
     }
 
+    bool moving = false;
     IEnumerator Move(Path path)
     {
+        pathMovingOn = path;
         RoadDirection direction = path.GetNextRoad().myDirection;
-        bool moving = true;
-        Vector3 StartPosition = transform.position;
+        moving = true;
+        transform.localPosition = new Vector3((StartArea.X-4) * -150, (StartArea.Y-4) * 150, 0);
+        Vector3 StartPosition = transform.localPosition;
         while (moving)
         {
-            if ((StartPosition - transform.position).magnitude > 200) { moving = false; }
+            if ((StartPosition - transform.localPosition).magnitude > 150) { moving = false; }
             switch (direction)
             {
                 case RoadDirection.Up:
@@ -159,12 +191,19 @@ public class LocationMap : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        StartArea = path.GetNextPosition();
+    }
+
+    Path pathMovingOn;
+
+    public void ChangeToNextLocation()
+    {
+        StartArea = pathMovingOn.GetNextPosition();
         StartArea.SetAsUsed();
-        path.RemoveRoadAndAreaFromPath();
-        if (path.PathParts.Count == 0) { Paths.Remove(path); }
-        GetComponentInParent<MapCanvas>().HideMap();
+        pathMovingOn.RemoveRoadAndAreaFromPath();
+        if (pathMovingOn.PathParts.Count == 0) { Paths.Remove(pathMovingOn); }
         StartArea.ChangeLevelToLocation();
+        GetComponentInParent<MapCanvas>().HideMapWithDelay();
+        pathMovingOn = null;
     }
 
     void SetStartArea()
@@ -378,11 +417,19 @@ public class LocationMap : MonoBehaviour
         return NewArea;
     }
 
+    public int maxHeight = 0;
+    public int maxWidth = 0;
+    public int minHeight = 0;
+    public int minWidth = 0;
 
     LocationArea SetupArea(LocationArea area)
     {
         AvailableDirections = new List<int>() { 0, 1, 2, 3 };
         LocationArea NewArea = FindAvailableArea(area);
+        if (NewArea.X - 4 > maxWidth) { maxWidth = NewArea.X - 4; }
+        if (NewArea.X - 4 < minWidth) { minWidth = NewArea.X - 4; }
+        if (NewArea.Y - 4 > maxHeight) { maxHeight = NewArea.Y - 4; }
+        if (NewArea.Y - 4 < minHeight) { minHeight = NewArea.Y - 4; }
         return NewArea;
     }
 

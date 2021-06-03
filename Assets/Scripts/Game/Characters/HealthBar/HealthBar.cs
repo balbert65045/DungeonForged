@@ -29,7 +29,7 @@ public class HealthBar : MonoBehaviour {
     public Sprite RangeSprite;
     public Sprite ArmorSprite;
 
-    List<DeBuffIndicator> DeBuffsIndicatorsActive = new List<DeBuffIndicator>();
+    public List<DeBuffIndicator> DeBuffsIndicatorsActive = new List<DeBuffIndicator>();
     public GameObject DeBuffPrefab;
 
     Camera cam;
@@ -117,12 +117,12 @@ public class HealthBar : MonoBehaviour {
                 DeBuffIndicator indicatorToRemove = DeBuffsIndicatorsActive[i];
                 DeBuffsIndicatorsActive.Remove(indicatorToRemove);
                 Destroy(indicatorToRemove.transform.parent.gameObject);
+                i--;
                 shift = true;
-                continue;
             }
-            if (shift)
+            else if (shift)
             {
-                DeBuffsIndicatorsActive[i].transform.localPosition = new Vector3(DeBuffsIndicatorsActive[i].transform.localPosition.x - .4f, -0.1f, 0);
+                DeBuffsIndicatorsActive[i].transform.parent.localPosition = new Vector3(DeBuffsIndicatorsActive[i].transform.parent.localPosition.x - .8f, -0.185f, 0);
             }
         }
     }

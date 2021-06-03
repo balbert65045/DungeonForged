@@ -20,4 +20,9 @@ public class PlayerMapController : MonoBehaviour
         FindObjectOfType<MapCanvas>().ShowMap();
         FindObjectOfType<LocationMap>().CreatePathsIfNoPaths();
     }
+
+    private void Update()
+    {
+        
+    }
 }

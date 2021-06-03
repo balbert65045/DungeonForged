@@ -119,10 +119,11 @@ public class ActionIndicator : MonoBehaviour {
                     RangeObj.SetActive(false);
                 }
                 if (DeBuffsHasType(deBuffs, DeBuffType.Disarm)) { EndAmount = 0; }
+                if (DeBuffsHasType(deBuffs, DeBuffType.PowerUp)) { EndAmount += FindDeBuff(deBuffs, DeBuffType.PowerUp).Amount; }
                 if (DeBuffsHasType(deBuffs, DeBuffType.IncreaseAttack)) {
                     EndAmount += FindDeBuff(deBuffs, DeBuffType.IncreaseAttack).Amount;
                 }
-                else if (DeBuffsHasType(deBuffs, DeBuffType.Weaken)) { EndAmount = Mathf.FloorToInt(EndAmount * .75f); }
+                if (DeBuffsHasType(deBuffs, DeBuffType.Weaken)) { EndAmount = Mathf.FloorToInt(EndAmount * .75f); }
                 ActionValue.text = EndAmount.ToString();
                 ActionSpriteIndicator.sprite = AttackIndicatorSprite;
                 ActionSpriteIndicatorBackGround.sprite = AttackIndicatorSprite;
@@ -230,6 +231,12 @@ public class ActionIndicator : MonoBehaviour {
                 StatusSpriteRenderer.color = manager.SlowColor;
                 StatusObj.GetComponent<Tooltip>().tooltipTitle = manager.SlowTitle;
                 StatusObj.GetComponent<Tooltip>().tooltipText = manager.SlowText;
+                break;
+            case DeBuffType.PowerUp:
+                StatusSpriteRenderer.sprite = manager.PowerUpSprite;
+                StatusSpriteRenderer.color = manager.PowerUpColor;
+                StatusObj.GetComponent<Tooltip>().tooltipTitle = manager.PowerUpTitle;
+                StatusObj.GetComponent<Tooltip>().tooltipText = manager.PowerUpText;
                 break;
         }
     }

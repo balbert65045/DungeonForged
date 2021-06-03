@@ -2153,7 +2153,8 @@ MonoBehaviour:
   AgilitySprite: {fileID: 21300000, guid: d480a25d0bf2e1c49a5583ce5d17f8b4, type: 3}
   RangeSprite: {fileID: 21300000, guid: cfb51629e8afd754da237c5e9256c086, type: 3}
   ArmorSprite: {fileID: 21300000, guid: ff398cdbe032de048871e6fd4ee46a09, type: 3}
-  DeBuffPrefab: {fileID: 497236576766875404, guid: 1ec378248eef5bd44b8be50fa143a983,
+  DeBuffsIndicatorsActive: []
+  DeBuffPrefab: {fileID: 5306506126806393446, guid: 0ac1d204e1f174d48837094c800ef1b5,
     type: 3}
   IndicatorPrefab: {fileID: 1145121032965342, guid: ab27972d27547c841a63479e9dfd7496,
     type: 3}
@@ -2982,8 +2983,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f47082266ca7ef43a30894abe104ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexOn: {fileID: 0}
   characterIcon: {fileID: 21300000, guid: fcd272693f0f1c143a5813a36f0cc6b4, type: 3}
+  HexOn: {fileID: 0}
   myCT: 1
   MaxMoveDistance: 15
   CurrentMoveDistance: 0
@@ -2996,13 +2997,18 @@ MonoBehaviour:
   NodesInWalkingDistance: []
   NodesInActionRange: []
   CombatNodes: []
-  myDeBuffs: 
-  deBuffApplied: 0
+  myDeBuffs: []
+  InCreaseAmount: 0
+  deBuffApplied:
+    thisDeBuffType: 0
+    Amount: 0
+  PreviewCharacter: {fileID: 0}
   EnemyChallengeRating: 2
   XpOnDeath: 10
   GoldHolding: 5
   CharacterName: Demolisher
   enemySprite: {fileID: 0}
+  previewMoveHexes: []
 --- !u!54 &7154783747336591517
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3032,6 +3038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RightHandWeapon: {fileID: 0}
+  AnimationTrigger: 
 --- !u!1 &7154783747336593533
 GameObject:
   m_ObjectHideFlags: 0
@@ -5132,6 +5139,22 @@ PrefabInstance:
       value: SM_Wep_Hammer_Large_Metal_01
       objectReference: {fileID: 0}
     - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 99.99998
+      objectReference: {fileID: 0}
+    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 99.999954
+      objectReference: {fileID: 0}
+    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 99.999954
+      objectReference: {fileID: 0}
+    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.4
       objectReference: {fileID: 0}
@@ -5142,6 +5165,10 @@ PrefabInstance:
     - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
       propertyPath: m_LocalPosition.z
       value: -3.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5450724
       objectReference: {fileID: 0}
     - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
       propertyPath: m_LocalRotation.x
@@ -5156,14 +5183,6 @@ PrefabInstance:
       value: -0.4504403
       objectReference: {fileID: 0}
     - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.5450724
-      objectReference: {fileID: 0}
-    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -10.86
       objectReference: {fileID: 0}
@@ -5174,18 +5193,6 @@ PrefabInstance:
     - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 99.99998
-      objectReference: {fileID: 0}
-    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 99.999954
-      objectReference: {fileID: 0}
-    - target: {fileID: 431196, guid: d6869b11ec4023a4b9853c8b8ee24688, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 99.999954
       objectReference: {fileID: 0}
     - target: {fileID: 64285489540866384, guid: d6869b11ec4023a4b9853c8b8ee24688,
         type: 3}

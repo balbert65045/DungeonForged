@@ -12,19 +12,18 @@ public enum AOEType
     Circle = 5,
     GreatCleave = 6,
     LargeLine = 7,
-    Wave = 8
+    Wave = 8,
+    LargeWave = 9
 }
 
 [System.Serializable]
 public struct AOE  {
 
     public AOEType thisAOEType;
-    public int Targets;
     public int Damage;
 
-    public AOE(AOEType aoeType, int targets, int damage)
+    public AOE(AOEType aoeType, int damage)
     {
-        Targets = targets;
         thisAOEType = aoeType;
         Damage = damage;
     }

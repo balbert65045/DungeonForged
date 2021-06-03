@@ -245,11 +245,16 @@ public class Character : Entity {
     public void DeadBySavingThrow() { GoingToDie = true; }
 
     //HEALING
-    public void PerformHeal(int amount, List<Character> charactersHealing)
+    public void PerformHeal(int amount, List<Character> charactersHealing, DeBuff deBuffApplying)
     {
         foreach (Character character in charactersHealing)
         {
             character.Heal(amount, this);
+            if (deBuffApplying.thisDeBuffType != DeBuffType.None)
+            {
+                character.AddDeBuff(deBuffApplying);
+                character.ShowDeBuff();
+            }
         }
     }
 
@@ -265,11 +270,16 @@ public class Character : Entity {
 
     //SHIELD
 
-    public void PerformShield(int amount, List<Character> charactersShielding)
+    public void PerformShield(int amount, List<Character> charactersShielding, DeBuff deBuffApplying)
     {
         foreach (Character character in charactersShielding)
         {
             character.Shield(amount, this);
+            if (deBuffApplying.thisDeBuffType != DeBuffType.None)
+            {
+                character.AddDeBuff(deBuffApplying);
+                character.ShowDeBuff();
+            }
         }
     }
 
@@ -351,18 +361,20 @@ public class Character : Entity {
         int amount = 3;
         if (hasArtifact(ArtifactType.HexAttackIncrease)){ amount = 6; }
         DeBuff newDeBuff = new DeBuff(DeBuffType.IncreaseAttack, amount);
-        if (!MyDeBuffsHas(DeBuffType.IncreaseAttack))
-        {
-            myDeBuffs.Add(newDeBuff);
-            myHealthBar.ShowDeBuff(newDeBuff);
-        }
-        else
-        {
-            DeBuff myDeBuff = FindDeBuff(DeBuffType.IncreaseAttack);
-            int newAmount = myDeBuff.Amount + amount;
-            SetDeBuffAmount(newAmount, myDeBuff);
-            myHealthBar.SetDeBuffAmount(myDeBuff.thisDeBuffType, newAmount);
-        }
+        AddDeBuff(newDeBuff);
+        ShowDeBuff();
+        //if (!MyDeBuffsHas(DeBuffType.IncreaseAttack))
+        //{
+        //    myDeBuffs.Add(newDeBuff);
+        //    myHealthBar.ShowDeBuff(newDeBuff);
+        //}
+        //else
+        //{
+        //    DeBuff myDeBuff = FindDeBuff(DeBuffType.IncreaseAttack);
+        //    int newAmount = myDeBuff.Amount + amount;
+        //    SetDeBuffAmount(newAmount, myDeBuff);
+        //    myHealthBar.SetDeBuffAmount(myDeBuff.thisDeBuffType, newAmount);
+        //}
     }
 
     public void EndTurn()
@@ -506,15 +518,17 @@ public class Character : Entity {
     int CalculateDeBuffs(int amount)
     {
         int totalamount = amount;
+        if (MyDeBuffsHas(DeBuffType.PowerUp)) { totalamount = totalamount + FindDeBuff(DeBuffType.PowerUp).Amount; }
         if (MyDeBuffsHas(DeBuffType.IncreaseAttack)) { totalamount = totalamount + FindDeBuff(DeBuffType.IncreaseAttack).Amount; }
         if (MyDeBuffsHas(DeBuffType.Weaken)) { totalamount = Mathf.FloorToInt(totalamount * .75f); }
         return totalamount;
     }
 
-    public void Attack(int damage, DeBuff deBuff, Character[] characters, bool ranged)
+    public void Attack(int damage, DeBuff deBuff, Character[] characters, bool ranged, string TriggerAnimation)
     {
         charactersAttackingAt.Clear();
         CharactersFinishedTakingDamage = 0;
+        GetComponent<CharacterAnimationController>().AnimationTrigger = TriggerAnimation;
         foreach(Character character in characters)
         {
             if (character.GetGoingToDie() == false) { charactersAttackingAt.Add(character); }

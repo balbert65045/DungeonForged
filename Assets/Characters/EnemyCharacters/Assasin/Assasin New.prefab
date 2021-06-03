@@ -2221,8 +2221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f47082266ca7ef43a30894abe104ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexOn: {fileID: 0}
   characterIcon: {fileID: 21300000, guid: 34c3dc92827b33449b7ad6b8b1d8a21a, type: 3}
+  HexOn: {fileID: 0}
   myCT: 1
   MaxMoveDistance: 15
   CurrentMoveDistance: 0
@@ -2235,13 +2235,18 @@ MonoBehaviour:
   NodesInWalkingDistance: []
   NodesInActionRange: []
   CombatNodes: []
-  myDeBuffs: 
-  deBuffApplied: 0
+  myDeBuffs: []
+  InCreaseAmount: 0
+  deBuffApplied:
+    thisDeBuffType: 0
+    Amount: 0
+  PreviewCharacter: {fileID: 0}
   EnemyChallengeRating: 2
   XpOnDeath: 10
   GoldHolding: 5
   CharacterName: Assasin
   enemySprite: {fileID: 0}
+  previewMoveHexes: []
 --- !u!114 &2722703528919516217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2255,6 +2260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RightHandWeapon: {fileID: 0}
+  AnimationTrigger: 
 --- !u!54 &2722703528919516216
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4078,7 +4084,8 @@ MonoBehaviour:
   AgilitySprite: {fileID: 21300000, guid: d480a25d0bf2e1c49a5583ce5d17f8b4, type: 3}
   RangeSprite: {fileID: 21300000, guid: cfb51629e8afd754da237c5e9256c086, type: 3}
   ArmorSprite: {fileID: 21300000, guid: ff398cdbe032de048871e6fd4ee46a09, type: 3}
-  DeBuffPrefab: {fileID: 497236576766875404, guid: 1ec378248eef5bd44b8be50fa143a983,
+  DeBuffsIndicatorsActive: []
+  DeBuffPrefab: {fileID: 5306506126806393446, guid: 0ac1d204e1f174d48837094c800ef1b5,
     type: 3}
   IndicatorPrefab: {fileID: 1145121032965342, guid: ab27972d27547c841a63479e9dfd7496,
     type: 3}

@@ -42,4 +42,9 @@ public class DeBuffManager : MonoBehaviour
     public Sprite AttackIncreaseSprite;
     public string AttackIncreaseTitle;
     public string AttackIncreaseText;
+
+    public Sprite PowerUpSprite;
+    public Color PowerUpColor;
+    public string PowerUpTitle;
+    public string PowerUpText;
 }

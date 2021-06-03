@@ -8628,7 +8628,6 @@ GameObject:
   - component: {fileID: 1470741853}
   - component: {fileID: 1470741852}
   - component: {fileID: 1470741851}
-  - component: {fileID: 1470741850}
   - component: {fileID: 1470741855}
   m_Layer: 0
   m_Name: Main Camera
@@ -8637,21 +8636,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1470741850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470741849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3da5d8d232db82847859c9d42da23e43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {x: 0, y: 0, z: 0}
-  StartPosition: {x: 0, y: 0, z: 0}
-  DifferencePos: {x: 2, y: -1, z: -2.5}
 --- !u!81 &1470741851
 AudioListener:
   m_ObjectHideFlags: 0
@@ -10556,11 +10540,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80948188bc7fe62498743ba70979567f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartArea: {fileID: 0}
   AvailableDirections: 00000000010000000200000003000000
   PathPrefab: {fileID: 804199435831041159, guid: 06477d53f0250614695a35609b58b11a,
     type: 3}
-  mapSpeed: 100
+  mapSpeed: 80
   PathsTaken: 0
+  maxHeight: 0
+  maxWidth: 0
+  minHeight: 0
+  minWidth: 0
 --- !u!224 &1710208367
 RectTransform:
   m_ObjectHideFlags: 0

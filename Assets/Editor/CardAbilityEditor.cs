@@ -53,9 +53,6 @@ public class CombatCardAbilityEditor : Editor
                     SerializedProperty ActionAOEType_Property = ActionAOE_Property.FindPropertyRelative("thisAOEType");
                     EditorGUILayout.PropertyField(ActionAOEType_Property);
 
-                    SerializedProperty ActionTargets_Property = ActionAOE_Property.FindPropertyRelative("Targets");
-                    EditorGUILayout.PropertyField(ActionTargets_Property);
-
                     SerializedProperty ActionAttackRange_Property = Actions_Property.GetArrayElementAtIndex(i - 1).FindPropertyRelative("Range");
                     EditorGUILayout.PropertyField(ActionAttackRange_Property);
 
@@ -64,6 +61,9 @@ public class CombatCardAbilityEditor : Editor
 
                     SerializedProperty ActionStatus_Property = Actions_Property.GetArrayElementAtIndex(i - 1).FindPropertyRelative("thisDeBuff");
                     EditorGUILayout.PropertyField(ActionStatus_Property);
+
+                    SerializedProperty ActionTrigger_Property = Actions_Property.GetArrayElementAtIndex(i - 1).FindPropertyRelative("TriggerAnimation");
+                    EditorGUILayout.PropertyField(ActionTrigger_Property);
 
                     break;
                 case ActionType.Movement:
@@ -81,6 +81,9 @@ public class CombatCardAbilityEditor : Editor
 
                     SerializedProperty ActionHealAmount_Property = ActionHealAOE_Property.FindPropertyRelative("Damage");
                     EditorGUILayout.PropertyField(ActionHealAmount_Property);
+
+                    SerializedProperty ActionHealStatus_Property = Actions_Property.GetArrayElementAtIndex(i - 1).FindPropertyRelative("thisDeBuff");
+                    EditorGUILayout.PropertyField(ActionHealStatus_Property);
                     break;
                 case ActionType.Shield:
                     SerializedProperty ActionShieldAOE_Property = Actions_Property.GetArrayElementAtIndex(i - 1).FindPropertyRelative("thisAOE");
@@ -92,6 +95,9 @@ public class CombatCardAbilityEditor : Editor
 
                     SerializedProperty ActionShieldAmount_Property = ActionShieldAOE_Property.FindPropertyRelative("Damage");
                     EditorGUILayout.PropertyField(ActionShieldAmount_Property);
+
+                    SerializedProperty ActionShieldStatus_Property = Actions_Property.GetArrayElementAtIndex(i - 1).FindPropertyRelative("thisDeBuff");
+                    EditorGUILayout.PropertyField(ActionShieldStatus_Property);
                     break;
                 case ActionType.BuffAttack:
                     SerializedProperty ActionBuffAttackAOE_Property = Actions_Property.GetArrayElementAtIndex(i - 1).FindPropertyRelative("thisAOE");

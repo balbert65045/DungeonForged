@@ -39,7 +39,7 @@ public class StagingArea : MonoBehaviour {
     {
         for (int i = 0; i < actions.Length; i++)
         {
-            Action newAction = new Action(actions[i].thisActionType, actions[i].thisAOE, actions[i].Range, actions[i].thisDeBuff);
+            Action newAction = new Action(actions[i].thisActionType, actions[i].thisAOE, actions[i].Range, actions[i].thisDeBuff, actions[i].TriggerAnimation);
             CurrentActions.Add(newAction);
             if (i == actions.Length - 1) { LastActionStackingOn = newAction; }
         }
@@ -68,7 +68,7 @@ public class StagingArea : MonoBehaviour {
             }
             else
             {
-                Action Aaction = new Action(AddedAction.thisActionType, AddedAction.thisAOE, AddedAction.Range, AddedAction.thisDeBuff);
+                Action Aaction = new Action(AddedAction.thisActionType, AddedAction.thisAOE, AddedAction.Range, AddedAction.thisDeBuff, AddedAction.TriggerAnimation);
                 CurrentActions.Add(Aaction);
                 LastActionStackingOn = Aaction;
             }

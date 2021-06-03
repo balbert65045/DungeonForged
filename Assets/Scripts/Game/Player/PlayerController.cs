@@ -185,6 +185,7 @@ public class PlayerController : MonoBehaviour {
         if (action.thisActionType == ActionType.Movement)
         {
             usingAction = CheckToMoveOrInteract();
+            if (usingAction) { RemoveArea(); }
         }
         else if (action.thisActionType == ActionType.Attack)
         {
@@ -274,9 +275,9 @@ public class PlayerController : MonoBehaviour {
         RemoveArea();
         if (action.thisActionType == ActionType.Attack) {
             bool ranged = action.Range > 1;
-            SelectPlayerCharacter.Attack(action.thisAOE.Damage, action.thisDeBuff, characters.ToArray(), ranged); 
+            SelectPlayerCharacter.Attack(action.thisAOE.Damage, action.thisDeBuff, characters.ToArray(), ranged, action.TriggerAnimation); 
         }
-        else { SelectPlayerCharacter.GetComponent<CharacterAnimationController>().DoBuff(action.thisActionType, action.thisAOE.Damage, characters); }
+        else { SelectPlayerCharacter.GetComponent<CharacterAnimationController>().DoBuff(action.thisActionType, action.thisAOE.Damage, CurrentAction.thisDeBuff, characters); }
     }
 
     List<Character> CheckForNegativeAction(Action action, Character character, Hex hexSelected)
@@ -378,7 +379,7 @@ public class PlayerController : MonoBehaviour {
             if (SelectPlayerCharacter.hasArtifact(ArtifactType.MoveStart))
             {
                 FindObjectOfType<NewHand>().HideHand();
-                CurrentActions.Add(new Action(ActionType.Movement, new AOE(AOEType.SingleTarget, 0, 0), 2, new DeBuff(DeBuffType.None, 0)));
+                CurrentActions.Add(new Action(ActionType.Movement, new AOE(AOEType.SingleTarget, 0), 2, new DeBuff(DeBuffType.None, 0)));
                 CurrentAction = CurrentActions[0];
                 SelectPlayerCharacter.ShowMoveDistance(CurrentAction.Range);
                 SelectPlayerCharacter.ShowActionOnHealthBar(CurrentActions);
@@ -458,7 +459,7 @@ public class PlayerController : MonoBehaviour {
         FindObjectOfType<NewHand>().ShowHand(); 
         FindObjectOfType<StagingArea>().DiscardUsedCards();
         FindObjectOfType<StagingArea>().ClearStagedAction();
-        CurrentAction = new Action(ActionType.None, new AOE(AOEType.SingleTarget, 0, 0), 0, new DeBuff(DeBuffType.None, 0));
+        CurrentAction = new Action(ActionType.None, new AOE(AOEType.SingleTarget, 0), 0, new DeBuff(DeBuffType.None, 0));
         AllowEndTurn();
         UnHighlightHexes();
     }
@@ -469,7 +470,7 @@ public class PlayerController : MonoBehaviour {
         if (character.hasArtifact(ArtifactType.HexMoveIncrease)) {
             amount = 2;
         }
-        CurrentActions.Add(new Action(ActionType.Movement, new AOE(AOEType.SingleTarget, 0, 0), amount, new DeBuff(DeBuffType.None, 0)));
+        CurrentActions.Add(new Action(ActionType.Movement, new AOE(AOEType.SingleTarget, 0), amount, new DeBuff(DeBuffType.None, 0)));
     }
 
     void AddShield(PlayerCharacter character)
@@ -483,7 +484,7 @@ public class PlayerController : MonoBehaviour {
         charactersShielding.Add(character);
         RemoveActionUsed();
         hexVisualizer.HexChange();
-        PerformAction(new Action(ActionType.Shield, new AOE(AOEType.SingleTarget, 1, amount), amount, new DeBuff(DeBuffType.None, 0)), charactersShielding);
+        PerformAction(new Action(ActionType.Shield, new AOE(AOEType.SingleTarget, amount), amount, new DeBuff(DeBuffType.None, 0)), charactersShielding);
     }
 
     void AddDraw(PlayerCharacter character)
@@ -495,7 +496,7 @@ public class PlayerController : MonoBehaviour {
         }
         RemoveActionUsed();
         hexVisualizer.HexChange();
-        UseImmediateAction(new Action(ActionType.DrawCard, new AOE(AOEType.SingleTarget, 1, amountDrawn), amountDrawn, new DeBuff(DeBuffType.None, 0)));
+        UseImmediateAction(new Action(ActionType.DrawCard, new AOE(AOEType.SingleTarget, amountDrawn), amountDrawn, new DeBuff(DeBuffType.None, 0)));
     }
 
     public void AddModifier(ModifierTypes modifier, PlayerCharacter character)
@@ -524,7 +525,7 @@ public class PlayerController : MonoBehaviour {
                 charactersHealing.Add(character);
                 RemoveActionUsed();
                 hexVisualizer.HexChange();
-                PerformAction(new Action(ActionType.Heal, new AOE(AOEType.SingleTarget, 1, amountHealed), amountHealed, new DeBuff(DeBuffType.None, 0)), charactersHealing);
+                PerformAction(new Action(ActionType.Heal, new AOE(AOEType.SingleTarget, amountHealed), amountHealed, new DeBuff(DeBuffType.None, 0)), charactersHealing);
                 break;
             case ModifierTypes.Money:
                 int goldAmount = Random.Range(10, 30);

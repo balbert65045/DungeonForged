@@ -59,108 +59,61 @@ MonoBehaviour:
     - thisActionType: 1
       thisAOE:
         thisAOEType: 0
-        Targets: 0
         Damage: 0
       thisDeBuff:
         thisDeBuffType: 0
         Amount: 0
       Range: 4
+      TriggerAnimation: 
     - thisActionType: 4
       thisAOE:
         thisAOEType: 0
-        Targets: 0
         Damage: 2
       thisDeBuff:
         thisDeBuffType: 0
         Amount: 0
       Range: 0
+      TriggerAnimation: 
   AvailableActions:
   - Actions:
     - thisActionType: 1
       thisAOE:
         thisAOEType: 0
-        Targets: 0
         Damage: 0
       thisDeBuff:
         thisDeBuffType: 0
         Amount: 0
       Range: 2
+      TriggerAnimation: 
     - thisActionType: 2
       thisAOE:
         thisAOEType: 0
-        Targets: 0
         Damage: 6
       thisDeBuff:
         thisDeBuffType: 0
         Amount: 0
       Range: 1
-  - Actions:
-    - thisActionType: 1
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 0
-      thisDeBuff:
-        thisDeBuffType: 0
-        Amount: 0
-      Range: 3
-    - thisActionType: 2
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 4
-      thisDeBuff:
-        thisDeBuffType: 0
-        Amount: 0
-      Range: 1
+      TriggerAnimation: 
   - Actions:
     - thisActionType: 4
       thisAOE:
         thisAOEType: 0
-        Targets: 0
-        Damage: 3
+        Damage: 5
+      thisDeBuff:
+        thisDeBuffType: 11
+        Amount: 1
+      Range: 0
+      TriggerAnimation: 
+  - Actions:
+    - thisActionType: 2
+      thisAOE:
+        thisAOEType: 4
+        Damage: 10
       thisDeBuff:
         thisDeBuffType: 0
         Amount: 0
       Range: 0
-    - thisActionType: 2
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 6
-      thisDeBuff:
-        thisDeBuffType: 0
-        Amount: 0
-      Range: 1
-  - Actions:
-    - thisActionType: 2
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 3
-      thisDeBuff:
-        thisDeBuffType: 4
-        Amount: 2
-      Range: 2
-  - Actions:
-    - thisActionType: 1
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 0
-      thisDeBuff:
-        thisDeBuffType: 0
-        Amount: 0
-      Range: 1
-    - thisActionType: 2
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 9
-      thisDeBuff:
-        thisDeBuffType: 0
-        Amount: 0
-      Range: 1
+      TriggerAnimation: 
   DisengagingActions: []
   CurrentActionSet:
     Actions: []

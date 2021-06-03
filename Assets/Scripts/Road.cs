@@ -79,5 +79,7 @@ public class Road : PathPart
         roadPiece2.color = Color.white;
         yield return new WaitForSeconds(.5f);
         roadPiece3.color = Color.white;
+        yield return new WaitForSeconds(.1f);
+        FindObjectOfType<LocationMap>().ChangeToNextLocation();
     }
 }

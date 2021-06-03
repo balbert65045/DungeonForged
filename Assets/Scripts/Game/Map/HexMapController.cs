@@ -433,6 +433,7 @@ public class HexMapController : MonoBehaviour {
     public List<Node> GetEnemyAOE(AOEType aoeType, Node OriginNode, Node targetNode)
     {
         Node nodeInBestDirection = GetNodeInDirection(GetBestDirection(OriginNode, targetNode, aoeType), OriginNode);
+        if (aoeType == AOEType.Circle) { nodeInBestDirection = targetNode; }
         return GetAOE(aoeType, OriginNode, nodeInBestDirection);
     }
 
@@ -445,35 +446,35 @@ public class HexMapController : MonoBehaviour {
                 Vector2 direction = FindDirection(OriginNode, StartNode);
                 Node nodeInCleave = GetNextCounterClockwizeNode(OriginNode, StartNode, direction);
                 NodesinAOE.Add(StartNode);
-                if (!IsAPossibleConnectedNode(nodeInCleave, StartNode)) { break; }
+                if (!IsPossibleNode(nodeInCleave)) { break; }
                 NodesinAOE.Add(nodeInCleave);
                 break;
             case AOEType.GreatCleave:
                 Vector2 CleaveDirection = FindDirection(OriginNode, StartNode);
                 Node node1InCleave = GetNextCounterClockwizeNode(OriginNode, StartNode, CleaveDirection);
                 NodesinAOE.Add(StartNode);
-                if (!IsAPossibleConnectedNode(node1InCleave, StartNode)) { break; }
+                if (!IsPossibleNode(node1InCleave)) { break; }
                 NodesinAOE.Add(node1InCleave);
                 Vector2 Cleave2Direction = FindDirection(OriginNode, node1InCleave);
                 Node node2InCleave = GetNextCounterClockwizeNode(OriginNode, node1InCleave, Cleave2Direction);
-                if (!IsAPossibleConnectedNode(node2InCleave, StartNode)) { break; }
+                if (!IsPossibleNode(node2InCleave)) { break; }
                 NodesinAOE.Add(node2InCleave);
                 break;
             case AOEType.Line:
                 Vector2 lineDirection = FindDirection(OriginNode, StartNode);
                 Node node = GetNextNodeInDirection(StartNode, lineDirection);
                 NodesinAOE.Add(StartNode);
-                if (!IsAPossibleConnectedNode(node, StartNode)) { break; }
+                if (!IsPossibleNode(node)) { break; }
                 NodesinAOE.Add(node);
                 break;
             case AOEType.LargeLine:
                 Vector2 LargelineDirection = FindDirection(OriginNode, StartNode);
                 Node node1 = GetNextNodeInDirection(StartNode, LargelineDirection);
                 NodesinAOE.Add(StartNode);
-                if (!IsAPossibleConnectedNode(node1, StartNode)) { break; }
+                if (!IsPossibleNode(node1)) { break; }
                 Node node2 = GetNextNodeInDirection(node1, LargelineDirection);
                 NodesinAOE.Add(node1);
-                if (!IsAPossibleConnectedNode(node2, node1)) { break; }
+                if (!IsPossibleNode(node2)) { break; }
                 NodesinAOE.Add(node2);
                 break;
             case AOEType.SingleTarget:
@@ -482,14 +483,14 @@ public class HexMapController : MonoBehaviour {
             case AOEType.Surounding:
                 List<Node> nodes = GetNodesSurrounding(OriginNode);
                 foreach(Node myNode in nodes) {
-                    if (!IsAPossibleConnectedNode(myNode, StartNode)) { continue; }
+                    if (!IsPossibleNode(myNode)) { continue; }
                     NodesinAOE.Add(myNode);
                 }
                 break;
             case AOEType.Circle:
                 List<Node> CircleNodes = GetNodesSurrounding(StartNode);
                 foreach (Node myNode in CircleNodes) {
-                    if (!IsAPossibleConnectedNode(myNode, StartNode)) { continue; }
+                    if (!IsPossibleNode(myNode)) { continue; }
                     NodesinAOE.Add(myNode);
                 }
                 NodesinAOE.Add(StartNode);
@@ -511,12 +512,37 @@ public class HexMapController : MonoBehaviour {
                 if (IsPossibleNode(FarNode2)) { NodesinAOE.Add(FarNode2); }
                 NodesinAOE.Add(StartNode);
                 break;
+            case AOEType.LargeWave:
+                Vector2 LargWaveDirection = FindDirection(OriginNode, StartNode);
+                Node closeNode1 = GetNextClockwizeNode(OriginNode, StartNode, LargWaveDirection);
+                Vector2 OtherDirection = FindDirection(StartNode, closeNode1);
+                
+                Node middleNode1 = GetNodeInDirection(LargWaveDirection, StartNode);
+                Node middleNode2 = GetNodeInDirection(OtherDirection, middleNode1);
+                Node middleNode3 = GetNodeInDirection(OtherDirection, middleNode2);
+
+                Node farNodew1 = GetNodeInDirection(LargWaveDirection, middleNode1);
+                Node farNodew2 = GetNodeInDirection(OtherDirection, farNodew1);
+                Node farNodew3 = GetNodeInDirection(OtherDirection, farNodew2);
+                Node farNodew4 = GetNodeInDirection(OtherDirection, farNodew3);
+
+                if (IsPossibleNode(closeNode1)) { NodesinAOE.Add(closeNode1); }
+                if (IsPossibleNode(middleNode1)) { NodesinAOE.Add(middleNode1); }
+                if (IsPossibleNode(middleNode2)) { NodesinAOE.Add(middleNode2); }
+                if (IsPossibleNode(middleNode3)) { NodesinAOE.Add(middleNode3); }
+                if (IsPossibleNode(farNodew1)) { NodesinAOE.Add(farNodew1); }
+                if (IsPossibleNode(farNodew2)) { NodesinAOE.Add(farNodew2); }
+                if (IsPossibleNode(farNodew3)) { NodesinAOE.Add(farNodew3); }
+                if (IsPossibleNode(farNodew4)) { NodesinAOE.Add(farNodew4); }
+                NodesinAOE.Add(StartNode);
+                break;
         }
         return NodesinAOE;
     }
 
     bool IsPossibleNode(Node node)
     {
+        if (node == null) { return false; }
         if (node.edge) { return false; }
         if (!node.Shown) { return false; }
         return true;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class mapCamera : MonoBehaviour
 {
     Vector3 MovPos;
+    float moveDistance = 1;
     public void setMovePosition(Vector3 position)
     {
         MovPos = new Vector3(transform.position.x, position.y, position.z);
@@ -18,9 +19,6 @@ public class mapCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if ((MovPos - transform.position).magnitude > .02f)
-        //{
-        //    transform.position = Vector3.Lerp(transform.position, MovPos, .002f);
-        //}
+
     }
 }

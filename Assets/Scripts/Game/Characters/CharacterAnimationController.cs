@@ -21,7 +21,9 @@ public class CharacterAnimationController : MonoBehaviour {
 
     ActionType ActionPerforming;
     int AmountOfAction;
+    DeBuff deBuffApplying;
     List<Character> CharactersAffected;
+    public string AnimationTrigger;
     // Use this for initialization
     void Awake() {
         myAnimator = GetComponent<Animator>();
@@ -77,12 +79,13 @@ public class CharacterAnimationController : MonoBehaviour {
         GetComponent<PlayerCharacter>().CollectGold(GoldAmount);
     }
 
-    public void DoBuff(ActionType action, int Amount, List<Character> charactersEffecting)
+    public void DoBuff(ActionType action, int Amount, DeBuff debuff, List<Character> charactersEffecting)
     {
        myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
        ActionPerforming = action;
        AmountOfAction = Amount;
        CharactersAffected = charactersEffecting;
+       deBuffApplying = debuff;
        myAnimator.SetTrigger("Buff");
     }
 
@@ -91,10 +94,10 @@ public class CharacterAnimationController : MonoBehaviour {
         switch (ActionPerforming)
         {
             case ActionType.Heal:
-                GetComponent<Character>().PerformHeal(AmountOfAction, CharactersAffected);
+                GetComponent<Character>().PerformHeal(AmountOfAction, CharactersAffected, deBuffApplying);
                 break;
             case ActionType.Shield:
-                GetComponent<Character>().PerformShield(AmountOfAction, CharactersAffected);
+                GetComponent<Character>().PerformShield(AmountOfAction, CharactersAffected, deBuffApplying);
                 break;
         }
     }
@@ -109,7 +112,14 @@ public class CharacterAnimationController : MonoBehaviour {
     {
         if (!myCharacter.GetAttacking())
         {
-            myAnimator.SetTrigger("Attack");
+            if (AnimationTrigger != null && AnimationTrigger != "")
+            {
+                myAnimator.SetTrigger(AnimationTrigger);
+            }
+            else
+            {
+                myAnimator.SetTrigger("Attack");
+            }
             myCharacter.SetAttacking(true);
         }
     }

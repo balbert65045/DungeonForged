@@ -31,7 +31,8 @@ public enum DeBuffType
     Slow = 7,
 
     IncreaseAttack = 9,
-    IncreaseMove = 10
+    IncreaseMove = 10,
+    PowerUp = 11,
 }
 
 [System.Serializable]
@@ -54,12 +55,14 @@ public struct Action {
     public AOE thisAOE;
     public DeBuff thisDeBuff;
     public int Range;
+    public string TriggerAnimation;
 
-    public Action(ActionType actionType, AOE aoe, int amount, DeBuff debuff)
+    public Action(ActionType actionType, AOE aoe, int amount, DeBuff debuff, string triggerAnimation = null)
     {
         thisActionType = actionType;
         thisAOE = aoe;
         Range = amount;
         thisDeBuff = debuff;
+        TriggerAnimation = triggerAnimation;
     }
 }

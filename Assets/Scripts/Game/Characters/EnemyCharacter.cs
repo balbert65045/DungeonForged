@@ -59,14 +59,27 @@ public class EnemyCharacter : Character {
         myHealthBar.ShowActions(currentActionSet.Actions, myDeBuffs);
         if (currentActionSet.Actions[0].thisActionType == ActionType.Attack && currentActionSet.Actions[0].thisAOE.thisAOEType != AOEType.SingleTarget)
         {
+            attackAOEType = currentActionSet.Actions[0].thisAOE.thisAOEType;
             AoeTargetHex = ClosestCharacter.HexOn;
-            Node nodeInBestDirection = HexMap.GetNodeInDirection(HexMap.GetBestDirection(HexOn.HexNode, AoeTargetHex.HexNode, currentActionSet.Actions[0].thisAOE.thisAOEType), HexOn.HexNode);
-            transform.LookAt(new Vector3(nodeInBestDirection.transform.position.x, transform.position.y, nodeInBestDirection.transform.position.z));
+            Node nodeInBestDirection = null;
+            if (currentActionSet.Actions[0].thisAOE.thisAOEType == AOEType.Circle)
+            {
+                nodeInBestDirection = AoeTargetHex.HexNode;
+            }
+            else
+            {
+                nodeInBestDirection = HexMap.GetNodeInDirection(HexMap.GetBestDirection(HexOn.HexNode, AoeTargetHex.HexNode, currentActionSet.Actions[0].thisAOE.thisAOEType), HexOn.HexNode);
+            }
+            transform.LookAt(new Vector3(AoeTargetHex.transform.position.x, transform.position.y, AoeTargetHex.transform.position.z));
             List<Node> nodesInAOE = FindObjectOfType<HexMapController>().GetAOE(currentActionSet.Actions[0].thisAOE.thisAOEType, HexOn.HexNode, nodeInBestDirection);
             foreach(Node node in nodesInAOE)
             {
                 node.NodeHex.SetToAOE();
             }
+        }
+        else
+        {
+            attackAOEType = AOEType.SingleTarget;
         }
     }
 
@@ -116,7 +129,7 @@ public class EnemyCharacter : Character {
 
     public void ShowPreviewAttack( Hex hex)
     {
-        if (previewAttackRange == 0) { return; }
+        if (previewAttackRange == 0 && attackAOEType == AOEType.SingleTarget) { return; }
         List<Node> nodes = null;
         if (attackAOEType == AOEType.SingleTarget) { nodes = HexMap.GetNodesInLOS(hex.HexNode, previewAttackRange); }
         else { nodes = HexMap.GetEnemyAOE(attackAOEType, HexOn.HexNode, AoeTargetHex.HexNode); }
@@ -136,9 +149,14 @@ public class EnemyCharacter : Character {
         //Have to do this because of silly variable being added
         List<Node> nodesToSurround = new List<Node>();
         foreach (Node node in nodesInRange) { nodesToSurround.Add(node); }
-        if (NodesInActionRange.Count == 0) { nodesToSurround.Add(hex.HexNode); }
+        if ((NodesInActionRange.Count == 0 && attackAOEType != AOEType.Circle) || attackAOEType == AOEType.Surounding) { nodesToSurround.Add(hex.HexNode); }
 
         List<Vector3> points = new List<Vector3>();
+        if (attackAOEType == AOEType.Circle)
+        {
+            hex = AoeTargetHex;
+            nodesToSurround.Remove(hex.HexNode);
+        }
         points = HexMap.GetHexesSurrounding(hex.HexNode, nodesToSurround);
         FindObjectOfType<EnemyController>().CreateOtherArea(points, ActionType.Attack);
     }
@@ -184,6 +202,7 @@ public class EnemyCharacter : Character {
     public override void Die()
     {
         GetGroup().UnLinkCharacterToGroup(this);
+        GetAttackHexes(1);
         if (attackAOEType != AOEType.SingleTarget)
         {
             foreach (Node node in NodesInActionRange)
@@ -288,12 +307,13 @@ public class EnemyCharacter : Character {
         }
         else
         {
-            GetComponent<CharacterAnimationController>().DoBuff(ActionType.Shield, CurrentAction.thisAOE.Damage, new List<Character>() { this });
+            GetComponent<CharacterAnimationController>().DoBuff(ActionType.Shield, CurrentAction.thisAOE.Damage, CurrentAction.thisDeBuff, new List<Character>() { this });
         }
     }
 
     DeBuff deBuffApplying;
     bool RangedAttack = false;
+    string TriggerAnimation;
     void UseAttack(Action action)
     {
         if (ClosestCharacter == null) { ClosestCharacter = BreadthFirst(); }
@@ -304,10 +324,12 @@ public class EnemyCharacter : Character {
             CurrentAttack = action.thisAOE.Damage;
             deBuffApplying = action.thisDeBuff;
             RangedAttack = action.Range > 1;
+            TriggerAnimation = action.TriggerAnimation;
             StartCoroutine("ShowAttack");
         }
         else if (attackAOEType != AOEType.SingleTarget)
         {
+            TriggerAnimation = action.TriggerAnimation;
             StartCoroutine("ShowAttack");
         }
         else { FinishedAttacking(); }
@@ -327,7 +349,6 @@ public class EnemyCharacter : Character {
         ClosestCharacter = BreadthFirst();
         if (ClosestCharacter == null)
         {
-            Debug.Log("No character to attack");
             finishedAction();
             return;
         }
@@ -356,7 +377,10 @@ public class EnemyCharacter : Character {
     IEnumerator Move()
     {
         List<Node> nodePath = null;
-        if (TakingDisadvantageWithRangedAttack()) { nodePath = MoveAwayFromTarget(TargetHex); }
+        if (TakingDisadvantageWithRangedAttack()) { 
+            nodePath = MoveAwayFromTarget(TargetHex);
+            Debug.Log(nodePath.Count);
+        }
         else { nodePath = getPathToTargettoAttack(TargetHex, CurrentAttackRange); }
         if (nodePath.Count == 0) { FinishedMoving(HexOn); }
         else
@@ -463,11 +487,13 @@ public class EnemyCharacter : Character {
         }
         if (charactersAttacking.Count == 0)
         {
+            transform.LookAt(new Vector3(AoeTargetHex.transform.position.x, transform.position.y, AoeTargetHex.transform.position.z));
+            GetComponent<CharacterAnimationController>().AnimationTrigger = TriggerAnimation;
             MakeAttack();
         }
         else
         {
-            Attack(CurrentAttack, deBuffApplying, charactersAttacking.ToArray(), RangedAttack);
+            Attack(CurrentAttack, deBuffApplying, charactersAttacking.ToArray(), RangedAttack, TriggerAnimation);
         }
     }
 

@@ -42,6 +42,17 @@ public class MapCanvas : MonoBehaviour
         locationMap.gameObject.SetActive(true);
     }
 
+    public void HideMapWithDelay()
+    {
+        StartCoroutine("hideMapWithDelay");
+    }
+
+    IEnumerator hideMapWithDelay()
+    {
+        yield return new WaitForSeconds(.1f);
+        HideMap();
+    }
+
     public void HideMap()
     {
         locationMap.gameObject.SetActive(false);
