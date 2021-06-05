@@ -56,7 +56,7 @@ public class EnemyCharacter : Character {
         if (distance > GetGroup().MaxIdealRange) { currentActionSet = GetGroup().GetRandomEngageActionSet(); }
         else if (distance < GetGroup().MinIdealRange) { currentActionSet = GetGroup().GetRandomDisengageActionSet(); }
         else { currentActionSet = GetGroup().GetRandomActionSet(currentActionSet); }
-        myHealthBar.ShowActions(currentActionSet.Actions, myDeBuffs);
+        myHealthBar.ShowActions(currentActionSet.Actions, myDeBuffs, false);
         if (currentActionSet.Actions[0].thisActionType == ActionType.Attack && currentActionSet.Actions[0].thisAOE.thisAOEType != AOEType.SingleTarget)
         {
             attackAOEType = currentActionSet.Actions[0].thisAOE.thisAOEType;

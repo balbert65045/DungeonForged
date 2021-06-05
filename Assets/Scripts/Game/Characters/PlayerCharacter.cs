@@ -206,6 +206,7 @@ public class PlayerCharacter : Character
     public override void FinishedAttacking(bool dead = false)
     {
         base.FinishedAttacking();
+        if (AttackActions.Count > 0) { return; }
         if (CharactersFinishedTakingDamage >= charactersAttackingAt.Count || charactersAttackingAt.Count == 0) {
             if (!dead) { StartCoroutine("FinisheAttackDelay"); }
             else { FindObjectOfType<PlayerController>().FinishedAttacking(this); }

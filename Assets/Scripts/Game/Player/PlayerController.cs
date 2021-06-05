@@ -174,6 +174,7 @@ public class PlayerController : MonoBehaviour {
 
     bool usingAction = false;
 
+    List<Character> charactersAttacking = new List<Character>();
     void UseAction(Action action)
     {
         if (usingAction) { return; }
@@ -189,12 +190,12 @@ public class PlayerController : MonoBehaviour {
         }
         else if (action.thisActionType == ActionType.Attack)
         {
-            List<Character> charactersActingOn = CheckForNegativeAction(action, SelectPlayerCharacter, hexSelected);
-            if (charactersActingOn != null && charactersActingOn.Count != 0)
+            charactersAttacking = CheckForNegativeAction(action, SelectPlayerCharacter, hexSelected);
+            if (charactersAttacking != null && charactersAttacking.Count != 0)
             {
                 usingAction = true;
                 hexVisualizer.ResetPredication();
-                PerformAction(action, charactersActingOn);
+                PerformAction(action, charactersAttacking);
             }
         }
         else
@@ -266,7 +267,11 @@ public class PlayerController : MonoBehaviour {
     public void RemoveActionUsed()
     {
         if (CurrentActions.Count == 0) { return; }
-        CurrentActions.RemoveAt(0);
+        int amountOfActions = CombinedActions().Count;
+        for(int i = 0; i < amountOfActions; i++)
+        {
+            CurrentActions.RemoveAt(0);
+        }
         SelectPlayerCharacter.ShowActionOnHealthBar(CurrentActions);
     }
 
@@ -274,10 +279,15 @@ public class PlayerController : MonoBehaviour {
     {
         RemoveArea();
         if (action.thisActionType == ActionType.Attack) {
-            bool ranged = action.Range > 1;
-            SelectPlayerCharacter.Attack(action.thisAOE.Damage, action.thisDeBuff, characters.ToArray(), ranged, action.TriggerAnimation); 
+            PerformAttack(CombinedActions(), characters);
         }
         else { SelectPlayerCharacter.GetComponent<CharacterAnimationController>().DoBuff(action.thisActionType, action.thisAOE.Damage, CurrentAction.thisDeBuff, characters); }
+    }
+
+    void PerformAttack(List<Action> actions, List<Character> characters)
+    {
+        RemoveArea();
+        SelectPlayerCharacter.PlayerAttack(actions, characters.ToArray());
     }
 
     List<Character> CheckForNegativeAction(Action action, Character character, Hex hexSelected)
@@ -449,6 +459,29 @@ public class PlayerController : MonoBehaviour {
         {
             AllowNewActions();
         }
+    }
+
+    public List<Action> CombinedActions()
+    {
+        if (CurrentActions.Count == 0) { return null; }
+        List<Action> actions = new List<Action>();
+        Action firstAction = CurrentActions[0];
+        actions.Add(firstAction);
+        if (CurrentActions.Count < 2) { return actions; }
+        for (int i = 1; i < CurrentActions.Count; i++)
+        {
+            if(CurrentActions[i].thisActionType == firstAction.thisActionType && CurrentActions[i].Range == firstAction.Range && 
+                CurrentActions[i].thisAOE.thisAOEType == firstAction.thisAOE.thisAOEType)
+            {
+                actions.Add(CurrentActions[i]);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return actions;
     }
 
     public void AllowNewActions()

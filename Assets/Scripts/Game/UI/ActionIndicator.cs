@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ActionIndicator : MonoBehaviour {
 
+    public Color HighlightColor;
+
     public GameObject StatusObj;
     public SpriteRenderer StatusSpriteRenderer;
     public TextMesh StatusValue;
@@ -12,6 +14,8 @@ public class ActionIndicator : MonoBehaviour {
     public SpriteRenderer RangeSpriteIndicator;
     public TextMesh RangeValue;
     public GameObject AOESprite;
+
+    public GameObject ActionObj;
     public SpriteRenderer ActionSpriteIndicator;
     public SpriteRenderer ActionSpriteIndicatorBackGround;
     public TextMesh ActionValue;
@@ -79,6 +83,20 @@ public class ActionIndicator : MonoBehaviour {
             if (aDebuff.thisDeBuffType == debuffType) { return true; }
         }
         return false;
+    }
+
+    public void HighlightAction()
+    {
+        ActionObj.GetComponent<SpriteRenderer>().color = HighlightColor;
+        StatusObj.GetComponent<SpriteRenderer>().color = HighlightColor;
+        RangeObj.GetComponent<SpriteRenderer>().color = HighlightColor;
+    }
+
+    public void UnHighlightAction()
+    {
+        ActionObj.GetComponent<SpriteRenderer>().color = Color.black;
+        StatusObj.GetComponent<SpriteRenderer>().color = Color.black;
+        RangeObj.GetComponent<SpriteRenderer>().color = Color.black;
     }
 
     public void ShowAction(Action action, List<DeBuff> deBuffs)

@@ -64,16 +64,41 @@ public class HealthBar : MonoBehaviour {
         }
     }
 
-    public void ShowActions(List<Action> actions, List<DeBuff> deBuffs)
+    public void ShowActions(List<Action> actions, List<DeBuff> deBuffs, bool isPlayer)
     {
         ClearActions();
+        bool firstfighting = false;
+        int actionRange = 0;
+        AOEType aoeType = AOEType.SingleTarget;
         for(int i = 0; i < actions.Count; i++)
         {
+           
             GameObject actionIndicator = Instantiate(IndicatorPrefab, this.transform);
             actionIndicator.transform.localPosition = new Vector3(-0.25f, .94f + i * .5f, 0);
             ActionIndicator AI = actionIndicator.GetComponent<ActionIndicator>();
             AI.ShowAction(actions[i], deBuffs);
             CurrnetIndicators.Add(AI);
+            if (!isPlayer) { continue; }
+            if (i == 0)
+            {
+                AI.HighlightAction();
+                if(actions[i].thisActionType == ActionType.Attack)
+                {
+                    firstfighting = true;
+                    actionRange = actions[i].Range;
+                    aoeType = actions[i].thisAOE.thisAOEType;
+                }
+            }
+            else if (firstfighting)
+            {
+                if (actions[i].thisActionType == ActionType.Attack && actions[i].Range == actionRange && actions[i].thisAOE.thisAOEType == aoeType)
+                {
+                    AI.HighlightAction();
+                } else
+                {
+                    firstfighting = false;
+                }
+            }
         }
     }
 

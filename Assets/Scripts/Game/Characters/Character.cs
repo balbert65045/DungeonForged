@@ -113,7 +113,7 @@ public class Character : Entity {
 
     public void ShowActionOnHealthBar(List<Action> actions)
     {
-        myHealthBar.ShowActions(actions, myDeBuffs);
+        myHealthBar.ShowActions(actions, myDeBuffs, IsPlayer());
     }
 
     public bool HexInActionRange(Hex hex) { return NodesInActionRange.Contains(hex.HexNode); }
@@ -169,9 +169,6 @@ public class Character : Entity {
     public virtual void FinishedMoving(Hex hex, bool fighting = false, Hex HexMovingFrom = null) { }
 
     public virtual void FinishedAttacking(bool dead = false) { 
-        if (MyDeBuffsHas(DeBuffType.IncreaseAttack)){
-            RemoveStatus(DeBuffType.IncreaseAttack);
-        }
         CharactersFinishedTakingDamage++; 
     }
 
@@ -358,8 +355,8 @@ public class Character : Entity {
 
     public void IncreaseAttack()
     {
-        int amount = 3;
-        if (hasArtifact(ArtifactType.HexAttackIncrease)){ amount = 6; }
+        int amount = 2;
+        if (hasArtifact(ArtifactType.HexAttackIncrease)){ amount = 4; }
         DeBuff newDeBuff = new DeBuff(DeBuffType.IncreaseAttack, amount);
         AddDeBuff(newDeBuff);
         ShowDeBuff();
@@ -503,6 +500,12 @@ public class Character : Entity {
         {
             character.GetHit();
         }
+        if (AttackActions.Count != 0)
+        {
+            bool ranged = AttackActions[0].Range > 1;
+            Attack(AttackActions[0].thisAOE.Damage, AttackActions[0].thisDeBuff, charactersAttackingAt.ToArray(), ranged, "StrikeAgain");
+            AttackActions.RemoveAt(0);
+        }
     }
 
     public void LetAttackerAttack()
@@ -522,6 +525,15 @@ public class Character : Entity {
         if (MyDeBuffsHas(DeBuffType.IncreaseAttack)) { totalamount = totalamount + FindDeBuff(DeBuffType.IncreaseAttack).Amount; }
         if (MyDeBuffsHas(DeBuffType.Weaken)) { totalamount = Mathf.FloorToInt(totalamount * .75f); }
         return totalamount;
+    }
+
+    protected List<Action> AttackActions = new List<Action>();
+    public void PlayerAttack(List<Action> actions, Character[] characters)
+    {
+        AttackActions = actions;
+        bool ranged = actions[0].Range > 1;
+        Attack(actions[0].thisAOE.Damage, actions[0].thisDeBuff, characters, ranged, actions[0].TriggerAnimation);
+        AttackActions.Remove(actions[0]);
     }
 
     public void Attack(int damage, DeBuff deBuff, Character[] characters, bool ranged, string TriggerAnimation)
