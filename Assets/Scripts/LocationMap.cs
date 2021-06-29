@@ -114,30 +114,30 @@ public class LocationMap : MonoBehaviour
     private void Update()
     {
         if (pathMovingOn != null) { return; }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.localPosition = Vector3.Lerp(transform.up * mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            transform.localPosition = Vector3.Lerp(transform.right * mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
-        }
-        else if (Input.GetKey(KeyCode.W))
-        {
-            transform.localPosition = Vector3.Lerp(transform.up * -mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            transform.localPosition = Vector3.Lerp(transform.right * -mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
-        }
-        float x = transform.localPosition.x;
-        float y = transform.localPosition.y;
-        if (transform.localPosition.x > -minWidth * 150) { x = -minWidth * 150; }
-        if (transform.localPosition.x < -maxWidth * 150) { x = -maxWidth * 150; }
-        if (transform.localPosition.y > maxHeight * 150) { y = maxHeight * 150; }
-        if (transform.localPosition.y < minHeight * 150) { y = minHeight * 150; }
+        //if (Input.GetKey(KeyCode.S))
+        //{
+        //    transform.localPosition = Vector3.Lerp(transform.up * mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
+        //}
+        //else if (Input.GetKey(KeyCode.A))
+        //{
+        //    transform.localPosition = Vector3.Lerp(transform.right * mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
+        //}
+        //else if (Input.GetKey(KeyCode.W))
+        //{
+        //    transform.localPosition = Vector3.Lerp(transform.up * -mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
+        //}
+        //else if (Input.GetKey(KeyCode.D))
+        //{
+        //    transform.localPosition = Vector3.Lerp(transform.right * -mapSpeed * .05f + transform.localPosition, transform.localPosition, .5f);
+        //}
+        //float x = transform.localPosition.x;
+        //float y = transform.localPosition.y;
+        //if (transform.localPosition.x > -minWidth * 150) { x = -minWidth * 150; }
+        //if (transform.localPosition.x < -maxWidth * 150) { x = -maxWidth * 150; }
+        //if (transform.localPosition.y > maxHeight * 150) { y = maxHeight * 150; }
+        //if (transform.localPosition.y < minHeight * 150) { y = minHeight * 150; }
 
-        transform.localPosition = new Vector3(x, y, 0);
+        //transform.localPosition = new Vector3(x, y, 0);
     }
 
     public int PathsTaken = 0;
@@ -160,7 +160,8 @@ public class LocationMap : MonoBehaviour
 
     public void MoveInDirection(Path path)
     {
-        StartCoroutine("Move", path);
+        pathMovingOn = path;
+        //StartCoroutine("Move", path);
     }
 
     bool moving = false;
@@ -208,7 +209,7 @@ public class LocationMap : MonoBehaviour
 
     void SetStartArea()
     {
-        StartArea = GetArea(4, 4);
+        StartArea = GetArea(4, 8);
         StartArea.SetAsStart();
         StartArea.SetAsUsed();
     }
@@ -231,7 +232,7 @@ public class LocationMap : MonoBehaviour
     void CreateFirstPath()
     {
         Path path = new Path();
-        LocationArea NewArea = SetupArea(StartArea);
+        LocationArea NewArea = SetupForwardArea(StartArea);
         LocationArea FirstArea = SetupArtifactArea(NewArea);
         //LocationArea FirstArea = SetupRestArea(NewArea);
         path.AddToPath(FirstArea.GetComponent<PathPart>());
@@ -253,14 +254,58 @@ public class LocationMap : MonoBehaviour
     void ShowPossibleOtherAreas()
     {
         ResetStops();
-        CreateAPath();
-        CreateAPath();
+        CreateRightPath();
+        CreateLeftPath();
     }
 
     List<Location> StopsAvailable = new List<Location> { Location.Anvil, Location.Artifact, Location.Chest, Location.Shop, Location.Rest, Location.Furnace }; 
     void ResetStops()
     {
         StopsAvailable = new List<Location> { Location.Anvil, Location.Artifact, Location.Chest, Location.Shop, Location.Rest, Location.Furnace };
+    }
+
+    void CreateRightPath()
+    {
+        if (AreaTakenOrNull(StartArea.X + 1, StartArea.Y)){ return; }
+        Path path = new Path();
+        LocationArea FirstArea = SetupRightArea(StartArea);
+        FirstArea = SetupStop(FirstArea);
+        path.AddToPath(FirstArea.GetComponent<PathPart>());
+        GameObject road1 = CreateTravelPath(StartArea, FirstArea);
+        path.AddToPath(road1.GetComponent<PathPart>());
+        LocationArea SecondArea = SetupRightArea(FirstArea);
+        SecondArea = SetupStop(SecondArea);
+        path.AddToPath(SecondArea.GetComponent<PathPart>());
+        GameObject road2 = CreateTravelPath(FirstArea, SecondArea);
+        path.AddToPath(road2.GetComponent<PathPart>());
+        LocationArea ThirdArea = SetupCombatArea(SecondArea);
+        path.AddToPath(ThirdArea.GetComponent<PathPart>());
+        GameObject road3 = CreateTravelPath(SecondArea, ThirdArea);
+        path.AddToPath(road3.GetComponent<PathPart>());
+
+        Paths.Add(path);
+    }
+
+    void CreateLeftPath()
+    {
+        if (AreaTakenOrNull(StartArea.X - 1, StartArea.Y)) { return; }
+        Path path = new Path();
+        LocationArea FirstArea = SetupLeftArea(StartArea);
+        FirstArea = SetupStop(FirstArea);
+        path.AddToPath(FirstArea.GetComponent<PathPart>());
+        GameObject road1 = CreateTravelPath(StartArea, FirstArea);
+        path.AddToPath(road1.GetComponent<PathPart>());
+        LocationArea SecondArea = SetupLeftArea(FirstArea);
+        SecondArea = SetupStop(SecondArea);
+        path.AddToPath(SecondArea.GetComponent<PathPart>());
+        GameObject road2 = CreateTravelPath(FirstArea, SecondArea);
+        path.AddToPath(road2.GetComponent<PathPart>());
+        LocationArea ThirdArea = SetupCombatArea(SecondArea);
+        path.AddToPath(ThirdArea.GetComponent<PathPart>());
+        GameObject road3 = CreateTravelPath(SecondArea, ThirdArea);
+        path.AddToPath(road3.GetComponent<PathPart>());
+
+        Paths.Add(path);
     }
 
     void CreateAPath()
@@ -411,7 +456,7 @@ public class LocationMap : MonoBehaviour
 
     LocationArea SetupCombatArea(LocationArea area)
     {
-        LocationArea NewArea = SetupArea(area);
+        LocationArea NewArea = SetupForwardArea(area);
         NewArea.SetAsEnemy();
         NewArea.SetAsUnused();
         return NewArea;
@@ -422,15 +467,44 @@ public class LocationMap : MonoBehaviour
     public int minHeight = 0;
     public int minWidth = 0;
 
+    LocationArea SetupRightArea(LocationArea area)
+    {
+        if (AreaTakenOrNull(area.X + 1, area.Y)){ return null; }
+        LocationArea newArea = GetArea(area.X + 1, area.Y);
+        SetBounds(newArea);
+        return newArea;
+    }
+
+    LocationArea SetupLeftArea(LocationArea area)
+    {
+        if (AreaTakenOrNull(area.X - 1, area.Y)) { return null; }
+        LocationArea newArea = GetArea(area.X - 1, area.Y);
+        SetBounds(newArea);
+        return newArea;
+    }
+
+    LocationArea SetupForwardArea(LocationArea area)
+    {
+        if (AreaTakenOrNull(area.X, area.Y - 1)) { return null; }
+        LocationArea newArea = GetArea(area.X, area.Y - 1);
+        SetBounds(newArea);
+        return newArea;
+    }
+
     LocationArea SetupArea(LocationArea area)
     {
         AvailableDirections = new List<int>() { 0, 1, 2, 3 };
         LocationArea NewArea = FindAvailableArea(area);
+        SetBounds(NewArea);
+        return NewArea;
+    }
+
+    void SetBounds(LocationArea NewArea)
+    {
         if (NewArea.X - 4 > maxWidth) { maxWidth = NewArea.X - 4; }
         if (NewArea.X - 4 < minWidth) { minWidth = NewArea.X - 4; }
         if (NewArea.Y - 4 > maxHeight) { maxHeight = NewArea.Y - 4; }
         if (NewArea.Y - 4 < minHeight) { minHeight = NewArea.Y - 4; }
-        return NewArea;
     }
 
     LocationArea FindAvailableArea(LocationArea area)

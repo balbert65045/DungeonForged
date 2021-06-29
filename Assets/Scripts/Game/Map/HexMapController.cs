@@ -385,6 +385,7 @@ public class HexMapController : MonoBehaviour {
         {
             int directionAvg = 0;
             List<Node> nodes = GetAOE(type, start, GetNodeInDirection(direction, start));
+            if (nodes.Count == 0) { continue; }
             foreach(Node node in nodes)
             {
                 directionAvg += GetDistance(node, target);
@@ -440,6 +441,7 @@ public class HexMapController : MonoBehaviour {
     public List<Node> GetAOE(AOEType aoeType, Node OriginNode, Node StartNode)
     {
         List<Node> NodesinAOE = new List<Node>();
+        if (!IsPossibleNode(StartNode)) { return NodesinAOE; }
         switch (aoeType)
         {
             case AOEType.Cleave:

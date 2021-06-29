@@ -18,8 +18,14 @@ public class EnemyCharacter : Character {
 
     private Hex TargetHex;
     PlayerCharacter ClosestCharacter;
+    EnemyCharacter ClosestDamagedAlly;
 
     ActionSet currentActionSet;
+
+    public bool Damaged()
+    {
+        return health < maxHealth;
+    }
 
     public EnemyGroup GetGroup()
     {
@@ -49,6 +55,16 @@ public class EnemyCharacter : Character {
         }
     }
 
+    List<ActionType> myActionTypes(ActionSet set)
+    {
+        List<ActionType> myActionTypes = new List<ActionType>();
+        for(int i = 0; i < set.Actions.Count; i++)
+        {
+            myActionTypes.Add(currentActionSet.Actions[i].thisActionType);
+        }
+        return myActionTypes;
+    }
+
     public void ShowNewAction()
     {
         ClosestCharacter = BreadthFirst();
@@ -57,10 +73,34 @@ public class EnemyCharacter : Character {
         else if (distance < GetGroup().MinIdealRange) { currentActionSet = GetGroup().GetRandomDisengageActionSet(); }
         else { currentActionSet = GetGroup().GetRandomActionSet(currentActionSet); }
         myHealthBar.ShowActions(currentActionSet.Actions, myDeBuffs, false);
+        //NOTE: Designed with the intention of when an enemy does an AOE its the only action taking place!
+
         if (currentActionSet.Actions[0].thisActionType == ActionType.Attack && currentActionSet.Actions[0].thisAOE.thisAOEType != AOEType.SingleTarget)
         {
             attackAOEType = currentActionSet.Actions[0].thisAOE.thisAOEType;
             AoeTargetHex = ClosestCharacter.HexOn;
+            Node nodeInBestDirection = null;
+            if (currentActionSet.Actions[0].thisAOE.thisAOEType == AOEType.Circle)
+            {
+                nodeInBestDirection = AoeTargetHex.HexNode;
+            }
+            else
+            {
+                nodeInBestDirection = HexMap.GetNodeInDirection(HexMap.GetBestDirection(HexOn.HexNode, AoeTargetHex.HexNode, currentActionSet.Actions[0].thisAOE.thisAOEType), HexOn.HexNode);
+            }
+            transform.LookAt(new Vector3(AoeTargetHex.transform.position.x, transform.position.y, AoeTargetHex.transform.position.z));
+            List<Node> nodesInAOE = FindObjectOfType<HexMapController>().GetAOE(currentActionSet.Actions[0].thisAOE.thisAOEType, HexOn.HexNode, nodeInBestDirection);
+            foreach(Node node in nodesInAOE)
+            {
+                node.NodeHex.SetToAOE();
+            }
+        }
+        else if (currentActionSet.Actions[0].thisActionType == ActionType.Heal && currentActionSet.Actions[0].thisAOE.thisAOEType != AOEType.SingleTarget)
+        {
+            attackAOEType = currentActionSet.Actions[0].thisAOE.thisAOEType;
+            ClosestDamagedAlly = BreadthFirstDamagedEnemy();
+            if (ClosestDamagedAlly != null) { AoeTargetHex = ClosestDamagedAlly.HexOn; }
+            else { AoeTargetHex = HexOn; }
             Node nodeInBestDirection = null;
             if (currentActionSet.Actions[0].thisAOE.thisAOEType == AOEType.Circle)
             {
@@ -86,6 +126,7 @@ public class EnemyCharacter : Character {
     public void Selected()
     {
         previewMoveHexes.Clear();
+        hexVisualizer.HighlightSelectionHex(HexOn);
         for (int i = 0; i < currentActionSet.Actions.Count; i++)
         {
             int range = currentActionSet.Actions[i].Range;
@@ -99,6 +140,12 @@ public class EnemyCharacter : Character {
                 previewAttackRange = range;
                 ShowAttackOnHexOn();
             }
+            else if (currentActionSet.Actions[i].thisActionType == ActionType.Heal)
+            {
+                attackAOEType = currentActionSet.Actions[i].thisAOE.thisAOEType;
+                previewAttackRange = range;
+                ShowHealOnHexOn();
+            }
         }
     }
 
@@ -109,22 +156,90 @@ public class EnemyCharacter : Character {
 
     public void RemoveAreas()
     {
+        hexVisualizer.UnHighlightHex(HexOn);
         if (Preview != null) { Destroy(Preview); }
         FindObjectOfType<EnemyController>().RemoveAreas();
     }
 
-    public void VisualizeAttack(Hex hex)
+    public void VisualizeAction(Hex hex)
     {
         if (Preview != null) { Destroy(Preview); }
         if (hex.EntityHolding != null) { return; }
         Preview = hex.SpawnPreview(PreviewCharacter);
-        ShowPreviewAttack(hex);
+        for (int i = 0; i < currentActionSet.Actions.Count; i++)
+        {
+            if (currentActionSet.Actions[i].thisActionType != ActionType.Movement)
+            {
+                if (currentActionSet.Actions[i].thisActionType == ActionType.Attack)
+                {
+                    ShowPreviewAttack(hex);
+                }
+                else if (currentActionSet.Actions[i].thisActionType == ActionType.Heal)
+                {
+                    ShowPreviewHeal(hex);
+                }
+            }
+        }
     }
 
-    public void ShowAttackOnHexOn()
+    public void ShowActionOnHexOn()
+    {
+        for (int i = 0; i < currentActionSet.Actions.Count; i++)
+        {
+            if (currentActionSet.Actions[i].thisActionType != ActionType.Movement)
+            {
+                if (currentActionSet.Actions[i].thisActionType == ActionType.Attack)
+                {
+                    ShowAttackOnHexOn();
+                }
+                else if (currentActionSet.Actions[i].thisActionType == ActionType.Heal)
+                {
+                    ShowHealOnHexOn();
+                }
+            }
+        }
+    }
+
+    void ShowHealOnHexOn()
+    {
+        if (Preview != null) { Destroy(Preview); }
+        ShowPreviewHeal(HexOn);
+    }
+
+    void ShowAttackOnHexOn()
     {
         if (Preview != null) { Destroy(Preview); }
         ShowPreviewAttack(HexOn);
+    }
+
+    public void ShowPreviewHeal(Hex hex)
+    {
+        if (previewAttackRange == 0 && attackAOEType == AOEType.SingleTarget) { return; }
+        List<Node> nodes = null;
+        if (attackAOEType == AOEType.SingleTarget) { nodes = HexMap.GetNodesInLOS(hex.HexNode, previewAttackRange); }
+        else { nodes = HexMap.GetEnemyAOE(attackAOEType, HexOn.HexNode, AoeTargetHex.HexNode); }
+        List<Node> nodesInRange = new List<Node>();
+        foreach (Node node in nodes)
+        {
+            if (!node.Shown) { continue; }
+            if (node.edge) { continue; }
+            nodesInRange.Add(node);
+        }
+        if (nodesInRange.Contains(hex.HexNode)) { nodesInRange.Remove(hex.HexNode); }
+
+        //Have to do this because of silly variable being added
+        List<Node> nodesToSurround = new List<Node>();
+        foreach (Node node in nodesInRange) { nodesToSurround.Add(node); }
+        if ((NodesInActionRange.Count == 0 && attackAOEType != AOEType.Circle) || attackAOEType == AOEType.Surounding) { nodesToSurround.Add(hex.HexNode); }
+
+        List<Vector3> points = new List<Vector3>();
+        if (attackAOEType == AOEType.Circle)
+        {
+            hex = AoeTargetHex;
+            nodesToSurround.Remove(hex.HexNode);
+        }
+        points = HexMap.GetHexesSurrounding(hex.HexNode, nodesToSurround);
+        FindObjectOfType<EnemyController>().CreateOtherArea(points, ActionType.Heal);
     }
 
     public void ShowPreviewAttack( Hex hex)
@@ -202,7 +317,7 @@ public class EnemyCharacter : Character {
     public override void Die()
     {
         GetGroup().UnLinkCharacterToGroup(this);
-        GetAttackHexes(1);
+        GetActionHexes(1);
         if (attackAOEType != AOEType.SingleTarget)
         {
             foreach (Node node in NodesInActionRange)
@@ -290,6 +405,7 @@ public class EnemyCharacter : Character {
             return;
         }
         if (health <= 0) { return; }
+        if (myActionTypes(currentActionSet).Contains(ActionType.Heal)) { ClosestDamagedAlly = BreadthFirstDamagedEnemy(); }
         DoNextAction();
     }
 
@@ -305,10 +421,20 @@ public class EnemyCharacter : Character {
         {
             UseAttack(CurrentAction);
         }
+        else if(CurrentAction.thisActionType == ActionType.Heal)
+        {
+            UseHeal(CurrentAction);
+        }
         else
         {
             GetComponent<CharacterAnimationController>().DoBuff(ActionType.Shield, CurrentAction.thisAOE.Damage, CurrentAction.thisDeBuff, new List<Character>() { this });
         }
+    }
+
+    void UseHeal(Action action)
+    {
+        GetActionHexes(action.Range);
+        StartCoroutine("ShowHeal", action);
     }
 
     DeBuff deBuffApplying;
@@ -319,7 +445,7 @@ public class EnemyCharacter : Character {
         if (ClosestCharacter == null) { ClosestCharacter = BreadthFirst(); }
         TargetHex = ClosestCharacter.HexOn;
         attackAOEType = action.thisAOE.thisAOEType;
-        GetAttackHexes(action.Range);
+        GetActionHexes(action.Range);
         if (HexInActionRange(TargetHex) && !MyDeBuffsHas(DeBuffType.Disarm)) {
             CurrentAttack = action.thisAOE.Damage;
             deBuffApplying = action.thisDeBuff;
@@ -338,50 +464,107 @@ public class EnemyCharacter : Character {
     void UseMove(Action action)
     {
         //Adjust this to check if using positive action or negative action and move to the target looking for
-        CurrentAttackRange = 1;
-        for (int i = actionSetIndex + 1; i < currentActionSet.Actions.Count; i++)
+        if (myActionTypes(currentActionSet).Contains(ActionType.Heal))
         {
-            if (currentActionSet.Actions[i].thisActionType == ActionType.Attack)
+            CurrentActionRange = 1;
+            for (int i = actionSetIndex + 1; i < currentActionSet.Actions.Count; i++)
             {
-                CurrentAttackRange = currentActionSet.Actions[i].Range;
+                if (currentActionSet.Actions[i].thisActionType == ActionType.Heal)
+                {
+                    CurrentActionRange = currentActionSet.Actions[i].Range;
+                }
+            }
+            if (ClosestDamagedAlly == null)
+            {
+                finishedAction();
+                return;
+            }
+            TargetHex = ClosestDamagedAlly.HexOn;
+            GetActionHexes(CurrentActionRange);
+            if(HexInActionRange(TargetHex))
+            {
+                finishedAction();
+            }
+            else
+            {
+                CurrentMoveRange = action.Range;
+                if (MyDeBuffsHas(DeBuffType.Slow)) { CurrentMoveRange--; }
+                StartCoroutine("MoveToHeal");
             }
         }
-        ClosestCharacter = BreadthFirst();
-        if (ClosestCharacter == null)
+        else
         {
-            finishedAction();
-            return;
-        }
-        TargetHex = ClosestCharacter.HexOn;
-        GetAttackHexes(CurrentAttackRange);
-        if ((HexInActionRange(TargetHex) && !TakingDisadvantageWithRangedAttack()) || MyDeBuffsHas(DeBuffType.Immobelized))
-        {
-            finishedAction();
-        } else
-        {
-            CurrentMoveRange = action.Range;
-            if (MyDeBuffsHas(DeBuffType.Slow)) { CurrentMoveRange--; }
-            StartCoroutine("Move");
+            CurrentActionRange = 1;
+            for (int i = actionSetIndex + 1; i < currentActionSet.Actions.Count; i++)
+            {
+                if (currentActionSet.Actions[i].thisActionType == ActionType.Attack)
+                {
+                    CurrentActionRange = currentActionSet.Actions[i].Range;
+                }
+            }
+            ClosestCharacter = BreadthFirst();
+            if (ClosestCharacter == null)
+            {
+                finishedAction();
+                return;
+            }
+            TargetHex = ClosestCharacter.HexOn;
+            GetActionHexes(CurrentActionRange);
+            if ((HexInActionRange(TargetHex) && !TakingDisadvantageWithRangedAttack()) || MyDeBuffsHas(DeBuffType.Immobelized))
+            {
+                finishedAction();
+            }
+            else
+            {
+                CurrentMoveRange = action.Range;
+                if (MyDeBuffsHas(DeBuffType.Slow)) { CurrentMoveRange--; }
+                StartCoroutine("MoveToAttack");
+            }
         }
     }
 
     bool TakingDisadvantageWithRangedAttack()
     {
-        if (CurrentAttackRange > 1 && InMeleeRange(ClosestCharacter))
+        if (CurrentActionRange > 1 && InMeleeRange(ClosestCharacter))
         {
             return true;
         }
         return false;
     }
+    IEnumerator MoveToHeal()
+    {
+        List<Node> nodePath = null;
+        nodePath = getPathToTargettoHeal(TargetHex, CurrentActionRange);
+        if (nodePath.Count == 0) { FinishedMoving(HexOn); }
+        else
+        {
+            hexVisualizer.HighlightSelectionHex(HexOn);
+            yield return new WaitForSeconds(.5f);
+            int distanceToTravel = nodePath.Count;
+            if (nodePath.Count > CurrentMoveRange) { distanceToTravel = CurrentMoveRange; }
+            Hex hexToMoveTo = null;
+            //Loop and eliminate last node if it has something on it
+            for (int i = distanceToTravel - 1; i > 0; i--)
+            {
+                if (nodePath[i].NodeHex.EntityHolding != null) { distanceToTravel--; }
+                else { break; }
+            }
+            hexToMoveTo = nodePath[distanceToTravel - 1].NodeHex;
 
-    IEnumerator Move()
+            if (nodePath.Count > distanceToTravel) { nodePath = nodePath.GetRange(0, distanceToTravel); }
+            if (hexToMoveTo != null) { MoveOnPathFound(hexToMoveTo, nodePath); }
+            else { Debug.LogWarning("No hex to move to"); }
+        }
+    }
+
+
+    IEnumerator MoveToAttack()
     {
         List<Node> nodePath = null;
         if (TakingDisadvantageWithRangedAttack()) { 
             nodePath = MoveAwayFromTarget(TargetHex);
-            Debug.Log(nodePath.Count);
         }
-        else { nodePath = getPathToTargettoAttack(TargetHex, CurrentAttackRange); }
+        else { nodePath = getPathToTargettoAttack(TargetHex, CurrentActionRange); }
         if (nodePath.Count == 0) { FinishedMoving(HexOn); }
         else
         {
@@ -454,6 +637,38 @@ public class EnemyCharacter : Character {
         return BreadthFirstSearch(newFrontier, Visited);
     }
 
+    EnemyCharacter BreadthFirstDamagedEnemy()
+    {
+        List<Hex> frontier = new List<Hex>();
+        frontier.Add(HexOn);
+        List<Hex> visited = new List<Hex>();
+        return BreadthFirstSearchDamagedEnemy(frontier, visited);
+    }
+
+
+    EnemyCharacter BreadthFirstSearchDamagedEnemy(List<Hex> Frontier, List<Hex> Visited)
+    {
+        if (Frontier.Count == 0) { return null; }
+        List<Hex> newFrontier = new List<Hex>();
+        foreach (Hex current in Frontier)
+        {
+            foreach (Node next in HexMap.GetRealNeighbors(current.HexNode))
+            {
+                if (!Visited.Contains(next.NodeHex))
+                {
+                    if (next.NodeHex.EntityHolding != null && next.NodeHex.EntityHolding.GetComponent<EnemyCharacter>() != null && 
+                        next.NodeHex.EntityHolding.GetComponent<EnemyCharacter>().Damaged())
+                    {
+                        return next.NodeHex.EntityHolding.GetComponent<EnemyCharacter>();
+                    }
+                    newFrontier.Add(next.NodeHex);
+                    Visited.Add(next.NodeHex);
+                }
+            }
+        }
+        return BreadthFirstSearchDamagedEnemy(newFrontier, Visited);
+    }
+
     void MoveOnPathFound(Hex hexMovingTo, List<Node> nodePath)
     {
         hexMovingTo.CharacterMovingToHex();
@@ -463,6 +678,31 @@ public class EnemyCharacter : Character {
         Node NodeToMoveTo = nodePath[0];
         nodePath.Remove(NodeToMoveTo);
         GetComponent<CharacterAnimationController>().MoveTowards(NodeToMoveTo.NodeHex, nodePath, HexCurrentlyOn);
+    }
+
+    IEnumerator ShowHeal(Action action)
+    {
+        if (Damaged())
+        {
+            hexVisualizer.HighlightHealRangeHex(HexOn);
+            yield return new WaitForSeconds(.5f);
+            GetComponent<CharacterAnimationController>().DoBuff(ActionType.Heal, action.thisAOE.Damage, action.thisDeBuff, new List<Character>() { this });
+            hexVisualizer.HighlightHealPointHex(HexOn);
+            yield return null;
+        }
+        else if (ClosestDamagedAlly != null && HexInActionRange(ClosestDamagedAlly.HexOn))
+        {
+            transform.LookAt(new Vector3(ClosestDamagedAlly.transform.position.x, transform.position.y, ClosestDamagedAlly.transform.position.z));
+            hexVisualizer.HighlightHealRangeHex(HexOn);
+            yield return new WaitForSeconds(.5f);
+            GetComponent<CharacterAnimationController>().DoBuff(ActionType.Heal, action.thisAOE.Damage, action.thisDeBuff, new List<Character>() { ClosestDamagedAlly });
+            hexVisualizer.HighlightHealPointHex(ClosestDamagedAlly.HexOn);
+            yield return null;
+        }
+        else
+        {
+            FinishedPerformingHealing();
+        }
     }
 
     IEnumerator ShowAttack()
@@ -497,9 +737,9 @@ public class EnemyCharacter : Character {
         }
     }
 
-    public void GetAttackHexes(int Range)
+    public void GetActionHexes(int Range)
     {
-        SetCurrentAttackRange(Range);
+        SetCurrentActionRange(Range);
         List<Node> nodes = null;
         if (attackAOEType == AOEType.SingleTarget) { nodes = HexMap.GetNodesInLOS(HexOn.HexNode, Range); }
         else { nodes = HexMap.GetEnemyAOE(attackAOEType, HexOn.HexNode, AoeTargetHex.HexNode); }
@@ -556,6 +796,15 @@ public class EnemyCharacter : Character {
     {
         List<Node> possibleNodes = HexMap.GetNodesInLOS(target.HexNode, range);
         if (possibleNodes.Contains(HexOn.HexNode)){ return new List<Node> { HexOn.HexNode }; }
+        Node ClosestNode = FindObjectOfType<AStar>().DiskatasWithArea(HexOn.HexNode, possibleNodes, myCT);
+        if (ClosestNode != null) { return FindObjectOfType<AStar>().FindPathWithMoveLimit(HexOn.HexNode, ClosestNode, myCT, CurrentMoveRange); }
+        else { return new List<Node>(); }
+    }
+
+    public List<Node> getPathToTargettoHeal(Hex target, int range)
+    {
+        List<Node> possibleNodes = HexMap.GetNodesInLOS(target.HexNode, range);
+        if (possibleNodes.Contains(HexOn.HexNode)) { return new List<Node> { HexOn.HexNode }; }
         Node ClosestNode = FindObjectOfType<AStar>().DiskatasWithArea(HexOn.HexNode, possibleNodes, myCT);
         if (ClosestNode != null) { return FindObjectOfType<AStar>().FindPathWithMoveLimit(HexOn.HexNode, ClosestNode, myCT, CurrentMoveRange); }
         else { return new List<Node>(); }

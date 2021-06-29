@@ -11,9 +11,9 @@ public class HexEditor : Editor {
         DrawDefaultInspector();
 
         Hex myHex = (Hex)target;
-        if (GUILayout.Button("Make Money"))
+        if (GUILayout.Button("Make Money Chest"))
         {
-            myHex.ShowMoney();
+            myHex.CreateMoneyChest();
         }
         if (GUILayout.Button("GenerateCharacter"))
         {

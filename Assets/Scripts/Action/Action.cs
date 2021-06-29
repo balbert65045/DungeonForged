@@ -33,6 +33,7 @@ public enum DeBuffType
     IncreaseAttack = 9,
     IncreaseMove = 10,
     PowerUp = 11,
+    IncreaseShield = 12
 }
 
 [System.Serializable]

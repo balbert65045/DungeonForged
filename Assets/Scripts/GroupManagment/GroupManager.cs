@@ -26,7 +26,7 @@ public class GroupManager : MonoBehaviour {
         Time.timeScale = 1;
     }
 
-    void CreateLevel()
+    public void CreateLevel()
     {
         List<GameObject> PlayerCharacters = new List<GameObject>();
         //PlayerCharacters.Add(CreateCharacterInstance(CharactersPrefab[0]));

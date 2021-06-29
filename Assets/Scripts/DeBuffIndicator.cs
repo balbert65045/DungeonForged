@@ -77,6 +77,20 @@ public class DeBuffIndicator : MonoBehaviour
                 GetComponent<Tooltip>().tooltipTitle = manager.AttackIncreaseTitle;
                 GetComponent<Tooltip>().tooltipText = manager.AttackIncreaseText;
                 break;
+            case DeBuffType.IncreaseMove:
+                deBuffImage.sprite = manager.MoveIncreaseSprite;
+                deBuffOutLineImage.sprite = manager.MoveIncreaseSprite;
+                deBuffImage.color = Color.white;
+                GetComponent<Tooltip>().tooltipTitle = manager.MoveIncreaseTitle;
+                GetComponent<Tooltip>().tooltipText = manager.MoveIncreaseText;
+                break;
+            case DeBuffType.IncreaseShield:
+                deBuffImage.sprite = manager.ShieldIncreaseSprite;
+                deBuffOutLineImage.sprite = manager.ShieldIncreaseSprite;
+                deBuffImage.color = Color.white;
+                GetComponent<Tooltip>().tooltipTitle = manager.ShieldIncreaseTitle;
+                GetComponent<Tooltip>().tooltipText = manager.ShieldIncreaseText;
+                break;
             case DeBuffType.PowerUp:
                 deBuffImage.sprite = manager.PowerUpSprite;
                 deBuffOutLineImage.sprite = manager.PowerUpSprite;

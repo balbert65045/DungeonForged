@@ -2,13 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class CharacterTurnIndicator : MonoBehaviour {
+public class CharacterTurnIndicator : MonoBehaviour, IPointerDownHandler
+{
 
     public Entity characterLinkedTo;
     public Image CharacterImage;
+    public Text TurnsLeft;
 
-    public void SetCharacter(Entity character)
+    public void ReduceTurns()
+    {
+        TurnsLeft.text = (int.Parse(TurnsLeft.text) - 1).ToString();
+    }
+    public void SetTurnsLeft(int amount)
+    {
+        TurnsLeft.gameObject.SetActive(true);
+        TurnsLeft.text = amount.ToString();
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        FindObjectOfType<MyCameraController>().LookAt(characterLinkedTo.transform);
+        FindObjectOfType<PlayerController>().SelectEnemyViaPortait((Character)characterLinkedTo);
+    }
+
+     public void SetCharacter(Entity character)
     {
         characterLinkedTo = character;
         SetCharacterImage(character.characterIcon);

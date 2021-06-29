@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour {
 
+    public bool HasTimer = false;
+    public int TurnsLeft = 0;
+
     public Sprite characterIcon;
 
     public Hex HexOn;
@@ -12,6 +15,8 @@ public class Entity : MonoBehaviour {
     public bool IsEnemy() { return GetComponent<EnemyCharacter>() != null; }
 
     public bool IsEnemySpawner() { return GetComponent<EnemySpawner>() != null; }
+
+    public bool isMoneyChest() { return GetComponent<MoneyChest>() != null; }
 
     public void StartOnHex(Hex hex)
     {

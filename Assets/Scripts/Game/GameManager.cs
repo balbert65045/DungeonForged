@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour {
     {
         //Debug.Log("Level Loaded");
         //if (FindObjectOfType<HexMapController>() == null) { Cursor.visible = true; }
-        if (DebugMap) { StartGameWithMapMade(); }
+        if (DebugMap) { FindObjectOfType<GroupManager>().CreateLevel(); }
     }
 
     // Update is called once per frame

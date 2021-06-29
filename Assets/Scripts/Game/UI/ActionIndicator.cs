@@ -98,6 +98,46 @@ public class ActionIndicator : MonoBehaviour {
         StatusObj.GetComponent<SpriteRenderer>().color = Color.black;
         RangeObj.GetComponent<SpriteRenderer>().color = Color.black;
     }
+    bool isFirstAttack()
+    {
+        List<ActionIndicator> indicators = GetComponentInParent<HealthBar>().CurrnetIndicators;
+        for(int i = 0; i < indicators.Count; i++)
+        {
+            if (indicators[i].myActionType == ActionType.Attack) {
+                if( indicators[i] == this) { return true; }
+                return false;
+            }
+        }
+        return false;
+    }
+
+    bool isFirstMove()
+    {
+        List<ActionIndicator> indicators = GetComponentInParent<HealthBar>().CurrnetIndicators;
+        for (int i = 0; i < indicators.Count; i++)
+        {
+            if (indicators[i].myActionType == ActionType.Movement)
+            {
+                if (indicators[i] == this) { return true; }
+                return false;
+            }
+        }
+        return false;
+    }
+
+    bool isFirstShield()
+    {
+        List<ActionIndicator> indicators = GetComponentInParent<HealthBar>().CurrnetIndicators;
+        for (int i = 0; i < indicators.Count; i++)
+        {
+            if (indicators[i].myActionType == ActionType.Shield)
+            {
+                if (indicators[i] == this) { return true; }
+                return false;
+            }
+        }
+        return false;
+    }
 
     public void ShowAction(Action action, List<DeBuff> deBuffs)
     {
@@ -114,7 +154,11 @@ public class ActionIndicator : MonoBehaviour {
                 InitialAmount = action.Range;
                 EndAmount = InitialAmount;
                 if (DeBuffsHasType(deBuffs, DeBuffType.Immobelized)) { EndAmount = 0; }
-                else if (DeBuffsHasType(deBuffs, DeBuffType.Slow)) { EndAmount--; }
+                else
+                {
+                    if (DeBuffsHasType(deBuffs, DeBuffType.Slow)) { EndAmount--; }
+                    if (DeBuffsHasType(deBuffs, DeBuffType.IncreaseMove) && isFirstMove()) { EndAmount += FindDeBuff(deBuffs, DeBuffType.IncreaseMove).Amount; }
+                }
                 ActionValue.text = EndAmount.ToString();
                 ActionSpriteIndicator.color = Color.blue;
                 break;
@@ -138,7 +182,7 @@ public class ActionIndicator : MonoBehaviour {
                 }
                 if (DeBuffsHasType(deBuffs, DeBuffType.Disarm)) { EndAmount = 0; }
                 if (DeBuffsHasType(deBuffs, DeBuffType.PowerUp)) { EndAmount += FindDeBuff(deBuffs, DeBuffType.PowerUp).Amount; }
-                if (DeBuffsHasType(deBuffs, DeBuffType.IncreaseAttack)) {
+                if (DeBuffsHasType(deBuffs, DeBuffType.IncreaseAttack) && isFirstAttack()) {
                     EndAmount += FindDeBuff(deBuffs, DeBuffType.IncreaseAttack).Amount;
                 }
                 if (DeBuffsHasType(deBuffs, DeBuffType.Weaken)) { EndAmount = Mathf.FloorToInt(EndAmount * .75f); }
@@ -158,13 +202,17 @@ public class ActionIndicator : MonoBehaviour {
                 {
                     RangeObj.SetActive(false);
                 }
-                ActionValue.text = action.thisAOE.Damage.ToString();
+                if (DeBuffsHasType(deBuffs, DeBuffType.IncreaseShield) && isFirstShield())
+                {
+                    EndAmount += FindDeBuff(deBuffs, DeBuffType.IncreaseShield).Amount;
+                }
+                ActionValue.text = EndAmount.ToString();
                 ActionSpriteIndicator.sprite = ShieldIndicatorSprite;
                 ActionSpriteIndicatorBackGround.sprite = ShieldIndicatorSprite;
                 ActionSpriteIndicator.color = Color.gray;
                 break;
             case ActionType.Heal:
-                if (action.Range > 1)
+                if (action.Range > 0)
                 {
                     RangeObj.SetActive(true);
                     RangeValue.text = action.Range.ToString();

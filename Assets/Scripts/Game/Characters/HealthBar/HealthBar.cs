@@ -39,7 +39,7 @@ public class HealthBar : MonoBehaviour {
     int CurrentShield = 0;
 
     public GameObject IndicatorPrefab;
-    List<ActionIndicator> CurrnetIndicators = new List<ActionIndicator>();
+    public List<ActionIndicator> CurrnetIndicators = new List<ActionIndicator>();
 
     public void ClearActions()
     {
@@ -76,8 +76,8 @@ public class HealthBar : MonoBehaviour {
             GameObject actionIndicator = Instantiate(IndicatorPrefab, this.transform);
             actionIndicator.transform.localPosition = new Vector3(-0.25f, .94f + i * .5f, 0);
             ActionIndicator AI = actionIndicator.GetComponent<ActionIndicator>();
-            AI.ShowAction(actions[i], deBuffs);
             CurrnetIndicators.Add(AI);
+            AI.ShowAction(actions[i], deBuffs);
             if (!isPlayer) { continue; }
             if (i == 0)
             {
@@ -256,10 +256,11 @@ public class HealthBar : MonoBehaviour {
     IEnumerator AddingHealth(int healthAmount)
     {
         yield return null;
-        HealValue.gameObject.SetActive(true);
-        HealValue.text = healthAmount.ToString();
+        AttackValue.gameObject.SetActive(true);
+        AttackValue.color = Color.green;
+        AttackValue.text = healthAmount.ToString();
         yield return new WaitForSeconds(.2f);
-        HealValue.gameObject.SetActive(false);
+        AttackValue.gameObject.SetActive(false);
         CurrentHealth = Mathf.Clamp(CurrentHealth + healthAmount, 0, MaxHealth);
         CurrentHealthText.text = CurrentHealth.ToString();
         HpBar.SetHP((float)CurrentHealth / (float)MaxHealth);
@@ -277,6 +278,7 @@ public class HealthBar : MonoBehaviour {
         yield return new WaitForSeconds(.2f);
         int totalHealthLoss = Mathf.Clamp(totalDamageIncomming - CurrentShield, 0, 100000);
         AttackValue.gameObject.SetActive(true);
+        AttackValue.color = Color.red;
         AttackValue.text = totalHealthLoss.ToString();
         yield return new WaitForSeconds(.2f);
 

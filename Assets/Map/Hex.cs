@@ -28,6 +28,9 @@ public class Hex : MonoBehaviour {
     public Material SlightlyVisibleMaterial;
     public Material OGMaterial;
 
+    public MoneyChest myMoneyChest;
+    //Make capable of collecting chest like money
+
     public Material previousMaterial { get; set; }
     public Node HexNode { get; set; }
 
@@ -83,9 +86,10 @@ public class Hex : MonoBehaviour {
 
     public int PickUpMoney()
     {
-        Destroy(GoldHolding);
-        int gold = goldHolding;
-        goldHolding = 0;
+        if (myMoneyChest == null) { return 0; }
+        int gold = myMoneyChest.goldHolding;
+        myMoneyChest.Use();
+        myMoneyChest = null;
         return gold;
     }
 
@@ -166,6 +170,17 @@ public class Hex : MonoBehaviour {
         }
 
         return true;
+    }
+
+    public void CreateMoneyChest()
+    {
+        if (EntityToSpawn != null)
+        {
+            Vector3 StartPos = new Vector3(transform.position.x, transform.position.y + EntityOffset, transform.position.z);
+            Vector3 startingRot = new Vector3(0, -90, 0);
+            GameObject moneyChest = Instantiate(EntityToSpawn.gameObject, StartPos, Quaternion.Euler(startingRot), transform);
+            myMoneyChest = moneyChest.GetComponent<MoneyChest>();
+        }
     }
 
 

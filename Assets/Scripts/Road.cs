@@ -73,13 +73,12 @@ public class Road : PathPart
 
     IEnumerator MovingOnRoad()
     {
-        yield return new WaitForSeconds(.5f);
         roadPiece1.color = Color.white;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.3f);
         roadPiece2.color = Color.white;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.3f);
         roadPiece3.color = Color.white;
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.3f);
         FindObjectOfType<LocationMap>().ChangeToNextLocation();
     }
 }

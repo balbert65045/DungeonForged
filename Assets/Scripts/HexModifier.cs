@@ -51,7 +51,7 @@ public class HexModifier : MonoBehaviour
 
     void CreateRandomModifier()
     {
-        int RandomIndex = Random.Range(1, 5);
+        int RandomIndex = Random.Range(1, 4);
         SetModifierType((ModifierTypes)RandomIndex);
     }
 

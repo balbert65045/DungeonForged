@@ -307,9 +307,9 @@ public class HexVisualizer : MonoBehaviour {
             //get all atacks that will hit
             int totalDamageDealing = 0;
             if (playerController.CombinedActions() == null) { return; }
-            foreach(Action action in playerController.CombinedActions())
+            for(int i = 0; i < playerController.CombinedActions().Count; i++)
             {
-                totalDamageDealing += playerController.SelectPlayerCharacter.DamageDealing(action.thisAOE.Damage);
+                totalDamageDealing += playerController.SelectPlayerCharacter.DamageDealing(playerController.CombinedActions()[i].thisAOE.Damage, i == 0);
             }
             hex.GetEnemy().PredictDamage(totalDamageDealing);
             if (!charactersPredictingDamage.Contains(hex.GetEnemy()))
@@ -362,13 +362,13 @@ public class HexVisualizer : MonoBehaviour {
         {
             if (playerController.enemySelected.previewMoveHexes.Contains(hex.HexNode))
             {
-                if (playerController.enemySelected.HexOn == hex) { playerController.enemySelected.ShowAttackOnHexOn(); }
-                else { playerController.enemySelected.VisualizeAttack(hex); }
+                if (playerController.enemySelected.HexOn == hex) { playerController.enemySelected.ShowActionOnHexOn(); }
+                else { playerController.enemySelected.VisualizeAction(hex); }
                 return;
             }
             else
             {
-                playerController.enemySelected.ShowAttackOnHexOn();
+                playerController.enemySelected.ShowActionOnHexOn();
                 return;
             }
         }

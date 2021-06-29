@@ -75,7 +75,11 @@ public class PlayerCharacter : Character
     {
         CurrentMoveRange = moveRange;
         if (MyDeBuffsHas(DeBuffType.Immobelized)) { CurrentMoveRange = 0; }
-        else if (MyDeBuffsHas(DeBuffType.Slow)) { CurrentMoveRange--; }
+        else
+        {
+            if (MyDeBuffsHas(DeBuffType.Slow)) { CurrentMoveRange--; }
+            if (MyDeBuffsHas(DeBuffType.IncreaseMove)) { CurrentMoveRange += FindDeBuff(DeBuffType.IncreaseMove).Amount; }
+        }
         List<Node> nodesInDistance = aStar.Diskatas(HexOn.HexNode, CurrentMoveRange, myCT);
         NodesInWalkingDistance.Clear();
         List<Node> nodesInArea = new List<Node>();
@@ -171,6 +175,7 @@ public class PlayerCharacter : Character
 
     public override void FinishedMoving(Hex hex, bool fight = false, Hex hexMovingFrom = null)
     {
+        if (MyDeBuffsHas(DeBuffType.IncreaseMove)) { RemoveStatus(DeBuffType.IncreaseMove); }
         playerController.ClearHexesMovingTo();
         if (HexMovingTo != null) { HexMovingTo.CharacterArrivedAtHex(); }
         int goldPickedUp = HexMovingTo.PickUpMoney();
@@ -206,7 +211,7 @@ public class PlayerCharacter : Character
     public override void FinishedAttacking(bool dead = false)
     {
         base.FinishedAttacking();
-        if (AttackActions.Count > 0) { return; }
+        if (AttackingAgain && !dead) { return; }
         if (CharactersFinishedTakingDamage >= charactersAttackingAt.Count || charactersAttackingAt.Count == 0) {
             if (!dead) { StartCoroutine("FinisheAttackDelay"); }
             else { FindObjectOfType<PlayerController>().FinishedAttacking(this); }
@@ -225,7 +230,8 @@ public class PlayerCharacter : Character
 
     public override void FinishedPerformingShielding()
     {
-        FindObjectOfType<PlayerController>().FinishedHealing(this);
+        if (MyDeBuffsHas(DeBuffType.IncreaseShield)) { RemoveStatus(DeBuffType.IncreaseShield); }
+        FindObjectOfType<PlayerController>().FinishedShielding(this);
     }
 
     //DOOR
@@ -256,7 +262,7 @@ public class PlayerCharacter : Character
 
     public void UpdateHealth(int amount)
     {
-        FindObjectOfType<CCSSelectionButton>().SetCurrentHp(amount);
+        if (FindObjectOfType<CCSSelectionButton>() != null) { FindObjectOfType<CCSSelectionButton>().SetCurrentHp(amount); }
     }
 
     public void GainXP(float XP)

@@ -42,12 +42,12 @@ public class LevelManager : MonoBehaviour {
         if (FindObjectOfType<NewGroupStorage>().BossNext) { SceneManager.LoadSceneAsync("Boss"); }
         else
         {
-            int randIndex = Random.Range(0, 3);
-            string Letter = "A";
-            if (randIndex == 1) { Letter = "B"; }
-            else if (randIndex == 2) { Letter = "C"; }
+            //int randIndex = Random.Range(0, 3);
+            //string Letter = "A";
+            //if (randIndex == 1) { Letter = "B"; }
+            //else if (randIndex == 2) { Letter = "C"; }
             int level = FindObjectOfType<NewGroupStorage>().LevelIndex;
-            SceneManager.LoadSceneAsync("New Level " + level.ToString() + " " + Letter);
+            SceneManager.LoadSceneAsync("New Level " + level.ToString());
         }
     }
 

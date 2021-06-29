@@ -97,6 +97,10 @@ public class EnemyController : MonoBehaviour {
         {
             turnOrder.GetCurrentCharacter().GetComponent<EnemySpawner>().Spawn();
         }
+        else if (turnOrder.GetCurrentCharacter().isMoneyChest())
+        {
+            turnOrder.GetCurrentCharacter().GetComponent<MoneyChest>().TickDownTimer();
+        }
         else
         {
             EnemyCharacter CurrentCharacter = turnOrder.GetCurrentCharacter().GetComponent<EnemyCharacter>();

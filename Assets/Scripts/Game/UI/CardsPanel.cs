@@ -13,7 +13,6 @@ public class CardsPanel : MonoBehaviour {
         NewCard[] newCards = ContentPanel.GetComponentsInChildren<NewCard>();
         foreach(NewCard newCard in newCards)
         {
-            Debug.Log("hiding new card");
             newCard.transform.SetParent(OldParent.transform);
             newCard.transform.localPosition = Vector3.zero;
             newCard.gameObject.SetActive(false);

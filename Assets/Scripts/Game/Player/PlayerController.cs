@@ -29,6 +29,10 @@ public class PlayerController : MonoBehaviour {
 
     public void ShowStagedAction(List<Action> actions)
     {
+        if (enemySelected != null) { 
+            enemySelected.RemoveAreas();
+            enemySelected = null;
+        }
         CurrentActions = actions;
         if (actions.Count == 0)
         {
@@ -72,7 +76,7 @@ public class PlayerController : MonoBehaviour {
         actionButton = FindObjectOfType<PlayerActionButton>();
         turnOrder = FindObjectOfType<TurnOrder>();
         endActionButton.gameObject.SetActive(false);
-        FindObjectOfType<PlayerTopBar>().HideBar();
+        if (FindObjectOfType<PlayerTopBar>() != null) { FindObjectOfType<PlayerTopBar>().HideBar(); }
         //..
         //StartCoroutine("StartGame");
         //actionButton.gameObject.SetActive(false);
@@ -118,11 +122,8 @@ public class PlayerController : MonoBehaviour {
     public EnemyCharacter enemySelected = null;
     void SelectEnemy()
     {
+        if (OverCard()) { return; }
         if (enemySelected != null) { enemySelected.RemoveAreas(); }
-        if (OverCard()) {
-            enemySelected = null;
-            return; 
-        }
         Transform HexHit = raycaster.HexRaycast();
         Hex hexSelected = null;
         if (HexHit != null && HexHit.GetComponent<Hex>()) { hexSelected = HexHit.GetComponent<Hex>(); }
@@ -131,15 +132,35 @@ public class PlayerController : MonoBehaviour {
             ShowArea();
             return; 
         }
-        if (!hexSelected.HasEnemy()) {
+        if (hexSelected.HasEnemy())
+        {
+            enemySelected = hexSelected.GetEnemy();
+        }
+        else
+        {
+            enemySelected = null;
+        }
+        EnemySelected(enemySelected);
+    }
+
+    public void SelectEnemyViaPortait(Character character)
+    {
+        if (enemySelected != null) { enemySelected.RemoveAreas(); }
+        EnemySelected(character);
+    }
+
+    public void EnemySelected(Character character)
+    {
+        if (character == null || !character.IsEnemy())
+        {
             enemySelected = null;
             ShowArea();
             return;
         }
         else
         {
+            enemySelected = (EnemyCharacter)character;
             RemoveArea();
-            enemySelected = hexSelected.GetEnemy();
             enemySelected.Selected();
         }
     }
@@ -417,15 +438,7 @@ public class PlayerController : MonoBehaviour {
         SelectPlayerCharacter.EndTurn();
         TurnOrder turnOrder = FindObjectOfType<TurnOrder>();
         turnOrder.EndTurn();
-
-        if (turnOrder.GetCurrentCharacter().IsPlayer())
-        {
-            AllowNewTurns();
-        }
-        else
-        {
-            FindObjectOfType<EnemyController>().DoEnemyActions();
-        }
+        FindObjectOfType<EnemyController>().DoEnemyActions();
     }
 
     public void DiscardAction()
@@ -542,12 +555,14 @@ public class PlayerController : MonoBehaviour {
                 ActionFinished();
                 break;
             case ModifierTypes.Move:
-                AddMovement(character);
+                character.IncreaseMove();
                 RemoveActionUsed();
                 ActionFinished();
                 break;
             case ModifierTypes.Shield:
-                AddShield(character);
+                character.IncreaseShield();
+                RemoveActionUsed();
+                ActionFinished();
                 break;
             case ModifierTypes.Draw:
                 AddDraw(character);

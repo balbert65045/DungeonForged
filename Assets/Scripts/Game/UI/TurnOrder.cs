@@ -24,15 +24,38 @@ public class TurnOrder : MonoBehaviour {
     int PlayerCharacters()
     {
         int pcs = 0;
-        foreach(Character character in CharactersInCombat)
+        foreach(Entity character in CharactersInCombat)
         {
             if (character.IsPlayer()) { pcs++; }
         }
         return pcs;
     }
 
+    void OrderCharacters()
+    {
+        Entity[] myEntities = CharactersInCombat.ToArray();
+        CharactersInCombat.Clear();
+        List<int> indexesOfNonCharacters = new List<int>();
+        for (int i = 0; i < myEntities.Length; i++)
+        {
+            if (myEntities[i].GetComponent<Character>() != null)
+            {
+                CharactersInCombat.Add(myEntities[i]);
+            }
+            else
+            {
+                indexesOfNonCharacters.Add(i);
+            }
+        }
+        foreach(int index in indexesOfNonCharacters)
+        {
+            CharactersInCombat.Add(myEntities[index]);
+        }
+    }
+
     void CreateInitialIndicators()
     {
+        OrderCharacters();
         SetSizeAndAmountOfSpots();
         LastCharacterIndex = characterIndex;
         if (LastCharacterIndex > CharactersInCombat.Count) { LastCharacterIndex--; }
@@ -46,6 +69,10 @@ public class TurnOrder : MonoBehaviour {
             if (character == CharactersInCombat[CharactersInCombat.Count - 1] && i != ActiveOtherSpots.Count)
             {
                 CreateNewTurnSpot(newIndicator);
+            }
+            if (character.HasTimer) 
+            {
+                newIndicator.SetTurnsLeft(character.TurnsLeft);
             }
             IncrimentLastCharacterIndex();
         }
@@ -113,6 +140,7 @@ public class TurnOrder : MonoBehaviour {
         {
             CharacterTurnIndicator NewIndicator = CreateNewTurnIndicator(OtherSpots[ActiveOtherSpots.Count], character);
             NewIndicator.transform.SetParent(OtherSpots[ActiveOtherSpots.Count - 1].transform);
+            if (character.HasTimer) { NewIndicator.SetTurnsLeft(character.TurnsLeft); }
             NewIndicator.SetShift();
         }
         IncrimentCharacterIndex();
@@ -139,6 +167,12 @@ public class TurnOrder : MonoBehaviour {
         return 0;
     }
 
+    public void SetTurnsLeft(Entity character)
+    {
+        ActiveSpot.GetComponentInChildren<CharacterTurnIndicator>().ReduceTurns();
+        ActiveOtherSpots[ActiveOtherSpots.Count - 1].GetComponentInChildren<CharacterTurnIndicator>().ReduceTurns();
+    }
+
     public void CharacterRemoved(Entity character)
     {
         int deadCharacterIndex = GetCharacterCharacterIndex(character);
@@ -146,6 +180,15 @@ public class TurnOrder : MonoBehaviour {
         if (characterIndex == CharactersInCombat.Count || deadCharacterIndex <= characterIndex) { characterIndex--; }
         CreateInitialIndicators();
     }
+
+    public void ChestRemoved(Entity character)
+    {
+        int deadCharacterIndex = GetCharacterCharacterIndex(character);
+        CharactersInCombat.Remove(character);
+        characterIndex = 0;
+        CreateInitialIndicators();
+    }
+
 
     public void AddCharacter(Entity character)
     {
