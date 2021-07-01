@@ -2221,6 +2221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f47082266ca7ef43a30894abe104ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HasTimer: 0
+  TurnsLeft: 0
   characterIcon: {fileID: 21300000, guid: 34c3dc92827b33449b7ad6b8b1d8a21a, type: 3}
   HexOn: {fileID: 0}
   myCT: 1
@@ -2240,7 +2242,8 @@ MonoBehaviour:
   deBuffApplied:
     thisDeBuffType: 0
     Amount: 0
-  PreviewCharacter: {fileID: 0}
+  PreviewCharacter: {fileID: 1369716483787741785, guid: 1df7929924f373447b0d17887345443e,
+    type: 3}
   EnemyChallengeRating: 2
   XpOnDeath: 10
   GoldHolding: 5
@@ -4089,6 +4092,7 @@ MonoBehaviour:
     type: 3}
   IndicatorPrefab: {fileID: 1145121032965342, guid: ab27972d27547c841a63479e9dfd7496,
     type: 3}
+  CurrnetIndicators: []
 --- !u!1 &8656800670042304146
 GameObject:
   m_ObjectHideFlags: 0

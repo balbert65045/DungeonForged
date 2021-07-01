@@ -186,24 +186,28 @@ public class HealthBar : MonoBehaviour {
     }
     public void ResetShield(int amount)
     {
-        CurrentShield = 0;
+        CurrentShield = amount;
         if (amount == 0)
         {
             ArmorSymbol.gameObject.SetActive(false);
             ArmorValue.gameObject.SetActive(false);
         }
+        else
+        {
+            SetShield(amount);
+        }
     }
 
     public void SetShield(int amount)
     {
-        if (CurrentShield == 0)
+        if (amount != 0)
         {
             ArmorSymbol.gameObject.SetActive(true);
             ArmorValue.gameObject.SetActive(true);
         }
 
-        ArmorValue.text = (CurrentShield + amount).ToString();
-        CurrentShield += amount;
+        ArmorValue.text = (amount).ToString();
+        CurrentShield = amount;
     }
 
     public void RemoveShield(int amount)
@@ -231,7 +235,7 @@ public class HealthBar : MonoBehaviour {
     IEnumerator AddingArmor(int shieldAmount)
     {
         yield return null;
-        if (CurrentShield == 0)
+        if (shieldAmount != 0)
         {
             ArmorSymbol.gameObject.SetActive(true);
             ArmorValue.gameObject.SetActive(true);

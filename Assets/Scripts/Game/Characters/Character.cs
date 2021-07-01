@@ -138,7 +138,7 @@ public class Character : Entity {
         Strength = baseStrength;
         Agility = baseAgility;
         Dexterity = baseDexterity;
-        Armor = baseArmor;
+        CurrentArmor = baseArmor;
         CurrentMoveDistance = MaxMoveDistance;
     }
 
@@ -182,7 +182,9 @@ public class Character : Entity {
 
     public virtual void FinishedPerformingHealing() { }
 
-    public void FinishedShielding() { characterShieldingMe.FinishedPerformingShielding(); }
+    public void FinishedShielding() { 
+        if (characterShieldingMe != null) { characterShieldingMe.FinishedPerformingShielding(); }
+    }
 
     public virtual void FinishedPerformingShielding() { }
 
@@ -347,7 +349,9 @@ public class Character : Entity {
 
     public void BeginTurn()
     {
-        if (FindObjectOfType<TurnOrder>().TurnNumber != 0) { resetShield(baseArmor); }
+        if (FindObjectOfType<TurnOrder>().TurnNumber != 0) {
+            resetShield(baseArmor);
+        }
         if (MyDeBuffsHas(DeBuffType.Bleed))
         {
             Bleed();
@@ -407,7 +411,6 @@ public class Character : Entity {
         if (MyDeBuffsHas(DeBuffType.Stun)) { DecreaseDebuff(DeBuffType.Stun); }
         if (MyDeBuffsHas(DeBuffType.Disarm)) { DecreaseDebuff(DeBuffType.Disarm); }
         if (MyDeBuffsHas(DeBuffType.Slow)) { DecreaseDebuff(DeBuffType.Slow); }
-        //if (MyDeBuffsHas(DeBuffType.IncreaseAttack)) { RemoveStatus(DeBuffType.IncreaseAttack); }
     }
     void DecreaseDebuff(DeBuffType DeBuffType)
     {

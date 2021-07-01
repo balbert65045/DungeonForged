@@ -2158,6 +2158,7 @@ MonoBehaviour:
     type: 3}
   IndicatorPrefab: {fileID: 1145121032965342, guid: ab27972d27547c841a63479e9dfd7496,
     type: 3}
+  CurrnetIndicators: []
 --- !u!1 &6403995464603375836
 GameObject:
   m_ObjectHideFlags: 0
@@ -2983,6 +2984,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f47082266ca7ef43a30894abe104ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HasTimer: 0
+  TurnsLeft: 0
   characterIcon: {fileID: 21300000, guid: fcd272693f0f1c143a5813a36f0cc6b4, type: 3}
   HexOn: {fileID: 0}
   myCT: 1
@@ -2993,7 +2996,7 @@ MonoBehaviour:
   baseStrength: 0
   baseAgility: 0
   baseDexterity: 0
-  baseArmor: 0
+  baseArmor: 3
   NodesInWalkingDistance: []
   NodesInActionRange: []
   CombatNodes: []
@@ -3002,7 +3005,8 @@ MonoBehaviour:
   deBuffApplied:
     thisDeBuffType: 0
     Amount: 0
-  PreviewCharacter: {fileID: 0}
+  PreviewCharacter: {fileID: 2639263195803685481, guid: 345c5b53c28b7a74e92860af8411c155,
+    type: 3}
   EnemyChallengeRating: 2
   XpOnDeath: 10
   GoldHolding: 5

@@ -45,75 +45,65 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterIcon: {fileID: 21300000, guid: 1e2a33e8bffd21d47b453a3378fffb18, type: 3}
   CharacterNameLinkedTo: Demolisher
-  AvailableActions:
+  EnemyPrefab: {fileID: 7154783747336591519, guid: f2e6413ac73502648afc88973932aec5,
+    type: 3}
+  Spawns:
+  - amount: 1
+    turn: 3
+  MaxIdealRange: 2
+  MinIdealRange: 1
+  EngagingActions:
   - Actions:
     - thisActionType: 1
       thisAOE:
         thisAOEType: 0
-        Targets: 0
         Damage: 0
-      thisDeBuff: 0
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
+      Range: 3
+      TriggerAnimation: 
+  AvailableActions:
+  - Actions:
+    - thisActionType: 2
+      thisAOE:
+        thisAOEType: 4
+        Damage: 15
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
       Range: 1
+      TriggerAnimation: 
+  - Actions:
+    - thisActionType: 1
+      thisAOE:
+        thisAOEType: 7
+        Damage: 0
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
+      Range: 1
+      TriggerAnimation: 
     - thisActionType: 2
       thisAOE:
         thisAOEType: 0
-        Targets: 0
-        Damage: 12
-      thisDeBuff: 0
+        Damage: 7
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
       Range: 1
+      TriggerAnimation: 
   - Actions:
     - thisActionType: 4
       thisAOE:
         thisAOEType: 0
-        Targets: 0
-        Damage: 3
-      thisDeBuff: 0
+        Damage: 10
+      thisDeBuff:
+        thisDeBuffType: 0
+        Amount: 0
       Range: 0
-    - thisActionType: 1
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 0
-      thisDeBuff: 0
-      Range: 3
-  - Actions:
-    - thisActionType: 1
-      thisAOE:
-        thisAOEType: 0
-        Targets: 1
-        Damage: 0
-      thisDeBuff: 0
-      Range: 2
-    - thisActionType: 2
-      thisAOE:
-        thisAOEType: 0
-        Targets: 1
-        Damage: 8
-      thisDeBuff: 0
-      Range: 1
-  - Actions:
-    - thisActionType: 2
-      thisAOE:
-        thisAOEType: 0
-        Targets: 1
-        Damage: 6
-      thisDeBuff: 0
-      Range: 3
-  - Actions:
-    - thisActionType: 1
-      thisAOE:
-        thisAOEType: 0
-        Targets: 0
-        Damage: 0
-      thisDeBuff: 0
-      Range: 1
-    - thisActionType: 2
-      thisAOE:
-        thisAOEType: 0
-        Targets: 1
-        Damage: 3
-      thisDeBuff: 3
-      Range: 2
+      TriggerAnimation: 
+  DisengagingActions: []
   CurrentActionSet:
     Actions: []
   linkedCharacters: []
